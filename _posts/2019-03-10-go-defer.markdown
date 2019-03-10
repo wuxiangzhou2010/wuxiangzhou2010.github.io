@@ -1,0 +1,56 @@
+---
+layout: post
+title:  "go defer"
+date:   2019-03-10 12:33 +0800
+categories: Golang
+---
+
+Go's `defer` statement can be used to do clean up work for a function. This can save the effort to place same statement before every return statement.
+
+1. defer must be a function, either `a concrete function call` or `an annoymous function call`.
+2. a function can have multiple defer statement, and they will be execute in `Last In First Out` manner.
+3. defer will be execute after the surround function returns, but before the return value is assigned to the variable.
+
+an example as follows:
+``` go
+
+package main
+
+import "fmt"
+
+func main() {
+
+	fmt.Println("in main ", *increase1())
+}
+
+func increase1() *int {
+	i := 100
+	defer increase2(&i) // 103
+	defer increase2(&i) // 102
+	defer increase2(&i) // 101
+	defer func() { fmt.Println("third") }()
+	defer func() { fmt.Println("second") }()
+	defer func() { fmt.Println("first") }()
+
+	fmt.Println("in increase1", i)
+	return &i
+
+}
+func increase2(i *int) {
+	*i = *i + 1
+	fmt.Println("in increase2", *i)
+}
+```
+
+the result:
+```
+in increase1 100
+first
+second
+third
+in increase2 101
+in increase2 102
+in increase2 103
+in main  103
+
+```
