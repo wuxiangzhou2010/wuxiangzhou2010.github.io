@@ -3,70 +3,71 @@ layout: post
 title: "Build mist wallet 0.10.0"
 date: 2019-03-11 16:52 +0800
 categories: Ethereum
-published: false
+published: true
 ---
 
-## config foleder
+Mist `0.10.0` it is the last version that use web3.js `0.xx.xx` series. To not break dependencies in my other projects, I need to use this version rather the newer ones.
 
-linux: `~/.config/Mist`
+As far as I know, the major difference between web3.js 0.xx and 1.xx is that 1.xx is mostly using async mechanism and web3 is divided into several packages while 0.xx can use async and sync mechanism and 0.xx web3.js is packed into a single package.
 
-```sh
-rm -rf ~/.config/Mist
-```
+1. Config foleder
 
-## dependencies
+   linux: `~/.config/Mist`
 
-- nodejs 8
-- meteor
-- yarn
-- Electron
-- Gulp
+   ```sh
+   rm -rf ~/.config/Mist
+   ```
 
-```sh
-curl https://install.meteor.com/ | sh
-curl -o- -L https://yarnpkg.com/install.sh | bash
-yarn global add electron@1.8.4
-yarn global add gulp
-```
+2. Dependencies
 
-## get repo
+   - nodejs 8
+   - meteor
+   - yarn
+   - Electron
+   - Gulp
 
-```sh
-git clone https://github.com/ethereum/mist.git
+   ```sh
+   curl https://install.meteor.com/ | sh
+   curl -o- -L https://yarnpkg.com/install.sh | bash
+   yarn global add electron@1.8.4
+   yarn global add gulp
+   ```
 
-cd mist
-git reset --hard v0.10.0
-yarn
-```
+3. Get repo
 
-## for dev
+   ```sh
+   git clone https://github.com/ethereum/mist.git
 
-```sh
-# 1. first terminal
+   cd mist
+   git reset --hard v0.10.0
+   yarn
+   ```
 
-cd mist/interface && meteor --no-release-check
+4. For dev
 
-# 2. second terminal
+   ```sh
+   # 1. first terminal
+   cd mist/interface && meteor --no-release-check
 
-cd my/path/meteor-dapp-wallet/app && meteor --port 3050
-# npm install @babel/runtime@7.0.0-beta.49
+   # 2. second terminal
+   cd my/path/meteor-dapp-wallet/app && meteor --port 3050
+   # npm install @babel/runtime@7.0.0-beta.49
 
-# 3. third terminal
+   # 3. third terminal
+   cd mist
+   yarn dev:electron --mode wallet
+   ```
 
-cd mist
-yarn dev:electron --mode wallet
-```
+5. Generate wallet
 
-## generate wallet
+   ```sh
+   # install multi lib for ia32 platform
+   sudo apt-get install gcc-multilib g++-multilib
 
-```sh
-# install multi lib for ia32 platform
-sudo apt-get install gcc-multilib g++-multilib
+   npm install -g meteor-build-client
+   gulp --linux --wallet --x64
+   ```
 
-npm install -g meteor-build-client
-gulp --linux --wallet --x64
-```
-
-reference:
+Reference:
 
 - [ethereum mist v0.10.0](https://github.com/ethereum/mist/tree/v0.10.0)
