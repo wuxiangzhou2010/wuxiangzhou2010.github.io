@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "wall proxy"
+title: "Wall proxy - Shadowsocks & V2ray"
 date: 2019-03-11 18:52 +0800
 categories: proxy
 ---
@@ -69,95 +69,7 @@ in short -->
 
    基本使用方法参考如下
 
-<!--
-            - [v2ray](http://v2ray.com/)
-
-              - [安装](https://v2ray.com/chapter_00/install.html)
-
-                登录机器后以 root 的身份， 直接运行下面的脚本就可以了
-
-                ```sh
-                bash <(curl -L -s https://install.direct/go.sh)
-                ```
-
-              - [设置](https://v2ray.com/chapter_00/start.html)
-
-                1. 配置文件在 `/etc/v2ray/config.json`
-
-                2. 其中的 users id 可以用[这个](https://www.uuidgenerator.net/)链接生成
-                3. 注意服务器要配置中指定的端口
-
-                客户端配置:
-
-                ```json
-                {
-                  "inbounds": [
-                    {
-                      "port": 1080, // SOCKS 代理端口，在浏览器中需配置代理并指向这个端口
-                      "listen": "127.0.0.1",
-                      "protocol": "socks",
-                      "settings": {
-                        "udp": true
-                      }
-                    }
-                  ],
-                  "outbounds": [
-                    {
-                      "protocol": "vmess",
-                      "settings": {
-                        "vnext": [
-                          {
-                            "address": "server", // 服务器地址，请修改为你自己的服务器 ip 或域名
-                            "port": 10086, // 服务器端口
-                            "users": [{ "id": "b831381d-6324-4d53-ad4f-8cda48b30811" }]
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "protocol": "freedom",
-                      "tag": "direct",
-                      "settings": {}
-                    }
-                  ],
-                  "routing": {
-                    "domainStrategy": "IPOnDemand",
-                    "rules": [
-                      {
-                        "type": "field",
-                        "ip": ["geoip:private"],
-                        "outboundTag": "direct"
-                      }
-                    ]
-                  }
-                }
-                ```
-
-                服务器端配置:
-
-                ```json
-                {
-                  "inbounds": [
-                    {
-                      "port": 10086, // 服务器监听端口，必须和上面的一样
-                      "protocol": "vmess",
-                      "settings": {
-                        "clients": [{ "id": "b831381d-6324-4d53-ad4f-8cda48b30811" }]
-                      }
-                    }
-                  ],
-                  "outbounds": [
-                    {
-                      "protocol": "freedom",
-                      "settings": {}
-                    }
-                  ]
-                }
-                ```
-
--->
-
-- shadowsocks
+- Shadowsocks
 
   使用上面的 ssh 工具登录服务器
 
@@ -188,12 +100,12 @@ in short -->
        ```sh
        cat>config.json<<EOF
        {
-       "server":"xx.xx.xx.xx",
-       "server_port":8838,
-       "local_port":1080,
-       "password":"xx",
-       "timeout":600,
-       "method":"AES-256-CFB"
+          "server":"xx.xx.xx.xx",
+          "server_port":8838,
+          "local_port":1080,
+          "password":"xx",
+          "timeout":600,
+          "method":"AES-256-CFB"
        }
        EOF
        ```
@@ -219,6 +131,95 @@ in short -->
     5. proxy port (同服务器配置中的 local_port)
 
     ![如图](/asserts/ssconfig.png)
+
+- [v2ray](http://v2ray.com/)
+
+  - [安装](https://v2ray.com/chapter_00/install.html)
+
+    登录机器后以 root 的身份， 直接运行下面的脚本就可以了
+
+    ```sh
+    bash <(curl -L -s https://install.direct/go.sh)
+    ```
+
+  - [设置](https://v2ray.com/chapter_00/start.html)
+
+    1. 配置文件在 `/etc/v2ray/config.json`
+    2. 其中的 users id 可以用 [这个](https://www.uuidgenerator.net/)链接生成
+    3. 确保指定的端口开放
+    4. 重启服务以生效
+
+       ```sh
+       service v2ray start
+       ```
+
+       客户端配置:
+
+       ```json
+       {
+         "inbounds": [
+           {
+             "port": 1080, // SOCKS 代理端口，在浏览器中需配置代理并指向这个端口
+             "listen": "127.0.0.1",
+             "protocol": "socks",
+             "settings": {
+               "udp": true
+             }
+           }
+         ],
+         "outbounds": [
+           {
+             "protocol": "vmess",
+             "settings": {
+               "vnext": [
+                 {
+                   "address": "server", // 服务器地址，请修改为你自己的服务器 ip 或域名
+                   "port": 10086, // 服务器端口
+                   "users": [{ "id": "b831381d-6324-4d53-ad4f-8cda48b30811" }]
+                 }
+               ]
+             }
+           },
+           {
+             "protocol": "freedom",
+             "tag": "direct",
+             "settings": {}
+           }
+         ],
+         "routing": {
+           "domainStrategy": "IPOnDemand",
+           "rules": [
+             {
+               "type": "field",
+               "ip": ["geoip:private"],
+               "outboundTag": "direct"
+             }
+           ]
+         }
+       }
+       ```
+
+       服务器端配置:
+
+       ```json
+       {
+         "inbounds": [
+           {
+             "port": 10086, // 服务器监听端口，必须和上面的一样
+             "protocol": "vmess",
+             "settings": {
+               "clients": [{ "id": "b831381d-6324-4d53-ad4f-8cda48b30811" }]
+             }
+           }
+         ],
+         "outbounds": [
+           {
+             "protocol": "freedom",
+             "settings": {}
+           }
+         ]
+       }
+       ```
 
 [bandwagon vps]: https://bandwagonhost.com/
 [vultr vps]: https://www.vultr.com/
