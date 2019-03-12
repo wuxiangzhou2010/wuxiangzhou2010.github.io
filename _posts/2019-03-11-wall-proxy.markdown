@@ -42,9 +42,12 @@ in short -->
 
    - 免费 vps:
 
-     有不少厂商有一年的免费期， 比如亚马逊 aws, 微软 azure , 谷歌的 google cloud platform。
+     有不少厂商提供一年的免费试用期， 比如亚马逊 aws, 微软 azure , 谷歌的 google cloud platform。
 
      - [Amazon web services free trial](https://aws.amazon.com/free/)
+
+       如亚马逊免费使用的方法, [亚马逊 AWS EC2 免费 1 年申请教程][aws free trial]
+
      - [Google cloud platform free trial](https://cloud.google.com/free/)
      - [Microsoft azure free trial](https://azure.microsoft.com/free/)
 
@@ -63,6 +66,7 @@ in short -->
 1. 代理工具:
 
    推荐 `v2ray` 或者 `shadowsocks`
+
    基本使用方法参考如下
 
 <!--
@@ -157,12 +161,18 @@ in short -->
 
   使用上面的 ssh 工具登录服务器
 
-  - 下载源码
+  - 服务器端下载源码
 
     ```sh
     git clone https://github.com/shadowsocks/shadowsocks.git ss
     cd ss
     git checkout origin/master
+    ```
+
+    若提示 git 未安装， 使用一下命令安装
+
+    ```sh
+    sudo apt install git -y
     ```
 
   - 配置服务器
@@ -173,22 +183,22 @@ in short -->
        ip addr
        ```
 
-    2. 确保服务器相应端口开放。
+    2. 生成服务端配置文件
 
-    生成服务端配置文件
+       ```sh
+       cat>config.json<<EOF
+       {
+       "server":"xx.xx.xx.xx",
+       "server_port":8838,
+       "local_port":1080,
+       "password":"xx",
+       "timeout":600,
+       "method":"AES-256-CFB"
+       }
+       EOF
+       ```
 
-    ```sh
-    cat>config.json<<EOF
-    {
-    "server":"xx.xx.xx.xx",
-    "server_port":8838,
-    "local_port":1080,
-    "password":"xx",
-    "timeout":600,
-    "method":"AES-256-CFB"
-    }
-    EOF
-    ```
+    3. 确保服务器相应端口开放。
 
   - 运行服务器
 
@@ -213,3 +223,4 @@ in short -->
 [bandwagon vps]: https://bandwagonhost.com/
 [vultr vps]: https://www.vultr.com/
 [digital ocean vps]: https://www.digitalocean.com/
+[aws free trial]: https://www.beizigen.com/2090.html
