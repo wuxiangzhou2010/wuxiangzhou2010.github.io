@@ -38,25 +38,32 @@ most big cloud company provide 12 months free tier for specific product
 
 in short -->
 
-1.  一台海外的虚拟主机（VPS）:
+1. 一台海外的虚拟主机（VPS）:
 
-    - 有不少厂商有一年的免费期， 比如亚马逊 aws， 微软 azure , 谷歌的 google cloud platform。
+   - 免费 vps:
 
-      - [Amazon web services free trial](https://aws.amazon.com/free/)
-      - [Google cloud platform free trial](https://cloud.google.com/free/)
-      - [Microsoft azure free trial](https://azure.microsoft.com/free/)
+     有不少厂商有一年的免费期， 比如亚马逊 aws, 微软 azure , 谷歌的 google cloud platform。
 
-    - 收费的 VPS, 如 bandwagon,vultr, digital ocean 的话，选择配置最低的足够了，一个月 5 美元左右。
-    - 地理位置尽量选择近一点的， 如台湾， 日本， 新加坡。 但是也要注意延迟和丢包率。美国西部和欧洲的服务器虽然延迟大，但是可能更稳定。
+     - [Amazon web services free trial](https://aws.amazon.com/free/)
+     - [Google cloud platform free trial](https://cloud.google.com/free/)
+     - [Microsoft azure free trial](https://azure.microsoft.com/free/)
 
-2.  远程登陆工具:
+   - 收费 vps:
 
-    推荐 [putty](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html)， [xshell](https://www.netsarang.com/en/xshell/), 用来登录购买的机器， 安装，设置， 并启动代理软件
+     如 [bandwagon][bandwagon vps], [vultr][vultr vps], [digital ocean][digital ocean vps] 的话，选择配置最低的足够了，一个月 5 美元左右。
 
-3.  代理工具:
+   - 地理位置:
 
-    推荐 `v2ray` 或者 `shadowsocks`
-    具体使用方法可以参考下面的连接
+     尽量选择近一点的， 如台湾， 日本， 新加坡。 但是也要注意延迟和丢包率。美国西部和欧洲的服务器虽然延迟大，但是可能更稳定。
+
+1. 远程登陆工具:
+
+   推荐 [putty](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html)， [xshell](https://www.netsarang.com/en/xshell/), 用来登录购买的机器, 安装,设置,并启动代理软件
+
+1. 代理工具:
+
+   推荐 `v2ray` 或者 `shadowsocks`
+   基本使用方法参考如下
 
 <!--
             - [v2ray](http://v2ray.com/)
@@ -202,3 +209,7 @@ in short -->
     5. proxy port (同服务器配置中的 local_port)
 
     ![如图](/asserts/ssconfig.png)
+
+[bandwagon vps]: https://bandwagonhost.com/
+[vultr vps]: https://www.vultr.com/
+[digital ocean vps]: https://www.digitalocean.com/
