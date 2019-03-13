@@ -1,7 +1,7 @@
 ---
 layout: post
-title:  "go defer"
-date:   2019-03-10 12:33 +0800
+title: "Go defer"
+date: 2019-03-10 12:33 +0800
 categories: Golang
 ---
 
@@ -12,7 +12,8 @@ Go's `defer` statement can be used to do clean up work for a function. This can 
 3. defer will be execute after the surround function returns, but before the return value is assigned to the variable.
 
 an example as follows:
-``` go
+
+```go
 
 package main
 
@@ -20,30 +21,31 @@ import "fmt"
 
 func main() {
 
-	fmt.Println("in main ", *increase1())
+  fmt.Println("in main ", *increase1())
 }
 
 func increase1() *int {
-	i := 100
-	defer increase2(&i) // 103
-	defer increase2(&i) // 102
-	defer increase2(&i) // 101
-	defer func() { fmt.Println("third") }()
-	defer func() { fmt.Println("second") }()
-	defer func() { fmt.Println("first") }()
+    i := 100
+    defer increase2(&i) // 103
+    defer increase2(&i) // 102
+    defer increase2(&i) // 101
+    defer func() { fmt.Println("third") }()
+    defer func() { fmt.Println("second") }()
+    defer func() { fmt.Println("first") }()
 
-	fmt.Println("in increase1", i)
-	return &i
+    fmt.Println("in increase1", i)
+    return &i
 
 }
 func increase2(i *int) {
-	*i = *i + 1
-	fmt.Println("in increase2", *i)
+    *i = *i + 1
+    fmt.Println("in increase2", *i)
 }
 ```
 
 the result:
-```
+
+```txt
 in increase1 100
 first
 second
