@@ -74,7 +74,7 @@ As far as I know, the major difference between web3.js 0.xx and 1.xx is that 1.x
    sudo apt-get install gcc-multilib g++-multilib
 
    npm install -g meteor-build-client
-   gulp --linux --wallet --x64
+   gulp --linux --wallet
    ```
 
 Reference:
