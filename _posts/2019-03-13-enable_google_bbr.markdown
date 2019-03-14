@@ -1,12 +1,12 @@
 ---
 layout: post
-title: "Enable goolge bbr"
+title: "Enable Goolge BBR feature"
 date: 2019-03-13 17:42 +0800
 categories: tcp_ip
-published: false
+published: true
 ---
 
-BBR (Bottleneck Bandwidth and Round-trip propagation time")is contributed by Google to the linux kernel tree, it is added `from 4.9.0` kernel but is not enabled by default. To enable it, we take Ubuntu for example.
+BBR (Bottleneck Bandwidth and Round-trip propagation time)is contributed by Google to the linux kernel tree, it is added `from 4.9.0` kernel but is not enabled by default. To enable it, we take Ubuntu for example.
 
 ```sh
 # add  BBR module to kernel
