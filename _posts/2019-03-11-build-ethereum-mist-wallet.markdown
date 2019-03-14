@@ -36,7 +36,7 @@ As far as I know, the major difference between web3.js 0.xx and 1.xx is that 1.x
 3. Get repo
 
    ```sh
-   git clone https://github.com/ethereum/mist.git
+    git clone https://github.com/ethereum/mist.git
 
    cd mist
    git reset --hard v0.10.0
@@ -48,14 +48,23 @@ As far as I know, the major difference between web3.js 0.xx and 1.xx is that 1.x
    ```sh
    # 1. first terminal
    cd mist/interface && meteor --no-release-check
+   #may need to install below too
+   meteor npm install --save babel-runtime
 
    # 2. second terminal
-   cd my/path/meteor-dapp-wallet/app && meteor --port 3050
+   git clone https://github.com/ethereum/meteor-dapp-wallet.git
+   cd meteor-dapp-wallet
+   # this is the last web3.js 0.xx version, on Feb 23, 2018, Begin upgrading to web3.js 1.0.0
+   git reset --hard  f8ea87c
+   cd app && meteor --port 3050
    # npm install @babel/runtime@7.0.0-beta.49
 
    # 3. third terminal
    cd mist
-   yarn dev:electron --mode wallet
+   # ipc
+   yarn dev:electron --mode wallet --rpc /home/username/.ethereum/geth.ipc
+   # http
+   yarn dev:electron --mode wallet --rpc http://172.16.3.191:8545
    ```
 
 5. Generate wallet
