@@ -69,13 +69,24 @@ As far as I know, the major difference between web3.js 0.xx and 1.xx is that 1.x
 
 5. Generate wallet
 
-   ```sh
-   # install multi lib for ia32 platform
-   sudo apt-get install gcc-multilib g++-multilib
+Build for windows on Linux
 
-   npm install -g meteor-build-client
-   gulp --linux --wallet
-   ```
+- [install-wine-on-ubuntu-18-04-bionic-beaver-linux](https://linuxconfig.org/install-wine-on-ubuntu-18-04-bionic-beaver-linux)
+
+```sh
+sudo dpkg --add-architecture i38
+sudo apt install wine64
+sudo apt install wine32
+wine --version
+```
+
+```sh
+# install multi lib for ia32 platform
+sudo apt-get install gcc-multilib g++-multilib
+
+npm install -g meteor-build-client
+gulp --linux --wallet
+```
 
 Reference:
 
