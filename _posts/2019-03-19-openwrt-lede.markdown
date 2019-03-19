@@ -68,6 +68,7 @@ uci commit
   opkg update [your package]
   opkg install [your package]
   opkg list-upgradable
+  opkg remove [your package]
   ```
 
 - [Entware](https://github.com/Entware/Entware)
