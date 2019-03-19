@@ -79,6 +79,28 @@ uci commit
 
 - [OpenWrt 的主 Makefile 工作过程](http://www.right.com.cn/forum/thread-73443-1-3.html) ： openwrt: Makefile 框架分析 - sammei - 博客园
 
+- [build from source](https://openwrt.org/docs/guide-developer/source-code/start)
+
+  note : do not build as a `super user`
+
+  - /config : configuration files for menuconfig
+  - /include : makefile configuration files
+  - /package : packages makefile and configuration
+  - /scripts : miscellaneous scripts used throughout the build process
+  - /target : makefile and configuration for building imagebuilder, kernel, sdk and the toolchain built by buildroot.
+  - /toolchain : makefile and configuration for building the toolchain
+  - /tools : miscellaneous tools used throughout the build process
+
+  ```sh
+  git clone https://github.com/openwrt/openwrt.git
+  cd openwrt
+  make menuconfig
+  # select platform and target model network feature...
+  make V=s -j1
+  ```
+
+- [[build use image builder]](https://openwrt.org/docs/guide-user/additional-software/imagebuilder)
+
 ### 问题解决
 
 - WNDR4300 5G 丢失问题解决
