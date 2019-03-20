@@ -36,7 +36,7 @@ As far as I know, the major difference between web3.js 0.xx and 1.xx is that 1.x
 3. Get repo
 
    ```sh
-    git clone https://github.com/ethereum/mist.git
+   git clone https://github.com/ethereum/mist.git
 
    cd mist
    git reset --hard v0.10.0
@@ -74,7 +74,7 @@ Build for windows on Linux
 - [install-wine-on-ubuntu-18-04-bionic-beaver-linux](https://linuxconfig.org/install-wine-on-ubuntu-18-04-bionic-beaver-linux)
 
 ```sh
-sudo dpkg --add-architecture i38
+sudo dpkg --add-architecture i386
 sudo apt install wine64
 sudo apt install wine32
 wine --version
