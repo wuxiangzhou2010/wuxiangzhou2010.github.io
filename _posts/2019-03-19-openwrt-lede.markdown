@@ -3,7 +3,7 @@ layout: post
 title: "OpenWRT/LEDE"
 date: 2019-03-19 22:24 +0800
 categories: tools
-published: false
+published: ture
 ---
 
 LEDE 是 [OpenWRT](https://Openwrt.org/) 的一个分支。 一部分 OpenWRT 开发者因为不满 OpenWRT 社区的协作方式，启动了 LEDE 项目， 后来这两支又重新合并， 并发布了新的 OpenWRT. 最新版本为 `18.06.02`. 我实际正在使用是 `WNDR4300` (WNDR2000v4 已经淘汰)
