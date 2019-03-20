@@ -1,13 +1,12 @@
 ---
 layout: post
-title: "Gigabyte z370n-wifi My first hackintosh build"
-date: 2016-05-08 12:25 +0800
-categories: tools
+title: "z370n-wifi hackintosh build"
+date: 2018-12-27 12:00 +0800
+categories: hackintosh
 published: true
 ---
-# z370n-wifi-hackintosh
 
-## Components
+### Components
 
 | Component   | Model                         |
 | ----------- | ----------------------------- |
@@ -22,28 +21,28 @@ update:
 
 1. 20190317  Samsumg pm981 is not compatible with macos 10.14.2, will reboot. no easy solution found yet.
 
-## Kexs
+### Kexs
 
-### Required
+#### Required
 
 - [Lilu](https://github.com/acidanthera/Lilu/releases)
 
 - [FakeSMC](https://bitbucket.org/RehabMan/os-x-fakesmc-kozlek/downloads)
 
-### Audio
+#### Audio
 
 - [AppleALC](https://github.com/acidanthera/AppleALC/releases/)
 - [CodecCommander](https://bitbucket.org/RehabMan/os-x-eapd-codec-commander/downloads/)
 
-### Video
+#### Video
 
 - [WhateverGreen](https://github.com/acidanthera/WhateverGreen/releases)
 
-### Network
+#### Network
 
 [IntelMausiEthernet](https://bitbucket.org/RehabMan/os-x-intel-network/downloads)
 
-## Todo
+### Todo
 
 1. case
   
@@ -61,35 +60,13 @@ update:
 
     I heard a lot that Apple's trackpad is a must for real Macos experience.
 
-## Refer
+### Reference
 
-- z370 installation guide:
-
-  https://hackintosher.com/forums/thread/success-gigabyte-z370n-wifi-i5-8400-nvme-970-evo-mojave-10-14-1-vanilla-hackintosh-deluxe-build.704/
-
-- z370 installation guide
-
-    https://hackintosher.com/builds/gigabyte-z370n-wifi-itx-hackintosh-guide-4k-htpc-build/
-
-- clover configuration
-
-    https://mackie100projects.altervista.org/clover-configurator-how-to-use/
-
-- make a installer
-    
-    https://hackintosher.com/guides/how-to-make-a-macos-10-14-mojave-flash-drive-installer/
-
-- download kexts
-
-    https://hackintosher.com/downloads/kexts/
-
-- fix wifi card
-  
-  https://www.tonymacx86.com/threads/...card-into-a-ga-z370n-wifi-motherboard.259300/
-- hackintosh-vanilla-desktop-guide
-
-    https://hackintosh.gitbook.io/-r-hackintosh-vanilla-desktop-guide/gathering-kexts
-
-- onedrive kext download
-
-    https://onedrive.live.com/?authkey=%21APjCyRpzoAKp4xs&id=FE4038DA929BFB23%21455036&cid=FE4038DA929BFB23
+- [success-gigabyte-z370n-wifi-i5-8400-nvme-970-evo-mojave-10-14-1-vanilla-hackintosh-deluxe-build](https://hackintosher.com/forums/thread/success-gigabyte-z370n-wifi-i5-8400-nvme-970-evo-mojave-10-14-1-vanilla-hackintosh-deluxe-build.704/)
+- [gigabyte-z370n-wifi-itx-hackintosh-guide-4k-htpc-build](https://hackintosher.com/builds/gigabyte-z370n-wifi-itx-hackintosh-guide-4k-htpc-build/)
+- [clover-configurator-how-to-use](https://mackie100projects.altervista.org/clover-configurator-how-to-use/)
+- [how-to-make-a-macos-10-14-mojave-flash-drive-installer](https://hackintosher.com/guides/how-to-make-a-macos-10-14-mojave-flash-drive-installer/)
+- [fix wifi card](https://www.tonymacx86.com/threads/...card-into-a-ga-z370n-wifi-motherboard.259300/)
+- [hackintosh-vanilla-desktop-guide](https://hackintosh.gitbook.io/-r-hackintosh-vanilla-desktop-guide/gathering-kexts)
+- [download kexts](https://hackintosher.com/downloads/kexts/)
+- [onedrive kext download](https://onedrive.live.com/?authkey=%21APjCyRpzoAKp4xs&id=FE4038DA929BFB23%21455036&cid=FE4038DA929BFB23)
