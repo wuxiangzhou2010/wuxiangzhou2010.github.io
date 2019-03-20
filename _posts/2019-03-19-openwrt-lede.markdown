@@ -99,6 +99,9 @@ uci commit
   make V=s -j1
   ```
 
+  - find the image in `openwrt/bin/targets/ar71xx/nand`
+  - find the package in `openwrt/bin/packages/mips_24kc`
+
 - [[build use image builder]](https://openwrt.org/docs/guide-user/additional-software/imagebuilder)
 
 ### 问题解决
