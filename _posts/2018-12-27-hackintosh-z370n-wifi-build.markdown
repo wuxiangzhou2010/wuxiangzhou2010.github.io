@@ -24,9 +24,21 @@ The main installation process is as follows
 
 1. Use a MacOS to download MacOS image from Mac app store
 2. Format a USB and flash the OS iamge to USB 
+   - use `diskutil`, choose the USB drive
+   - erase: name, `usb`, format `Mac OS Extended (Journaled)`, schema `GUID Partition Map`
+   - open a terminal, flash with
+
+        ```sh
+        sudo /Applications/Install\ macOS\ .app/Contents/Resources/createinstallmedia --volume /Volumes/usb --nointeraction
+        ```
+
 3. Mount EFI folder and corret EFI (using clover bootloader/clover configurator)
 4. Reboot and set proper BIOS options, save your modification.
 5. Boot from USB installer and install MacOS on a SSD
+
+   - you may need to format the disk before install on the drive
+   - name: `hackintosh_hd`, format: `Mac OS Extended (Journaled)`, schema: `GUID Partition Map`
+
 6. Put the same EFI folder on the new MacOS
 
 ### Kexs
