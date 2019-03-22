@@ -67,7 +67,7 @@ a little adjustment may be needed
 
 #### Network
 
-- IntelMausiEthernet](https://bitbucket.org/RehabMan/os-x-intel-network/downloads)
+- [IntelMausiEthernet](https://bitbucket.org/RehabMan/os-x-intel-network/downloads)
 
 ### Todo
 
