@@ -22,11 +22,11 @@ This is my first Hackintosh build, before I actually started to buy component, I
 
 The main installation process is as follows
 
-1. Use a MacOS to download MacOS image from Mac app store
-2. Format a USB and flash the OS iamge to USB
+1. Use a MacOS to download MacOS image from Mac app store, [download link](https://support.apple.com/en-us/HT201372)
+2. Format a USB drive and flash the OS image to USB
    - use `diskutil`, choose the USB drive
    - erase: name, `usb`, format `Mac OS Extended (Journaled)`, schema `GUID Partition Map`
-   - open a terminal, flash with
+   - open a terminal, flash the os image with following command
 
     ```sh
     sudo /Applications/Install\ macOS\ .app/Contents/Resources/createinstallmedia --volume /Volumes/usb --nointeraction
@@ -91,6 +91,7 @@ a little adjustment may be needed
 
 - [success-gigabyte-z370n-wifi-i5-8400-nvme-970-evo-mojave-10-14-1-vanilla-hackintosh-deluxe-build](https://hackintosher.com/forums/thread/success-gigabyte-z370n-wifi-i5-8400-nvme-970-evo-mojave-10-14-1-vanilla-hackintosh-deluxe-build.704/)
 - [gigabyte-z370n-wifi-itx-hackintosh-guide-4k-htpc-build](https://hackintosher.com/builds/gigabyte-z370n-wifi-itx-hackintosh-guide-4k-htpc-build/)
+- [Installing macOS Mojave 10.14 on Gigabyte Z370N WIFI + i7 8700K + UHD 630](https://www.insanelymac.com/forum/topic/335847-guide-gigabyte-ga-z370n-wifi-i7-8700k-uhd-630-mojave-1014/)
 - [clover-configurator-how-to-use](https://mackie100projects.altervista.org/clover-configurator-how-to-use/)
 - [how-to-make-a-macos-10-14-mojave-flash-drive-installer](https://hackintosher.com/guides/how-to-make-a-macos-10-14-mojave-flash-drive-installer/)
 - [fix wifi card](https://www.tonymacx86.com/threads/...card-into-a-ga-z370n-wifi-motherboard.259300/)
