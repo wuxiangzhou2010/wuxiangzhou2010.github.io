@@ -6,20 +6,28 @@ categories: hackintosh
 published: true
 ---
 
-### Components
+This is my first Hackintosh build, before I actually started to buy component, I had done a lot of search  mosotly on tonymacx68 and hackintosher. This build is mainly for everday use and sometimes code development.
 
-| Component   | Model                         |
-| ----------- | ----------------------------- |
-| CPU         | Intel i3 8100                 |
-| Motherboard | Giga-z370n-wifi itx  Bios: f4 |
-| RAM         | Crucial DDR4 2666 8G          |
-| Case        | In Win Chopin                 |
-| Cooler      | Noctua NH-L9I                 |
-| SSD         | Samsung 840 EVO 120G          |
+ **Components list**
 
-update:
+| Component   | Model                         | note          |
+| ----------- | ----------------------------- | ------------- |
+| CPU         | Intel i3 8100                 | Taobao 659RMB |
+| Motherboard | Giga-z370n-wifi itx  Bios: f4 | Xianyu 900RMB |
+| RAM         | Crucial DDR4 2666 8G          | Xianyu 265RMB |
+| Case        | In Win Chopin                 | Xianyu 400RMB |
+| Cooler      | Noctua NH-L9I                 | Taobao 259RMB |
+| SSD         | Samsung 840 EVO 120G          | already owned |
+| screen      | Dell E2214hv                  | already owned |
 
-1. 20190317  Samsumg pm981 is not compatible with macos 10.14.2, will reboot. no easy solution found yet.
+The main installation process is as follows
+
+1. Use a MacOS to download MacOS image from Mac app store
+2. Format a USB and flash the OS iamge to USB 
+3. Mount EFI folder and corret EFI (using clover bootloader/clover configurator)
+4. Reboot and set proper BIOS options, save your modification.
+5. Boot from USB installer and install MacOS on a SSD
+6. Put the same EFI folder on the new MacOS
 
 ### Kexs
 
@@ -40,7 +48,7 @@ update:
 
 #### Network
 
-[IntelMausiEthernet](https://bitbucket.org/RehabMan/os-x-intel-network/downloads)
+- IntelMausiEthernet](https://bitbucket.org/RehabMan/os-x-intel-network/downloads)
 
 ### Todo
 
@@ -70,3 +78,9 @@ update:
 - [hackintosh-vanilla-desktop-guide](https://hackintosh.gitbook.io/-r-hackintosh-vanilla-desktop-guide/gathering-kexts)
 - [download kexts](https://hackintosher.com/downloads/kexts/)
 - [onedrive kext download](https://onedrive.live.com/?authkey=%21APjCyRpzoAKp4xs&id=FE4038DA929BFB23%21455036&cid=FE4038DA929BFB23)
+
+
+
+update:
+
+1. 20190317:  Samsumg pm981(305RMB from Taobao) is not compatible with Macos 10.14.2, will reboot. no easy solution found yet.
