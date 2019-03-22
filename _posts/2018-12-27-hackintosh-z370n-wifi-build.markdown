@@ -52,22 +52,22 @@ a little adjustment may be needed
 
 #### Required
 
-- [Lilu](https://github.com/acidanthera/Lilu/releases)
+- [Lilu](https://github.com/acidanthera/Lilu/releases) : An open source kernel extension bringing a platform for arbitrary kext, library, and program patching throughout the system for macOS.
 
-- [FakeSMC](https://bitbucket.org/RehabMan/os-x-fakesmc-kozlek/downloads)
+- [FakeSMC](https://bitbucket.org/RehabMan/os-x-fakesmc-kozlek/downloads): FakeSMC is an open source SMC device driver/emulator developed by netkas.
 
 #### Audio
 
-- [AppleALC](https://github.com/acidanthera/AppleALC/releases/)
+- [AppleALC](https://github.com/acidanthera/AppleALC/releases/):An open source kernel extension enabling native macOS HD audio for not officially supported codecs without any filesystem modifications.
 - [CodecCommander](https://bitbucket.org/RehabMan/os-x-eapd-codec-commander/downloads/)
 
 #### Video
 
-- [WhateverGreen](https://github.com/acidanthera/WhateverGreen/releases)
+- [WhateverGreen](https://github.com/acidanthera/WhateverGreen/releases):Lilu plugin providing patches to select GPUs on macOS. Requires Lilu 1.2.5 or newer.
 
 #### Network
 
-- [IntelMausiEthernet](https://bitbucket.org/RehabMan/os-x-intel-network/downloads)
+- [IntelMausiEthernet](https://bitbucket.org/RehabMan/os-x-intel-network/downloads):OS X driver for Intel onboard LAN
 
 ### Todo
 
@@ -97,8 +97,6 @@ a little adjustment may be needed
 - [hackintosh-vanilla-desktop-guide](https://hackintosh.gitbook.io/-r-hackintosh-vanilla-desktop-guide/gathering-kexts)
 - [download kexts](https://hackintosher.com/downloads/kexts/)
 - [onedrive kext download](https://onedrive.live.com/?authkey=%21APjCyRpzoAKp4xs&id=FE4038DA929BFB23%21455036&cid=FE4038DA929BFB23)
-
-
 
 update:
 
