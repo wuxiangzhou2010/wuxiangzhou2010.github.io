@@ -6,7 +6,7 @@ categories: hackintosh
 published: true
 ---
 
-This is my first Hackintosh build, before I actually started to buy component, I had done a lot of search  mosotly on tonymacx68 and hackintosher. This build is mainly for everday use and sometimes code development.
+This is my first Hackintosh build, before I actually started to buy component, I had done a lot of search  mostly on [`tonymacx68`](http://www.tonymacx86.com) and [`hackintosher`](https://hackintosher.com/). This build is mainly for everday use and sometimes code development.
 
  **Components list**
 
