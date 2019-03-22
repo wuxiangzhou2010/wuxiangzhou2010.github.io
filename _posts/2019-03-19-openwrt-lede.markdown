@@ -79,47 +79,52 @@ uci commit
 
 - [OpenWrt 的主 Makefile 工作过程](http://www.right.com.cn/forum/thread-73443-1-3.html) ： openwrt: Makefile 框架分析 - sammei - 博客园
 
-- [Updating Feeds](https://openwrt.org/docs/guide-developer/feeds?s[]=feed)
-
-  a feed is a collection of packages which share a common location. Feeds may reside on a remote server, in a version control system, on the local filesystem.(Feeds are retrieved and managed by `scripts/feeds`, a perl script, default location: `feeds.conf.default`)
-
-  - packages
-  - luci
-  - routing
-  - telephony
-
-  ```sh
-  ./scripts/feeds update -a
-  ./scripts/feeds install -a
-  ```
-
-  `update means`: pull the latest updates for the feeds.
-
-  `install means`: making package available in make menuconfig, Only after installation will they be available in the configuration interface!
-
 - [build from source](https://openwrt.org/docs/guide-developer/source-code/start)
 
-  note : do not build as a `super user`
+```sh
+sudo apt update && sudo apt install git build-essential libncurses5-dev unzip python-dev -y
 
-  - /config : configuration files for menuconfig
-  - /include : makefile configuration files
-  - /package : packages makefile and configuration
-  - /scripts : miscellaneous scripts used throughout the build process
-  - /target : makefile and configuration for building imagebuilder, kernel, sdk and the toolchain built by buildroot.
-  - /toolchain : makefile and configuration for building the toolchain
-  - /tools : miscellaneous tools used throughout the build process
+git clone https://github.com/openwrt/openwrt.git
+cd openwrt
+git checkout openwrt-18.06
+```
 
-  ```sh
-  git clone https://github.com/openwrt/openwrt.git
-  cd openwrt
-  git checkout openwrt-18.06
-  make menuconfig
-  # select platform and target model network feature...
-  make V=s -j1
-  ```
+- [Updating Feeds](https://openwrt.org/docs/guide-developer/feeds?s[]=feed)
 
-  - find the image in `openwrt/bin/targets/ar71xx/nand`
-  - find the package in `openwrt/bin/packages/mips_24kc`
+a feed is a collection of packages which share a common location. Feeds may reside on a remote server, in a version control system, on the local filesystem.(Feeds are retrieved and managed by `scripts/feeds`, a perl script, default location: `feeds.conf.default`)
+
+- packages
+- luci
+- routing
+- telephony
+
+```sh
+./scripts/feeds update -a
+./scripts/feeds install -a
+```
+
+`update means`: pull the latest updates for the feeds.
+
+`install means`: making package available in make menuconfig, Only after installation will they be available in the configuration interface!
+
+note : do not build as a `super user`
+
+- /config : configuration files for menuconfig
+- /include : makefile configuration files
+- /package : packages makefile and configuration
+- /scripts : miscellaneous scripts used throughout the build process
+- /target : makefile and configuration for building imagebuilder, kernel, sdk and the toolchain built by buildroot.
+- /toolchain : makefile and configuration for building the toolchain
+- /tools : miscellaneous tools used throughout the build process
+
+```sh
+make menuconfig
+# select platform and target model network feature...
+make V=s -j1
+```
+
+- find the image in `openwrt/bin/targets/ar71xx/nand`
+- find the package in `openwrt/bin/packages/mips_24kc`
 
 - [[build use image builder]](https://openwrt.org/docs/guide-user/additional-software/imagebuilder)
 
