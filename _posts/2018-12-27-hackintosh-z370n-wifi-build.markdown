@@ -41,6 +41,13 @@ The main installation process is as follows
 
 6. Put the same EFI folder on the new MacOS
 
+### fix issue
+
+a little adjustment may be needed
+
+- fix blackscreen after wakeup sleep/wake : Boot -> Arguments -> dart=0
+- reboot after shutdown: Acpi--> fixshutdown-->checked
+
 ### Kexs
 
 #### Required
