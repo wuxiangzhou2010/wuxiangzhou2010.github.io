@@ -202,7 +202,7 @@ categories: proxy
 
   - Config
 
-    both server and client need `private key` and `public key`
+    both server and client config need `private key` and `public key`
 
     ```sh
     umask 077
@@ -226,7 +226,7 @@ categories: proxy
     sudo vi /etc/wireguard/wg0server.conf
     ```
 
-    server config as follows
+    server config as follows:
 
     ```sh
     [Interface]
@@ -245,6 +245,7 @@ categories: proxy
 
     ```sh
     sudo wg-quick up/down wg0server
+    # start when reboot
     sudo systemctl enable wg-quick@wg0server
     ```
 
@@ -255,6 +256,8 @@ categories: proxy
     ```sh
     sudo vi /etc/wireguard/wg0.conf
     ```
+
+    client config as folows:
 
     ```sh
     [Interface]
@@ -277,9 +280,9 @@ categories: proxy
 
 refer to：
 
-[arch linux](https://wiki.archlinux.org/index.php/WireGuard)
+[Arch linux wiki: wireguard](https://wiki.archlinux.org/index.php/WireGuard)
 
-[set-up-wireguard-vpn-on-ubuntu](https://www.linode.com/docs/networking/vpn/set-up-wireguard-vpn-on-ubuntu/#wireguard-client)
+[linode: set-up-wireguard-vpn-on-ubuntu](https://www.linode.com/docs/networking/vpn/set-up-wireguard-vpn-on-ubuntu/#wireguard-client)
 
 [bandwagon vps]: https://bandwagonhost.com/
 [vultr vps]: https://www.vultr.com/
