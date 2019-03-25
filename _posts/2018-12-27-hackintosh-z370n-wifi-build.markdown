@@ -6,7 +6,7 @@ categories: hackintosh
 published: true
 ---
 
-This is my first Hackintosh build, before I actually started to buy component, I had done a lot of search  mostly on [`tonymacx68`](http://www.tonymacx86.com) and [`hackintosher`](https://hackintosher.com/). This build is mainly for everday use and sometimes a little code development.
+This is my first Hackintosh build, before I actually started to buy components, I had done a lot of search ,  mostly on [`tonymacx68`](http://www.tonymacx86.com) and [`hackintosher`](https://hackintosher.com/). This build is mainly for everday use and sometimes a little code development.
 
  **Components list**
 
@@ -20,12 +20,13 @@ This is my first Hackintosh build, before I actually started to buy component, I
 | SSD         | Samsung 840 EVO 120G          | already owned |
 | screen      | Dell E2214hv                  | already owned |
 
+total: 2483 RMB(370 USD)
+
 The main installation process is as follows
 
-1. Use a MacOS to download MacOS image from Mac app store, [download link](https://support.apple.com/en-us/HT201372)
-2. Format a USB drive and flash the OS image to USB
-   - use `diskutil`, choose the USB drive
-   - erase: name, `usb`, format `Mac OS Extended (Journaled)`, schema `GUID Partition Map`
+1. Use a Mac to download a MacOS installer app from app store, [download link](https://support.apple.com/en-us/HT201372)
+2. Use `diskutil` to format a USB drive and flash the OS image to USB
+   - select erase: name, `usb`, format `Mac OS Extended (Journaled)`, schema `GUID Partition Map`
    - open a terminal, flash the os image with following command
 
     ```sh
@@ -33,8 +34,8 @@ The main installation process is as follows
     ```
 
 3. Mount EFI folder and correct the EFI (using clover bootloader/clover configurator)
-4. Reboot and set proper BIOS options, save your modification.
-5. Boot from USB installer and install MacOS on a SSD
+4. Set proper BIOS options, save your modification.
+5. Reboot from USB installer and install MacOS on a SSD
 
    - you may need to format the disk before install on the drive
    - name: `hackintosh_hd`, format: `Mac OS Extended (Journaled)`, schema: `GUID Partition Map`
