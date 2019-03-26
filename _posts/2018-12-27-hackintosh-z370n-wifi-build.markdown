@@ -98,7 +98,7 @@ a little adjustment may be needed
 - [fix wifi card](https://www.tonymacx86.com/threads/...card-into-a-ga-z370n-wifi-motherboard.259300/)
 - [hackintosh-vanilla-desktop-guide](https://hackintosh.gitbook.io/-r-hackintosh-vanilla-desktop-guide/gathering-kexts)
 - [download kexts](https://hackintosher.com/downloads/kexts/)
-- [onedrive kext download](https://onedrive.live.com/?authkey=%21APjCyRpzoAKp4xs&id=FE4038DA929BFB23%21455036&cid=FE4038DA929BFB23)
+- [Guide to fresh installing macOS Mojave on a Hackintosh](https://hackintosher.com/guides/guide-to-fresh-installing-macos-mojave-on-a-hackintosh-10-14/)
 
 update:
 
