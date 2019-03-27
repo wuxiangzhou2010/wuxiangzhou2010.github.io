@@ -36,7 +36,6 @@ The main installation process is as follows
 3. Mount EFI folder using `clover configurator` and correct the EFI by place the [preconfigured EFI from hackintosher,Mojave-10.14.2-EFI](https://hackintosher.com/wp-content/uploads/Hackintosher-Mojave-10.14.2-EFI.zip)
 4. Set proper BIOS options, save your modification.
 5. Reboot from USB installer and install MacOS on a SSD
-
    - you may need to format the disk before install on the drive
    - name: `hackintosh_hd`, format: `Mac OS Extended (Journaled)`, schema: `GUID Partition Map`
 
