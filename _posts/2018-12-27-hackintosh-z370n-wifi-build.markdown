@@ -49,7 +49,9 @@ a little adjustment may be needed
 - fix blackscreen after wakeup sleep/wake : Boot -> Arguments -> dart=0
 - reboot after shutdown: Acpi--> fixshutdown-->checked
 
-### Kexs
+### Kexts
+
+kext files are basically the drivers for macOS or the kernel modules for Linux. The word "Kext" is short for Kernel Extension. Kexts are extensions of the macOS  kernel. When you boot up your machine the code contained in these kexts is automatically injected into the operation system.
 
 #### Required
 
@@ -99,7 +101,7 @@ a little adjustment may be needed
 - [hackintosh-vanilla-desktop-guide](https://hackintosh.gitbook.io/-r-hackintosh-vanilla-desktop-guide/gathering-kexts)
 - [download kexts](https://hackintosher.com/downloads/kexts/)
 - [Guide to fresh installing macOS Mojave on a Hackintosh](https://hackintosher.com/guides/guide-to-fresh-installing-macos-mojave-on-a-hackintosh-10-14/)
-
+- [kext-files-macos](https://hackintosher.com/blog/kext-files-macos/)
 update:
 
 1. 20190317:  Samsumg pm981(305RMB from Taobao) is not compatible with Macos 10.14.2, will reboot. no easy solution found yet.
