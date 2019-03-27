@@ -24,8 +24,8 @@ total: 2483 RMB(370 USD)
 
 The main installation process is as follows
 
-1. Use a Mac to download a MacOS installer app from app store, [download link](https://support.apple.com/en-us/HT201372)
-2. Use `diskutil` to format a USB drive and flash the OS image to USB
+1. Use a mac to download a macOS installer app from app store, [download link](https://support.apple.com/en-us/HT201372)
+2. Use `Disk util` to format a USB drive and flash the OS image to USB
    - select erase: name, `usb`, format `Mac OS Extended (Journaled)`, schema `GUID Partition Map`
    - open a terminal, flash the os image with following command
 
@@ -33,7 +33,7 @@ The main installation process is as follows
     sudo /Applications/Install\ macOS\ .app/Contents/Resources/createinstallmedia --volume /Volumes/usb --nointeraction
     ```
 
-3. Mount EFI folder and correct the EFI (using clover bootloader/clover configurator)
+3. Mount EFI folder using `clover configurator` and correct the EFI by place the [preconfigured EFI from hackintosher,Mojave-10.14.2-EFI](https://hackintosher.com/wp-content/uploads/Hackintosher-Mojave-10.14.2-EFI.zip)
 4. Set proper BIOS options, save your modification.
 5. Reboot from USB installer and install MacOS on a SSD
 
@@ -55,9 +55,8 @@ kext files are basically the drivers for macOS or the kernel modules for Linux. 
 
 #### Required
 
-- [Lilu](https://github.com/acidanthera/Lilu/releases) : An open source kernel extension bringing a platform for arbitrary kext, library, and program patching throughout the system for macOS.
-
-- [FakeSMC](https://bitbucket.org/RehabMan/os-x-fakesmc-kozlek/downloads): FakeSMC is an open source SMC device driver/emulator developed by netkas.
+- [FakeSMC](https://bitbucket.org/RehabMan/os-x-fakesmc-kozlek/downloads): FakeSMC is an open source SMC device driver/emulator developed by netkas. This kext is needed to emulate a mac and boot up.
+- [Lilu](https://github.com/acidanthera/Lilu/releases) : An open source kernel extension bringing a platform for arbitrary kext, library, and program patching throughout the system for macOS. This kext is need for many other kexs to work.
 
 #### Audio
 
