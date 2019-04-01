@@ -110,3 +110,4 @@ update:
 2. 20190329: get a `Samsung 970 Evo nvme m.2 SSD`. use as the main drive.
 3. 20190330: get a `In Win 303` case, it is a well built case with high quality. Alougth it is a middle tower and much bigger than I`nwin chopin`, I love it very much.
 4. 20190331: get a `bcm94360cs2` Mac origin wifi card and adapter from taobao, 95RMB, it's working fine without kext.
+![bcm94360cs2](/asserts/bcm94360cs2.jpeg)
