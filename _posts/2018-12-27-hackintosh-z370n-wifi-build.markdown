@@ -6,21 +6,24 @@ categories: hackintosh
 published: true
 ---
 
-This is my first Hackintosh build, before I actually started to buy components, I had done a lot of search ,  mostly on [`tonymacx68`](http://www.tonymacx86.com) and [`hackintosher`](https://hackintosher.com/). This build is mainly for everday use and sometimes a little code development.
+This is my first Hackintosh build, before I actually started to buy components, I had done a lot of search ,  mostly on [`tonymacx68`](http://www.tonymacx86.com) and [`hackintosher`](https://hackintosher.com/). This build is mainly for everyday use and sometimes a little code development.
 
  **Components list**
 
-| Component   | Model                         | note          |
-| ----------- | ----------------------------- | ------------- |
-| CPU         | Intel i3 8100                 | Taobao 659RMB |
-| Motherboard | Giga-z370n-wifi itx  Bios: f4 | Xianyu 900RMB |
-| RAM         | Crucial DDR4 2666 8G          | Xianyu 265RMB |
-| Case        | In Win Chopin                 | Xianyu 400RMB |
-| Cooler      | Noctua NH-L9I                 | Taobao 259RMB |
-| SSD         | Samsung 840 EVO 120G          | already owned |
-| screen      | Dell E2214hv                  | already owned |
+| Component               | Model                         | note          |
+| ----------------------- | ----------------------------- | ------------- |
+| CPU                     | Intel i3 8100                 | Taobao 659RMB |
+| Motherboard             | Giga-z370n-wifi itx  Bios: f4 | Xianyu 900RMB |
+| RAM                     | Crucial DDR4 2666 8G          | Xianyu 265RMB |
+| Case1                   | In Win Chopin                 | Xianyu 400RMB |
+| Case2(bought later)     | In win 303                    | Xianyu 300RMB |
+| Cooler                  | Noctua NH-L9I                 | Taobao 259RMB |
+| SSD1                    | Samsung 840 EVO 120G          | already owned |
+| SSD2 (bought later)     | Samsung 970 EVO 250G          | Xianyu 360RMB |
+| screen                  | Dell E2214hv                  | already owned |
+| Wifi card(bought later) | bcm94360cs2 with adapter      | Xianyu 95RMB  |
 
-total: 2483 RMB(370 USD)
+original total: 2483 RMB(370 USD)
 
 The main installation process is as follows
 
@@ -72,17 +75,17 @@ kext files are basically the drivers for macOS or the kernel modules for Linux. 
 
 ### Todo
 
-1. case
+1. ~~case~~ [done with In Win 303]
   
-    Change the case to a larger one, say Inwin 301 matx case. This will make a lot room for other staff like graphic card.
+    Change the case to a larger one, say In win 301 matx case. This will make a lot room for other staff like graphic card.
 
 2. Graphic card
 
     I found amd card, like rx580 work out of the box, As my girl friend want to do photo work like PS and AE, maybe I need to add a graphic card.
 
-3. wifi
+3. ~~wifi~~ [ done with bcm94360cs2]
   
-    I Plan to use an Apple part to get wifi work out of the box. I do a lot of search and found that `bcm94360cs2` with m.2 adapter works fine. However the Inwin itx case is two small to fit the adapter. A larger case is needed.
+    I Plan to use an Apple part to get wifi work out of the box. I do a lot of search and found that `bcm94360cs2` with m.2 adapter works fine. However the In Win itx case is two small to fit the adapter. A larger case is needed.
 
 4. Magic trackpad
 
@@ -103,3 +106,7 @@ kext files are basically the drivers for macOS or the kernel modules for Linux. 
 update:
 
 1. 20190317:  Samsumg pm981(305RMB from Taobao) is not compatible with Macos 10.14.2, will reboot. no easy solution found yet.
+2. 20190329: get a `Samsung 970 Evo nvme m.2 SSD`. use as the main drive.
+3. 20190330: get a `In Win 303` case, it is a well built case with high quality. Alougth it is a middle tower and much bigger than I`nwin chopin`, I love it very much.
+4. 20190331: get a `bcm94360cs2` Mac origin wifi card and adapter from taobao, 95RMB, it's working fine without kext.
+![bcm94360cs2](/asserts/bcm94360cs2.jpeg)
