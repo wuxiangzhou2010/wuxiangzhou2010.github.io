@@ -6,7 +6,7 @@ categories: tools
 published: true
 ---
 
-LEDE 是 [OpenWRT](https://Openwrt.org/) 的一个分支。 一部分 OpenWRT 开发者因为不满 OpenWRT 社区的协作方式，启动了 LEDE 项目， 后来这两支又重新合并， 并发布了新的 OpenWRT. 最新版本为 `18.06.02`. 我实际正在使用是 `WNDR4300` (WNDR2000v4 已经淘汰)
+LEDE 是 [OpenWRT](https://Openwrt.org/) 分出来的一个项目。 几年前一部分开发者因为不满 OpenWRT 社区的协作方式，启动了 LEDE 项目， 这两支又重新合并. 最新版本为 `18.06.02`. 我实际正在使用是 `WNDR4300` (WNDR2000v4 已经咸鱼转手)
 
 - ~~Netgear WNDR2000v4~~
 
@@ -18,24 +18,32 @@ LEDE 是 [OpenWRT](https://Openwrt.org/) 的一个分支。 一部分 OpenWRT �
 
 ### 刷入固件
 
-note: 注意替换 `192.16.1.1` 为路由器 LAN 侧实际 IP
+- 通过 web 刷入
 
-```sh
-cp lede-ar71xx-tl-wr1043nd-v1-squashfs-sysupgrade.bin root@192.168.1.1:/tmp
+  如果是原厂固件， 最简单的方式是通过 web 界面直接刷入 OpenWRT 固件。一般升级的入口在路由器`高级设置`里面的`系统升级`。
 
-sysupgrade -v /tmp/*.bin
-# You can add the `-n` option if you DO NOT want to preserve any old configuration files and configure upgraded device from clean state (network/system settings will be lost as well)
-```
+- 通过命令行刷入
 
-- 修改 LAN 侧的 IP 地址
+  如果已经是 OpenWRT 固件， 可以通过 ssh, 在命令行下刷入新固件。
+
+  note: 注意替换 `192.16.1.1` 为路由器 LAN 侧实际 IP
+
+  ```sh
+  cp lede-ar71xx-tl-wr1043nd-v1-squashfs-sysupgrade.bin root@192.168.1.1:/tmp
+
+  sysupgrade -v /tmp/*.bin
+  # You can add the `-n` option if you DO NOT want to preserve any old configuration files and configure upgraded device from clean state (network/system settings will be lost as well)
+  ```
 
   note: 注意 LAN 侧的 IP 要和 WAN 侧的不要在一个网段。
 
-```sh
-uci set network.lan.ipaddr=192.168.5.1
-uci commit
-/etc/init.d/network restart
-```
+  - 命令行下修改 LAN 侧的 IP 地址的方式
+
+  ```sh
+  uci set network.lan.ipaddr=192.168.5.1
+  uci commit
+  /etc/init.d/network restart
+  ```
 
 ### 软件安装
 
