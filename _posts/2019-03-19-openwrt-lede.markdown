@@ -83,28 +83,27 @@ LEDE 是 [OpenWRT](https://Openwrt.org/) 分出来的一个项目。 几年前�
 
 ### 源码分析与编译
 
-- [OpenWrt Development Guide](http://www.ccs.neu.edu/home/noubir/Courses/CS6710/S12/material/OpenWrt_Dev_Tutorial.pdf)
-
-- [OpenWrt 的主 Makefile 工作过程](http://www.right.com.cn/forum/thread-73443-1-3.html) ： openwrt: Makefile 框架分析 - sammei - 博客园
-
-- [build from source](https://openwrt.org/docs/guide-developer/source-code/start)
+- 安装可能需要的依赖
 
 ```sh
 sudo apt update && sudo apt install git build-essential libncurses5-dev unzip python-dev -y
+```
 
+- 选择编译的版本
+
+```sh
 git clone https://github.com/openwrt/openwrt.git
 cd openwrt
 git checkout openwrt-18.06
 ```
 
 - [Updating Feeds](https://openwrt.org/docs/guide-developer/feeds?s[]=feed)
+  - packages
+  - luci
+  - routing
+  - telephony
 
-a feed is a collection of packages which share a common location. Feeds may reside on a remote server, in a version control system, on the local filesystem.(Feeds are retrieved and managed by `scripts/feeds`, a perl script, default location: `feeds.conf.default`)
-
-- packages
-- luci
-- routing
-- telephony
+a feed is `a collection of packages` which share a common location. Feeds may reside on a remote server, in a version control system, on the local filesystem.(Feeds are retrieved and managed by `scripts/feeds`, a perl script, default location: `feeds.conf.default`)
 
 ```sh
 ./scripts/feeds update -a
@@ -134,9 +133,14 @@ make V=s -j1
 - find the image in `openwrt/bin/targets/ar71xx/nand`
 - find the package in `openwrt/bin/packages/mips_24kc`
 
-- [[build use image builder]](https://openwrt.org/docs/guide-user/additional-software/imagebuilder)
+reference:
 
-### 问题解决
+- [[build use image builder]](https://openwrt.org/docs/guide-user/additional-software/imagebuilder)
+- [OpenWrt Development Guide](http://www.ccs.neu.edu/home/noubir/Courses/CS6710/S12/material/OpenWrt_Dev_Tutorial.pdf)
+- [OpenWrt 的主 Makefile 工作过程](http://www.right.com.cn/forum/thread-73443-1-3.html) ： openwrt: Makefile 框架分析 - sammei - 博客园
+- [build from source](https://openwrt.org/docs/guide-developer/source-code/start)
+
+### 可能遇到的问题解决方法
 
 - WNDR4300 5G 丢失问题解决
 
