@@ -394,83 +394,47 @@ disable_irq
 ret_from_sys_call() function
 ret_from_exception() function
 
-## 12. The virtual file system
+## 5. timer
 
-- regular files
-- directories
-- symbolic links
+init function when kernel start `time_init()`
 
-- 12.1 the role of Virtual file system.(VFS)
+- hardware clock
 
-  The Virtual Filesystem (also known as Virtual Filesystem Switch or VFS) is a kernel software layer that handles all system calls related to a standard Unix filesystem. Its main strength is providing a common interface to several kinds of filesystems.
+  - realtime clock
+  - time stamp counter
 
-  filesystems supported by the VFS may be grouped into three main classes:
+- timer interrupt handler
+  - update the time elaspsed since system startup: do_timer jiffies
+  - udpate time and date:`update_times --> update_wall_time()`
+  - determines how long the process has been running on the CPU and preempts it if it has exceeded the time allocated to it. `update_times--> update_process_times()-->need_resched--> schedule()`
+  - updates resource usage statistics: `update_process_times`
+  - check whether the interval of time associated with each software time has elasped; if so , invokes the proper function.
 
-  - disk-based filesystems: ext4
-  - network filesystems --> nfs smb
-  - special filesystems (virtual filesystem): --> /proc, /dev/pts
+1> After system up, system time may be changed by NTP/GPS or other source, timeout which uses sem_timedwait will not be accurate, and from linux spec, there is no such sem_timedwait using monatomic timer.
+2> system timer is not correct, previously use the realtime(wallclock) timer rather than the monatonic timer
+check every 10ms, rather than 100ms, use nanosleep rather than sleep(sleep is not thread safe, not accurate)
 
-- 12.1.1 the common file model
+xtime 是从 cmos 电路中取得的时间，一般是从某一历史时刻开始到现在的时间，也就是为了取得我们操作系统上显示的日期。这个就是所谓的“实时时钟”，它的精确度是微秒。The xtime variable of type struct timeval is where user programs get the current time and date.
 
-  - in the common file model each directory is regarded as a normal file, which contains a list of files and other directories
-  - the Linux kernel cannot hardcode a particular function to handle an operation such as `read()` or `ioctl()`. Instead, it must use a pointer for each operation; the pointer is made to point to the proper function for the particular filesystem being accessed.
-    file -> f_op-> read(...)
-  - In short, the kernel is responsible for assigning the right set of pointers to the file variable associated with each open file, then for invoking the call specific to each filesystem that the f_op field points to.
+jiffies 是记录着从电脑开机到现在总共的时钟中断次数。在 linux 内核中 jiffies 远比 xtime 重要
 
-    the common file model consists of the following object types:
+HZ and Jiffies
 
-  - the superblock object ---> filesystem control block
-  - the inode object --> Stores general information about a specific file --> inode number
-  - the file object
-  - the dentry object
+- the role of time
 
-- 12.1.2 system calls handled by vfs
+  - timeout
 
-  - mount(), umount()
-  - chmod()
-  - ...
+    implementing a timer is relatively easy: each timer contains a field that indicates how far in the future the timer should expire. This field is initially calculated by adding the right number of ticks to the current value of jiffies. The field does not change. Every time the kernel checks a timer, it compares the expiration field to the value of jiffies at the current moment, and the timer expires when jiffies is greater or equal to the stored value. This comparison is made via the time_after, time_before, time_after_eq, and time_before_eq macros, which take care of possible overflows of jiffies.
 
-- 12.2.1 superblock objects
-  super_operations
-  - read_inode(inode)
-  - write_inode(inode)
-  - put_inode(inode)
-  - delete_inode(inode)
-- 12.2.2 inode objects
-- 12.2.3 file objects
-- 12.2.5 dentry objects
-- 12.2.7 files associated with a process
+```txt
+man sleep
+DESCRIPTION
+       sleep()  makes  the  calling  thread  sleep  until seconds seconds have
+       elapsed or a signal arrives which is not ignored.
+```
 
-- 12.3 filesystem mounting
-
-- each file and directory in a partition is known by a unique inode number(root directory always has inode2)
-- mkdir/rmdir/link/unlink/getdents system calll
-- chdir/symlink
-
-## memory addressing
-
-- memory addresses
-
-  - logical address
-  - linear address
-  - physical address
-
-  segmentation uint and paging uint
-
-- segmentation in hardware
-
-  - segmentation registers:cd ds ,ss
-  - segmentation description(GDT, LDT, gdtr and ldtr)
-
-- segmentation in Linux
-
-  mmu virtual memory to physical memory
-
-- Paging in hardware
-
-  - regular paging: Directory, table, offset
-
-- Paging in linux
+- static timer: `struct timer_struct---> run_old_timers()`
+- dynamic time: `struct timer_list --> run_timer_list()`
 
 ## 6. Memory Management
 
@@ -595,168 +559,6 @@ the `vfree()` function relaeses noncontiguous memory areas. Its parameter addr c
 
 a kernel function gets dynamic memory in a fairly straightforward manner by invoking one of a variety of functions:\_\_get_free_pages from the buddy system algorithm, kmem_cache_alloc() or kmalloc() to use the slab allocator for specialized or general-purpose objects, and vmalloc() to get a noncontingunous memory area.
 
-## 5. timer
-
-init function when kernel start `time_init()`
-
-- hardware clock
-
-  - realtime clock
-  - time stamp counter
-
-- timer interrupt handler
-  - update the time elaspsed since system startup: do_timer jiffies
-  - udpate time and date:`update_times --> update_wall_time()`
-  - determines how long the process has been running on the CPU and preempts it if it has exceeded the time allocated to it. `update_times--> update_process_times()-->need_resched--> schedule()`
-  - updates resource usage statistics: `update_process_times`
-  - check whether the interval of time associated with each software time has elasped; if so , invokes the proper function.
-
-1> After system up, system time may be changed by NTP/GPS or other source, timeout which uses sem_timedwait will not be accurate, and from linux spec, there is no such sem_timedwait using monatomic timer.
-2> system timer is not correct, previously use the realtime(wallclock) timer rather than the monatonic timer
-check every 10ms, rather than 100ms, use nanosleep rather than sleep(sleep is not thread safe, not accurate)
-
-xtime 是从 cmos 电路中取得的时间，一般是从某一历史时刻开始到现在的时间，也就是为了取得我们操作系统上显示的日期。这个就是所谓的“实时时钟”，它的精确度是微秒。The xtime variable of type struct timeval is where user programs get the current time and date.
-
-jiffies 是记录着从电脑开机到现在总共的时钟中断次数。在 linux 内核中 jiffies 远比 xtime 重要
-
-HZ and Jiffies
-
-- the role of time
-
-  - timeout
-
-    implementing a timer is relatively easy: each timer contains a field that indicates how far in the future the timer should expire. This field is initially calculated by adding the right number of ticks to the current value of jiffies. The field does not change. Every time the kernel checks a timer, it compares the expiration field to the value of jiffies at the current moment, and the timer expires when jiffies is greater or equal to the stored value. This comparison is made via the time_after, time_before, time_after_eq, and time_before_eq macros, which take care of possible overflows of jiffies.
-
-```txt
-man sleep
-DESCRIPTION
-       sleep()  makes  the  calling  thread  sleep  until seconds seconds have
-       elapsed or a signal arrives which is not ignored.
-```
-
-- static timer: `struct timer_struct---> run_old_timers()`
-- dynamic time: `struct timer_list --> run_timer_list()`
-
-## Bootstrap
-
-- the BIOS<-- ROM <-- RESET pin of the CPU, POST
-- The bootloader <--MBR partion table
-  - booting Linux from floppy disk
-  - booting Linux from hard disk
-- the setup_32() function
-- the start_kernel() function
-
-  - the page tables are initialized by invoking `paging_init()` function
-  - the page descriptors are initialized by the `mem_init()` function
-  - the final initialization of the IDT is performed by invoking `trap_init()` and `init_IRQ()`
-  - the slab allocator is initialized by the `kmem_cache_init(`) and `kmem_cache_sizes_init()` functions
-  - the system date and time are initialized by the `time_init()` function
-  - the kernel thread for process 1 is created by invoking the `kernel_thread()` function. In turn, this kernel thead creates the other theads and executes the `/sbin/init` program/
-
-- /UEFI/grub/lilo/systemd/init
-
-  Kernel image/ramdisk
-  compile the kernel
-  kernel debug(Meng Ning's course)
-
-  kenel startup grub booloader init/systemd
-
-- [Linux Kernel 2.4 Internals](http://www.tldp.org/LDP/lki/index.html)
-
-## funtion pointer
-
-function is a block of code, the pointer point to the first instruction in the Text segment.
-
-- Unlike normal pointers, a function pointer points to code, not data. Typically a function pointer stores the start of execute code.
-- Unlike normal pointers, we `do not allocate de-allocate memory` using function pointers.
-- A function's name can also be used to get function's address.
-- Like normal data pointers, a function pointer can be passed as an argument and can also be returned from a function.
-- Many object oriented features in C++ are implemented using function pointers in C. For example virtual functions. Class methods are another example implemented using function pointers.
-
-reference:
-
-- [function-pointer-in-c](https://www.geeksforgeeks.org/function-pointer-in-c/)
-- [how-do-function-pointers-in-c-work](https://stackoverflow.com/questions/840501/how-do-function-pointers-in-c-work)
-
-```c
-#include <stdio.h>
-int add(int a, int b)
-{
-    return a+b;
-}
-int main()
-{
-    int c;
-    int (*p)(int, int);
-    p = &add;
-    c = (*p)(2,3);
-    printf("%d",c);
-
-}
-```
-
-## 8. system call
-
-- api, POSIX, The C library
-- syscalls
-  - system call numbers
-  - system call performance
-- system call handler
-- system call implementation
-
-sys_call_table
-
-SYSCALL_DEFINE0(vfork)
-\_do_fork
-copy_process
-CLONE_NEWNS // new mount namespaces group
-CLONE_FS //set if fs info shared between processes
-CLONE_NEWUSER // new user namespace
-dup_task_struct
-free_task
-cgroup_can_fork
-copy_to_user copy_from_users
-ptrace_event/ SIGTRAP
-ptrace_notify((event << 8) | SIGTRAP)
-
-SYSCALL_DEFINE4
-
-system call use the stack of the calling process just like a normal function call.
-reference:
-
-- [Unix system calls (1/2)](https://youtu.be/xHu7qI1gDPA?t=278)
-
-## 10. process scheduling
-
-- 10.1 scheduling policy
-  - interactive processes
-  - batch proccesses
-  - real-time processes
-    system calls related to scheduling
-  - nice()
-  - getpriority()
-  - setpriority()
-    ...
-- 10.1.1 process preemption
-
-some real-time operating systems feature preempive kernels,which means that a process running in kernel mode can be interrupted after any instruction, just as it can in the user mode.the Linux kernel is not preemptive, which means that a process can be preemptived only while running in the user mode; nonpreemptive kernel design is much simpler, since most sychronization problems involving the kernel data structures are easily avoided.
-
-- 10.2 the scheduling algorithm
-  - static priority 0-99
-  - dynamic priority
-- 10.2.1 data structures used by the scheduler
-
-  - need_resched
-  - policy: SCHED_FIFO|SCHED_RR|SCHED_OTHER
-  - rt_priority
-  - priority
-  - counter
-
-- 10.2.2 the schedule() function
-- multitasking
-  - cooperative multitask
-  - preemptive multitask
-
 ## 7. Process address space
 
 A kernel function gets dynamic memory in a fairly straightforward manner by invoking one of a vaariety of functions: `_get_free_pages()` to get pages from the `buddy system algorithm`, `kmem_cache_alloc()` or `kmalloc()` to use the `slab allocator` for speciallized or general-purpose objects, and `vmalloc()` to get a noncontiguous memory area. If the request can be satisfied. each of these function returns a linear address identifying the beginning of the allocated dynamic memory arera.
@@ -875,15 +677,120 @@ the `mm_alloc()` function is invoked to get a new memory descriptor. Since these
 
     if the process has asked to shrink the heap, `sys_brk()` invokes the `do_munmap()` function to do the job and then returns:
 
-## Kernel Synchronization Methods
+## 8. system call
 
-- atomic operation: acomic_read,atomic_add ,atomic_set
-- Interrupt diabling
-- Locking Through Kernel Semaphores
+- api, POSIX, The C library
+- syscalls
+  - system call numbers
+  - system call performance
+- system call handler
+- system call implementation
 
-  ```c
-  struct semaphore{}
-  ```
+sys_call_table
+
+SYSCALL_DEFINE0(vfork)
+\_do_fork
+copy_process
+CLONE_NEWNS // new mount namespaces group
+CLONE_FS //set if fs info shared between processes
+CLONE_NEWUSER // new user namespace
+dup_task_struct
+free_task
+cgroup_can_fork
+copy_to_user copy_from_users
+ptrace_event/ SIGTRAP
+ptrace_notify((event << 8) | SIGTRAP)
+
+SYSCALL_DEFINE4
+
+system call use the stack of the calling process just like a normal function call.
+reference:
+
+- [Unix system calls (1/2)](https://youtu.be/xHu7qI1gDPA?t=278)
+
+## 10. process scheduling
+
+- 10.1 scheduling policy
+  - interactive processes
+  - batch proccesses
+  - real-time processes
+    system calls related to scheduling
+  - nice()
+  - getpriority()
+  - setpriority()
+    ...
+- 10.1.1 process preemption
+
+some real-time operating systems feature preempive kernels,which means that a process running in kernel mode can be interrupted after any instruction, just as it can in the user mode.the Linux kernel is not preemptive, which means that a process can be preemptived only while running in the user mode; nonpreemptive kernel design is much simpler, since most sychronization problems involving the kernel data structures are easily avoided.
+
+- 10.2 the scheduling algorithm
+  - static priority 0-99
+  - dynamic priority
+- 10.2.1 data structures used by the scheduler
+
+  - need_resched
+  - policy: SCHED_FIFO|SCHED_RR|SCHED_OTHER
+  - rt_priority
+  - priority
+  - counter
+
+- 10.2.2 the schedule() function
+- multitasking
+  - cooperative multitask
+  - preemptive multitask
+
+## 12. The virtual file system
+
+- regular files
+- directories
+- symbolic links
+
+- 12.1 the role of Virtual file system.(VFS)
+
+  The Virtual Filesystem (also known as Virtual Filesystem Switch or VFS) is a kernel software layer that handles all system calls related to a standard Unix filesystem. Its main strength is providing a common interface to several kinds of filesystems.
+
+  filesystems supported by the VFS may be grouped into three main classes:
+
+  - disk-based filesystems: ext4
+  - network filesystems --> nfs smb
+  - special filesystems (virtual filesystem): --> /proc, /dev/pts
+
+- 12.1.1 the common file model
+
+  - in the common file model each directory is regarded as a normal file, which contains a list of files and other directories
+  - the Linux kernel cannot hardcode a particular function to handle an operation such as `read()` or `ioctl()`. Instead, it must use a pointer for each operation; the pointer is made to point to the proper function for the particular filesystem being accessed.
+    file -> f_op-> read(...)
+  - In short, the kernel is responsible for assigning the right set of pointers to the file variable associated with each open file, then for invoking the call specific to each filesystem that the f_op field points to.
+
+    the common file model consists of the following object types:
+
+  - the superblock object ---> filesystem control block
+  - the inode object --> Stores general information about a specific file --> inode number
+  - the file object
+  - the dentry object
+
+- 12.1.2 system calls handled by vfs
+
+  - mount(), umount()
+  - chmod()
+  - ...
+
+- 12.2.1 superblock objects
+  super_operations
+  - read_inode(inode)
+  - write_inode(inode)
+  - put_inode(inode)
+  - delete_inode(inode)
+- 12.2.2 inode objects
+- 12.2.3 file objects
+- 12.2.5 dentry objects
+- 12.2.7 files associated with a process
+
+- 12.3 filesystem mounting
+
+- each file and directory in a partition is known by a unique inode number(root directory always has inode2)
+- mkdir/rmdir/link/unlink/getdents system calll
+- chdir/symlink
 
 ## 13. managing IO devides
 
@@ -945,6 +852,99 @@ modprobe [-rv] nfs (loads kernel modules)
 reference:
 
 - [Listing Information about Loaded Modules](https://docs.oracle.com/cd/E52668_01/E54669/html/ol7-s1-modules.html)
+
+## memory addressing
+
+- memory addresses
+
+  - logical address
+  - linear address
+  - physical address
+
+  segmentation uint and paging uint
+
+- segmentation in hardware
+
+  - segmentation registers:cd ds ,ss
+  - segmentation description(GDT, LDT, gdtr and ldtr)
+
+- segmentation in Linux
+
+  mmu virtual memory to physical memory
+
+- Paging in hardware
+
+  - regular paging: Directory, table, offset
+
+- Paging in linux
+
+## Bootstrap
+
+- the BIOS<-- ROM <-- RESET pin of the CPU, POST
+- The bootloader <--MBR partion table
+  - booting Linux from floppy disk
+  - booting Linux from hard disk
+- the setup_32() function
+- the start_kernel() function
+
+  - the page tables are initialized by invoking `paging_init()` function
+  - the page descriptors are initialized by the `mem_init()` function
+  - the final initialization of the IDT is performed by invoking `trap_init()` and `init_IRQ()`
+  - the slab allocator is initialized by the `kmem_cache_init(`) and `kmem_cache_sizes_init()` functions
+  - the system date and time are initialized by the `time_init()` function
+  - the kernel thread for process 1 is created by invoking the `kernel_thread()` function. In turn, this kernel thead creates the other theads and executes the `/sbin/init` program/
+
+- /UEFI/grub/lilo/systemd/init
+
+  Kernel image/ramdisk
+  compile the kernel
+  kernel debug(Meng Ning's course)
+
+  kenel startup grub booloader init/systemd
+
+- [Linux Kernel 2.4 Internals](http://www.tldp.org/LDP/lki/index.html)
+
+## funtion pointer
+
+function is a block of code, the pointer point to the first instruction in the Text segment.
+
+- Unlike normal pointers, a function pointer points to code, not data. Typically a function pointer stores the start of execute code.
+- Unlike normal pointers, we `do not allocate de-allocate memory` using function pointers.
+- A function's name can also be used to get function's address.
+- Like normal data pointers, a function pointer can be passed as an argument and can also be returned from a function.
+- Many object oriented features in C++ are implemented using function pointers in C. For example virtual functions. Class methods are another example implemented using function pointers.
+
+reference:
+
+- [function-pointer-in-c](https://www.geeksforgeeks.org/function-pointer-in-c/)
+- [how-do-function-pointers-in-c-work](https://stackoverflow.com/questions/840501/how-do-function-pointers-in-c-work)
+
+```c
+#include <stdio.h>
+int add(int a, int b)
+{
+    return a+b;
+}
+int main()
+{
+    int c;
+    int (*p)(int, int);
+    p = &add;
+    c = (*p)(2,3);
+    printf("%d",c);
+
+}
+```
+
+## Kernel Synchronization Methods
+
+- atomic operation: acomic_read,atomic_add ,atomic_set
+- Interrupt diabling
+- Locking Through Kernel Semaphores
+
+  ```c
+  struct semaphore{}
+  ```
 
 ## kernel data structures
 
