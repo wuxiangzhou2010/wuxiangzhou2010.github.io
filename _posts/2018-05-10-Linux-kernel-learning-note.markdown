@@ -8,6 +8,17 @@ published: true
 
 This is a brief learning note of `Understanding The Linux Kernel`
 
+## Get started with kernel
+
+- the kernel source tree
+- building the kernel
+- A beast of a different nature
+  - the kernel has access to neither the C library nor the standard C header
+  - the kernel is coded in GNU C
+  - the kernel lacks the memory protection afforded to user-space
+  - the kernel can not easily execute floating-point operations
+  - the kernel has a smaller per-process fixed-size stack
+
 ## 1. Intruduction
 
 ## 2. memory addressing
@@ -69,16 +80,217 @@ This is a brief learning note of `Understanding The Linux Kernel`
   - linear addresses from 0x00000000 to PAGE_OFFSET -1 can be addressed when the process is in either user mode or kernel mode
   - linear addresses from PAGE_OFFSET to 0xffffffff can be addresses only when the process is in kernel mode
 
-## Get started with kernel
+## 3. process management
 
-- the kernel source tree
-- building the kernel
-- A beast of a different nature
-  - the kernel has access to neither the C library nor the standard C header
-  - the kernel is coded in GNU C
-  - the kernel lacks the memory protection afforded to user-space
-  - the kernel can not easily execute floating-point operations
-  - the kernel has a smaller per-process fixed-size stack
+- 3.1 process descriptor and the task structure
+
+  what each process is doing , process prority, whether it's runing or blocked, what address space has been assigned to it, what files it is allowed to address.
+
+  The task_struct structure is allocated via the `slab allocator` to provide object reuse and cache coloring.
+
+  ```c
+  struct task_struct{
+      volatile long state;/* -1 unrunnable, 0 runnable , > 0 stopped*/
+      struct mm_struct *mm;
+    int exit_state;
+    int exit_code, exit_signal;
+    pid_t pid;
+    pid_t tgid;
+    struct task_struct *real_parent;
+    struct task_struct *parent;/* recipient of SIGCHLD, wait4() reports*/
+    struct list_head children;
+    struct list_head sibling;
+    struct task_struct *group_leader;
+    struct fs_struct *fs;
+    struct files_struct *files;
+    struct signal_struct *signal;
+    struct sighand_struct *sighand;
+  }
+  struct thread_info{}
+  ```
+
+  Each task_struct (include/linux/sched.h) has:
+
+- 3.1.1 `state`: `TASK_{RUNNING, INTERRUPTIBLE, UNINTERRUPTIBLE, STOPPED(reciving SIGSTOP, SIGSTP,ptrace), ZOMBIE}`
+  - TASK_ZOMBIE: process execution is terminated, but the parent process has not yet issued a `wait()` like system call(`wait()`, `wiat3()`, `wait4()`, or `waitpid()`) to return information about the dead process. Before the wait()-like call is issued the kernel can not discard the data contained in the dead process descriptor because the parent process could need it.
+- `fs_struct`: Filesystem information, current directory
+- `files_struct`: open file information, pointers to file descriptors
+- `mm_struct`: pointers to memory
+- `signal_struct/sighand_struct`: signals received/signal handers
+- 3.1.2 identifying a process
+  process ID or (PID)
+- 3.1.2.1 the task array
+
+  The kernel reserves a global static array of size `NR_TASKS` called `task` in its own address space.
+
+- 3.1.2.2 stroing a process descriptor
+
+  since process are dynamic entities, process descriptors are stored in dynamic memory rather than in the memory area permanently assigned to the kernel. `Linux store two different data structures for each process in a single 8KB memory area: the process descriptor and the kernel mode process stack.`
+
+- 3.1.2.3 the current macro
+
+  process descriptors and stack cache: `free_task_struct`/ `alloc_task_struct`
+
+- 3.1.2.4 process list:
+  - `prev_task` `next_task`, the head of the list is init_task, process 0 or swapper.
+  - `for_each_task`: sacns the whole process list
+- 3.1.2.5 the list of TASK_RUNNING processes
+
+  runqueue--> next_run, prev_run, add_to_runqueue(), del_from_runqueue(), wake_up_process()
+
+- 3.1.2.6 The pidhash table and chained lists
+
+  derive the process descriptor pointer corresponding to a PID, uses chaining to handle colliding PIDs
+
+- 3.1.3 parenthood relationship among processes
+
+  - parent: p_opptr(originall parent)
+  - p_pptr(parent)
+  - p_cptr(child)
+  - p_ysptr(younger sibling)
+  - p_osptr(older sibling)
+
+- 3.1.4 wait queues
+
+  Wait queues are implemented as cyclical lists whose elements include pointers to process descriptors. `void sleep_on(struct wait_queue **p)`
+
+- 3.1.5 process usage limits:
+  - RLIMIT_CPU
+  - RLIMIT_FSIZE
+  - RLIMIT_DATA
+  - RLIMIT_STACK
+  - RLIMIT_CORE
+- 3.2 process context/process switching/
+
+  - hardware contex
+  - hardware support
+  - linux code
+  - saving the floating point registers
+
+- 3.2.1 hardware context is stored in
+
+  - TSS segment
+  - Kernel Mode stack
+
+  The set of data that must be loaded into the registers before the process resumes its execution on the CPU is called the hardware context.
+
+  Process switching occurs only in Kernel Mode. The contents of all registers used by a process in User Mode have already been saved before performing process switching
+
+- 3.2.3 the switch_to macro
+- 3.2.4 saving floating point registers
+
+- 3.3 process creation
+- 3.3.1 the `clone()`, `fork()` and `vfork()` system calls
+
+  lightweight processes are created in linux by using a function named `__clone()`-->parameters
+
+  - fn
+  - args
+  - flags
+    - signal number to be sent to the parent process when the child terminates: SIGCHLD
+    - CLONE_VM|CLONE_FS|CLONE_FILES|CLONE_SIGHAND|CLONE_PID|CLONE_PTRACE|CLONE_VFORK
+  - child stack
+
+- clone--> do_fork() function --> alloc_task_struct
+
+  do_fork()
+
+  1. if the CLONE_PID flag has been specified, the do_fork()fucntion checks whether PID of the parent process is not null; if so , it reurns an error code. ONly the swapper process is allowed to set CLONE_PID; this is required when initializing a multiprocessor system
+  2. the alloc_task_struct() function is invoked in order to get a new 8k union task_union memory area to store the process descriptor and the kernel mode stack of the new process
+  3. the function follows the current pointer to obtain the parent process descriptor and copies it into the new process descriptor in the memory area just allocated.
+  4. a few checks occur to make sure the use has the resources necessary to start a new process. First the function checks whether current->rlim[RLIMIT_NPROC].rlim_cur is smaller than or equal to the current number of processes owned by the user: if so, an error code is reutrned. The function gets the current number of processes owned by the uer from a per-user data structure named user_struct. this data structure can be found through a pointer in the user field os the process descriptor.
+  5. the find_empty_process() function is invoked. if the owner of the parent process is not the superuser, this function checks whether nr_task (the total number of process in the system) is smaller than the NR_TASKS_LEFT_FOR_ROOT. If so, find_empty_process()involes get_free_takslot() to find a free entry in the task array. otherwise, it returns an error.
+  6. the function writes the new process descriptor pointer into the previously obtained task entry and sets the tarray_ptr field of the process descriptor to the address of the entry
+  7. if the parent process makes use of some kernel modules, th efunction increments the corresponding reference counters. Each kernel module has its own reference counter, which indicateds how many processes are using it. A module can not be removed unless its reference counter is null.
+  8. updates some flags included in the flags field that have been copied from teh parent process
+  9. the function invokes the get_pid() function to obtain a new PID, which will be assigned to the child process
+  10. the function then update all the process descriptor fields that can not be inherited from the parent process, such as th fields that specify the process parenthood relationships.
+  11. unless specified differently by the flags parameter, it involes copy_files(), copy_fs(), copy_sighand(), and copy_mm() to create new data structures and copy into them the values of the corresponding parent process data structures.
+  12. invokes the copy_thread() to initialize the kernel mode stack of the child process with the values contained in the cpu registers when the clone() call was issued
+  13. use the SET_LINKS macro to insert the new process descriptor in the process list
+  14. hash_pid()
+  15. increments the value of nr_tasks and current->user->count
+  16. it sets the state field of the child process descriptor to TASK_RUNNING and then invokes wake_up_process() to insert the child in the runqueue list.
+  17. if the CLONE_VFORK flag has been specified, the function suspens the parent process until the child releases its memory address space. in order to do this, the process descriptor includes a kernel semaphore called `vfork_sem`
+  18. it returns the PID of the child, which will be eventually be read by the parent process in the user mode.
+
+  - copy on write(COW) : allow both the parent and the child to read the same physical pages.
+  - lightweight processes allow both parent and child to share many per-process kernel data structure, like paging tables and therefore the entire User mode address space and the open file tables.
+  - the vfork system call creates a process that shares the memory address space of its parent.To prevent the parent from overwriting data needed by the child, the parent's execution is blocked until the child exits or execites a new program.`
+
+- 3.3.2 kernel thread
+  Kernel threads differ from regular processes in the following ways:
+  - each kernel thread executes a single specific kernel function, while regular processes execute kernel functions only through system calls.
+  - kernel threads run only in kernel mode, while regular processes run alternatively in kernel mode and in user mode.
+  - since kernel threads run only in kernel mode, they use only linear addresses greater than `PAGE_OFFSET`, regular processes, on the other hand , use all 4 gigabytes of linear addresses, either in user mode or in kernel mode.
+- 3.3.2.1 creating a kernel thread
+
+  kernel_thread() function`
+
+- 3.3.2.2 Process 0
+
+  the ancestor of all process, called process 0 or `the swapper process` is a kernel thread created from scratch during the initialization phase of linux by the `start_kernel()` function. This ancestor process makes use of the following data structures:
+
+  - `a process descriptor` and `a kernel mode stack` stored in the `init_task_union` variable. The `init_task` and `init_stack` macro yield the addresses of the process descriptor and the stack, respectively.
+  - the following tables, which the process descriptor points to:
+
+    - init_mm
+    - init_mmap
+    - init_fs
+    - init_files
+    - init_signals
+
+      the tables are initialized, respectively, by the following macros:
+
+    - INIT_MM
+    - INIT_MMAP
+    - INIT_FS
+    - INIT_FILES
+    - INIT_SIGNALS
+
+  - A TSS segment, initialized by the `INIT_TSS` macro
+  - two segment descriptors, namely a `TSSD` and an `LDTD`, which are stored in the `GDT`
+  - A `page global directory` stored in `swapper_pg_dir`, which may be considered as the kernel `page global directory` since it is used by all kernel threads
+
+    the `start_kernel()` function initializes all the data structures needed by the kernel, enables interrupts, and creates another kernek thread, named `process 1`. more commonly referred to as the `init` process:
+
+    ```c
+    kernel_thread(init, NULL, CLONE_FS_CLONE_FILE|CLONE_SIGHAND)
+    ```
+
+    after having created the `init` process, process executes the `cpu_idele()` function, which essentially consists of repeatedly executing the `hlt` assembly language instruction with the interrupts enabled. Process is selected by teh scheduler only when there are no other processes in the `TASK_RUNNING` state.
+
+- 3.3.2.3 Process 1
+
+the kernel thead created by the process executes the init()function, which inturn invokes the `kernel_thread()` function four times to initiate four kernel threads needed for routine kernel tasks:
+
+- `kflushd`: flush "dirty" buffers to disk to reclaim memory
+- `kupdate`: flush old "dirty"buffers to disk to reduce risks of file system inconsistencies.
+- `kpiod`: swaps out pages belonging to shred memory mappings.
+- `kswapd`: performs memory reclaiming.
+
+  then `init()` invokes the `execve()` system call to load the executable program init. As a result, the init kernel thread becomes a regular process having its own per-process kernel data structure.
+
+- 3.4 destroy process
+
+  - call exit
+  - main returns
+  - error
+
+- 3.4.1 process termination
+  all process terminations are handled by the `do_exit()` function, which removes most references to the terminationg process from kernel data structures. the do_exit() function executes the following actions:
+
+  1. set the PF_EXTING flag in the flag field of the process descriptor to denote that the process is being eliminated.
+  2. removes, if necessary, the process descriptor from an IPC semephore queue via the `sem_exit()` function or from a dynamic timer queue via the `del_timer()` function.
+  3. Examines the process's data structures related to paging, filesystem, open file descriptors, and signal handing, respectively, with the `__exit_mm()`, `__exit_files()`, `__exit_fs()`and `__exit_sighand()` functions. These functions also remove any of these data structures if no other process is sharing it.
+  4. set the state field field of the process descriptor to `TASK_ZOMBIE`.
+  5. sets the `exit_code` field of the process descriptor to the process termination code. this value is either the `eixt()` system call parameter(normal termination), or an error code supplied by teh kernel(abnormal termination).
+  6. invokes the`exit_notofy()` function to update the parenthood relationships of both the parent process and the children processes. All children process created by the terminating process become children of the `init` process.
+  7. involes the `schedule()` function to select a new process to run. since a process in a `TASK_ZOMBIE` state is ignored by the scheduler, the process will stop executing right after `switch_to` macro in `schedule()` is invoked.
+
+- 3.4.2 process removal
+  - orphan process will be taken by the init process and will destroy the zombies through with a wait()-like system call.
+  - the `release()` fucntion releases the process descriptor of `zombie process`
 
 ## 12. The virtual file system
 
@@ -511,218 +723,6 @@ local_irq_disable
 disable_irq
 ret_from_sys_call() function
 ret_from_exception() function
-
-## 3. process management
-
-- 3.1 process descriptor and the task structure
-
-  what each process is doing , process prority, whether it's runing or blocked, what address space has been assigned to it, what files it is allowed to address.
-
-  The task_struct structure is allocated via the `slab allocator` to provide object reuse and cache coloring.
-
-  ```c
-  struct task_struct{
-      volatile long state;/* -1 unrunnable, 0 runnable , > 0 stopped*/
-      struct mm_struct *mm;
-    int exit_state;
-    int exit_code, exit_signal;
-    pid_t pid;
-    pid_t tgid;
-    struct task_struct *real_parent;
-    struct task_struct *parent;/* recipient of SIGCHLD, wait4() reports*/
-    struct list_head children;
-    struct list_head sibling;
-    struct task_struct *group_leader;
-    struct fs_struct *fs;
-    struct files_struct *files;
-    struct signal_struct *signal;
-    struct sighand_struct *sighand;
-  }
-  struct thread_info{}
-  ```
-
-  Each task_struct (include/linux/sched.h) has:
-
-- 3.1.1 `state`: `TASK_{RUNNING, INTERRUPTIBLE, UNINTERRUPTIBLE, STOPPED(reciving SIGSTOP, SIGSTP,ptrace), ZOMBIE}`
-  - TASK_ZOMBIE: process execution is terminated, but the parent process has not yet issued a `wait()` like system call(`wait()`, `wiat3()`, `wait4()`, or `waitpid()`) to return information about the dead process. Before the wait()-like call is issued the kernel can not discard the data contained in the dead process descriptor because the parent process could need it.
-- `fs_struct`: Filesystem information, current directory
-- `files_struct`: open file information, pointers to file descriptors
-- `mm_struct`: pointers to memory
-- `signal_struct/sighand_struct`: signals received/signal handers
-- 3.1.2 identifying a process
-  process ID or (PID)
-- 3.1.2.1 the task array
-
-  The kernel reserves a global static array of size `NR_TASKS` called `task` in its own address space.
-
-- 3.1.2.2 stroing a process descriptor
-
-  since process are dynamic entities, process descriptors are stored in dynamic memory rather than in the memory area permanently assigned to the kernel. `Linux store two different data structures for each process in a single 8KB memory area: the process descriptor and the kernel mode process stack.`
-
-- 3.1.2.3 the current macro
-
-  process descriptors and stack cache: `free_task_struct`/ `alloc_task_struct`
-
-- 3.1.2.4 process list:
-  - `prev_task` `next_task`, the head of the list is init_task, process 0 or swapper.
-  - `for_each_task`: sacns the whole process list
-- 3.1.2.5 the list of TASK_RUNNING processes
-
-  runqueue--> next_run, prev_run, add_to_runqueue(), del_from_runqueue(), wake_up_process()
-
-- 3.1.2.6 The pidhash table and chained lists
-
-  derive the process descriptor pointer corresponding to a PID, uses chaining to handle colliding PIDs
-
-- 3.1.3 parenthood relationship among processes
-
-  - parent: p_opptr(originall parent)
-  - p_pptr(parent)
-  - p_cptr(child)
-  - p_ysptr(younger sibling)
-  - p_osptr(older sibling)
-
-- 3.1.4 wait queues
-
-  Wait queues are implemented as cyclical lists whose elements include pointers to process descriptors. `void sleep_on(struct wait_queue **p)`
-
-- 3.1.5 process usage limits:
-  - RLIMIT_CPU
-  - RLIMIT_FSIZE
-  - RLIMIT_DATA
-  - RLIMIT_STACK
-  - RLIMIT_CORE
-- 3.2 process context/process switching/
-
-  - hardware contex
-  - hardware support
-  - linux code
-  - saving the floating point registers
-
-- 3.2.1 hardware context is stored in
-
-  - TSS segment
-  - Kernel Mode stack
-
-  The set of data that must be loaded into the registers before the process resumes its execution on the CPU is called the hardware context.
-
-  Process switching occurs only in Kernel Mode. The contents of all registers used by a process in User Mode have already been saved before performing process switching
-
-- 3.2.3 the switch_to macro
-- 3.2.4 saving floating point registers
-
-- 3.3 process creation
-- 3.3.1 the `clone()`, `fork()` and `vfork()` system calls
-
-  lightweight processes are created in linux by using a function named `__clone()`-->parameters
-
-  - fn
-  - args
-  - flags
-    - signal number to be sent to the parent process when the child terminates: SIGCHLD
-    - CLONE_VM|CLONE_FS|CLONE_FILES|CLONE_SIGHAND|CLONE_PID|CLONE_PTRACE|CLONE_VFORK
-  - child stack
-
-- clone--> do_fork() function --> alloc_task_struct
-
-  do_fork()
-
-  1. if the CLONE_PID flag has been specified, the do_fork()fucntion checks whether PID of the parent process is not null; if so , it reurns an error code. ONly the swapper process is allowed to set CLONE_PID; this is required when initializing a multiprocessor system
-  2. the alloc_task_struct() function is invoked in order to get a new 8k union task_union memory area to store the process descriptor and the kernel mode stack of the new process
-  3. the function follows the current pointer to obtain the parent process descriptor and copies it into the new process descriptor in the memory area just allocated.
-  4. a few checks occur to make sure the use has the resources necessary to start a new process. First the function checks whether current->rlim[RLIMIT_NPROC].rlim_cur is smaller than or equal to the current number of processes owned by the user: if so, an error code is reutrned. The function gets the current number of processes owned by the uer from a per-user data structure named user_struct. this data structure can be found through a pointer in the user field os the process descriptor.
-  5. the find_empty_process() function is invoked. if the owner of the parent process is not the superuser, this function checks whether nr_task (the total number of process in the system) is smaller than the NR_TASKS_LEFT_FOR_ROOT. If so, find_empty_process()involes get_free_takslot() to find a free entry in the task array. otherwise, it returns an error.
-  6. the function writes the new process descriptor pointer into the previously obtained task entry and sets the tarray_ptr field of the process descriptor to the address of the entry
-  7. if the parent process makes use of some kernel modules, th efunction increments the corresponding reference counters. Each kernel module has its own reference counter, which indicateds how many processes are using it. A module can not be removed unless its reference counter is null.
-  8. updates some flags included in the flags field that have been copied from teh parent process
-  9. the function invokes the get_pid() function to obtain a new PID, which will be assigned to the child process
-  10. the function then update all the process descriptor fields that can not be inherited from the parent process, such as th fields that specify the process parenthood relationships.
-  11. unless specified differently by the flags parameter, it involes copy_files(), copy_fs(), copy_sighand(), and copy_mm() to create new data structures and copy into them the values of the corresponding parent process data structures.
-  12. invokes the copy_thread() to initialize the kernel mode stack of the child process with the values contained in the cpu registers when the clone() call was issued
-  13. use the SET_LINKS macro to insert the new process descriptor in the process list
-  14. hash_pid()
-  15. increments the value of nr_tasks and current->user->count
-  16. it sets the state field of the child process descriptor to TASK_RUNNING and then invokes wake_up_process() to insert the child in the runqueue list.
-  17. if the CLONE_VFORK flag has been specified, the function suspens the parent process until the child releases its memory address space. in order to do this, the process descriptor includes a kernel semaphore called `vfork_sem`
-  18. it returns the PID of the child, which will be eventually be read by the parent process in the user mode.
-
-  - copy on write(COW) : allow both the parent and the child to read the same physical pages.
-  - lightweight processes allow both parent and child to share many per-process kernel data structure, like paging tables and therefore the entire User mode address space and the open file tables.
-  - the vfork system call creates a process that shares the memory address space of its parent.To prevent the parent from overwriting data needed by the child, the parent's execution is blocked until the child exits or execites a new program.`
-
-- 3.3.2 kernel thread
-  Kernel threads differ from regular processes in the following ways:
-  - each kernel thread executes a single specific kernel function, while regular processes execute kernel functions only through system calls.
-  - kernel threads run only in kernel mode, while regular processes run alternatively in kernel mode and in user mode.
-  - since kernel threads run only in kernel mode, they use only linear addresses greater than `PAGE_OFFSET`, regular processes, on the other hand , use all 4 gigabytes of linear addresses, either in user mode or in kernel mode.
-- 3.3.2.1 creating a kernel thread
-
-  kernel_thread() function`
-
-- 3.3.2.2 Process 0
-
-  the ancestor of all process, called process 0 or `the swapper process` is a kernel thread created from scratch during the initialization phase of linux by the `start_kernel()` function. This ancestor process makes use of the following data structures:
-
-  - `a process descriptor` and `a kernel mode stack` stored in the `init_task_union` variable. The `init_task` and `init_stack` macro yield the addresses of the process descriptor and the stack, respectively.
-  - the following tables, which the process descriptor points to:
-
-    - init_mm
-    - init_mmap
-    - init_fs
-    - init_files
-    - init_signals
-
-      the tables are initialized, respectively, by the following macros:
-
-    - INIT_MM
-    - INIT_MMAP
-    - INIT_FS
-    - INIT_FILES
-    - INIT_SIGNALS
-
-  - A TSS segment, initialized by the `INIT_TSS` macro
-  - two segment descriptors, namely a `TSSD` and an `LDTD`, which are stored in the `GDT`
-  - A `page global directory` stored in `swapper_pg_dir`, which may be considered as the kernel `page global directory` since it is used by all kernel threads
-
-    the `start_kernel()` function initializes all the data structures needed by the kernel, enables interrupts, and creates another kernek thread, named `process 1`. more commonly referred to as the `init` process:
-
-    ```c
-    kernel_thread(init, NULL, CLONE_FS_CLONE_FILE|CLONE_SIGHAND)
-    ```
-
-    after having created the `init` process, process executes the `cpu_idele()` function, which essentially consists of repeatedly executing the `hlt` assembly language instruction with the interrupts enabled. Process is selected by teh scheduler only when there are no other processes in the `TASK_RUNNING` state.
-
-- 3.3.2.3 Process 1
-
-the kernel thead created by the process executes the init()function, which inturn invokes the `kernel_thread()` function four times to initiate four kernel threads needed for routine kernel tasks:
-
-- `kflushd`: flush "dirty" buffers to disk to reclaim memory
-- `kupdate`: flush old "dirty"buffers to disk to reduce risks of file system inconsistencies.
-- `kpiod`: swaps out pages belonging to shred memory mappings.
-- `kswapd`: performs memory reclaiming.
-
-  then `init()` invokes the `execve()` system call to load the executable program init. As a result, the init kernel thread becomes a regular process having its own per-process kernel data structure.
-
-- 3.4 destroy process
-
-  - call exit
-  - main returns
-  - error
-
-- 3.4.1 process termination
-  all process terminations are handled by the `do_exit()` function, which removes most references to the terminationg process from kernel data structures. the do_exit() function executes the following actions:
-
-  1. set the PF_EXTING flag in the flag field of the process descriptor to denote that the process is being eliminated.
-  2. removes, if necessary, the process descriptor from an IPC semephore queue via the `sem_exit()` function or from a dynamic timer queue via the `del_timer()` function.
-  3. Examines the process's data structures related to paging, filesystem, open file descriptors, and signal handing, respectively, with the `__exit_mm()`, `__exit_files()`, `__exit_fs()`and `__exit_sighand()` functions. These functions also remove any of these data structures if no other process is sharing it.
-  4. set the state field field of the process descriptor to `TASK_ZOMBIE`.
-  5. sets the `exit_code` field of the process descriptor to the process termination code. this value is either the `eixt()` system call parameter(normal termination), or an error code supplied by teh kernel(abnormal termination).
-  6. invokes the`exit_notofy()` function to update the parenthood relationships of both the parent process and the children processes. All children process created by the terminating process become children of the `init` process.
-  7. involes the `schedule()` function to select a new process to run. since a process in a `TASK_ZOMBIE` state is ignored by the scheduler, the process will stop executing right after `switch_to` macro in `schedule()` is invoked.
-
-- 3.4.2 process removal
-  - orphan process will be taken by the init process and will destroy the zombies through with a wait()-like system call.
-  - the `release()` fucntion releases the process descriptor of `zombie process`
 
 ## 10. process scheduling
 
