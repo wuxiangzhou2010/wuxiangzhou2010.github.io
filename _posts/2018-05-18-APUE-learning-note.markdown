@@ -16,25 +16,37 @@ This chapter gives basic Unix system concepts that are familiar to system admini
 
 This chapter discusses Unix standards, specifications and implementations
 
+- 2.2 unix standardization
+  - 2.2.1 ISO C
+  - 2.2.2 IEEE POSIX
+  - 2.2.3 the single unix specification
+  - 2.2.4 FIPS
+- 2.3 Unix system implementations
+  - 2.3.1 Unix system V release 4
+  - 2.3.2 4.4 BSD
+  - 2.3.3 freeBSD
+  - 2.3.4 Linux
+  - 2.3.5 Mac OS X
+  - 2.3.6 solaris
+
 ## Chapter 3. File I/O
 
-This chapter discusses `unbuffered I/O`, which are not part of ISO C but are part of POSIX.1 and the Single UNIX Specification.
+This chapter discusses `unbuffered I/O`,the term unbuffered means that each read or write invokes a system call in the kernel. These unbuffered I/O funtions are not part of ISO C but are part of POSIX.1 and the Single UNIX Specification.
 
-- file descriptors (Non-negative integer)
-- functions:
+- 3.2 file descriptors (Non-negative integer)
+- 3.3 open and opennat functions
+- 3.4 creat function
+- 3.5 close function
+- 3.6 lseek function (move the marker)
+- 3.7 read function ( with buffer in the OS for faster reading)
+- 3.8 write (with bufffer in the OS for faster writing)
 
-  1. open and opennat
-  2. creat
-  3. close
-  4. lseek (move the marker)
-  5. read (with buffer in the OS for faster reading)
-  6. write (with bufffer in the OS for faster writing)
-  7. truncate (shrink and increase the file)
+<!-- 5. truncate (shrink and increase the file) -->
 
 reference:
 
 - [Unix system calls (2/2)](https://youtu.be/2DrjQBL5FMU?t=432)
-- file sharing
+- 3.10 file sharing
 
   1. process table entry:
 
@@ -62,48 +74,77 @@ it is possible for more than one file descriptor entry to point to the same file
 1. dup:
 2. fork: the parent and the child share the same file table entry for each open descriptor.
 
-- pread pwrite:
+- 3.11 pread pwrite:
 
 seek and perform I/O atomically, equivalent to calling lseek and then read/write
 
-- dup/ dup2
+- 3.12 dup/ dup2
 
   new and old file descriptors `share the same file table entry`
 
-- sync fsync fdatasync
+- 3.13 sync fsync fdatasync
 
   1. sync:queues all the modified block buffers for writing and returns. It `does not wait` for the disk writes to take place
   2. fsync: applies to a single file specified by the file descriptor fd, and `waits` for the disk writes to complete before returning.
   3. fdatasync: similar to fsync, but it affects only the data portions of a file
 
-- fcntl
+- 3.14 fcntl
 
   can change the properties of a file that is already open
+
+- 3.15 ioctl function
+- 3.16 /dev/fd
 
 ## Chapter 4. Files and Directories
 
 This chapter centers on I/O for regular files
 
-- file information: stat, fstat, fstatat, and lstat
+- 4.2 file information: stat, fstat, fstatat, and lstat
 
   - stat: returns a structure of information about the `named file`
   - fstat: returns a structure of information about the given
     `file descriptor`
 
-- file types: regular file, directory file,socket file, fifo file, symbolic link file
-- set user id and set group id
-- ownership and premission: access and faccessat, umask, chmod, fchmod, and fchmodat, chown, fchown, fchownat, and lchown,
-- file system:
-- link: link, linkat, unlink, unlinkat
-- file times: futimens, utimensat
-- reading directories:mkdir, mkdirat, rmdir, opendir, closedir, fdopendir, chdir, getdir
+- 4.3 file types: regular file, directory file,socket file, fifo file, symbolic link file
+- 4.4 set user id and set group id
+- 4.5 file access permission
+- 4.6 ownership of New files and directories:
+- 4.7 access and faccessat
+- 4.8 umask
+- 4.9 chmod, fchmod, and fchmodat
+- 4.10 sticky bit
+- 4.11 chown, fchown, fchownat, and lchown,
+- 4.12 file size:
+- 4.13 file trunction: truncate, ftruncate
+- 4.14 file systems
+- 4.15 link, linkat, unlink, unlinkat and remove functions
+- 4.16 rename and renameat
+- 4.17 symbolic links
+- 4.18 creating and reading symbolic links
+- 4.19 file times
+- 4.20 futimens, utimensat and utimes function
+- 4.21 mkdir, mkdirat and rmdir functions
+- 4.22 reading directories
+  - opendir, fdopendir, readdir, rewinddir, closedir,telldir, seekdir
+- 4.23 chdir, fchdir and getcwd functions
+- 4.24 device special files
 
 ## Chapter 5. Standard I/O Library
 
-- Buffering:
+    This library is specified by the ISO C standard because it has been implemented on many operating systems other than the Unix system,
 
-  - full buffered
-  - line buffered
+- 5.2 streams and FILE onjects
+- 5.3 standard input/output/error
+- 5.4 Buffering:
+
+  the goal of the buffering provided by the standard I/O library is to use te minium number of read and write calls
+
+  - full buffered:
+    - files residing on disk are normally fully buffered by the standard I/O library. fflush
+  - line buffered:
+
+    - terminal, in this case, the standard I/O library performs I/O when a newline character is encountered on input or output
+
   - unbuffered.
 
     Standard error is always `unbuffered`.
@@ -111,44 +152,48 @@ This chapter centers on I/O for regular files
 
     setbuf, setvbuf
 
-- open a stream: fopen, freopen, fdopen
-- close a stream: flose
-- reading and writing a stream:
-  - character at a time I/O: getc, fgetc,gethchar
-  - line at a time I/O:fgets, gets
-  - binary I/O. fread, fwrite
-- positioning a stream: ftell, fseek, rewind
-- formatted I/O: fprintf
+- 5.5 open a stream: fopen, freopen, fdopen, close with : flose
+- 5.6 reading and writing a stream:
+  - character at a time I/O: getc, fgetc, gethchar
+- 5.7 line at a time I/O:fgets, gets, fputs,puts
+
+- 5.8 Standard I/O efficiency
+- 5.9 binary I/O. fread, fwrite
+- 5.10 positioning a stream: ftell, fseek, rewind
+- 5.11 formatted I/O: fprintf
 
 - umask - get/set default permissions for new files/directories
 
 ## Chapter 6. System Data Files and Information
 
-- password, group, shadow file
-- time and date
+- 6.2 password
+- 6.3 shadow password
+- 6.4 group file
+- 6.9 system identification: uname
+- 6.10 time and date routines
 
 ## Chapter 7. Process Environment
 
-- main function
-- Process Termination
+- 7.2 main function
+- 7.3 Process Termination
 
   1. `exit`(总是执行 IO 库的清理关闭操作, return 0 相当于 exit(0))
   2. `_Exit` `_exit` (立即进入内核)
   3. `atExit`(登记函数结束后的清理过程， 跟注册的顺序相反。stack 的调用顺序)
 
-- Command-Line Arguments
+- 7.4 Command-Line Arguments
 
   ```c
   int main(int argc, char *argv[])
   ```
 
-- Environment List
+- 7.5 Environment List
 
   ```c
   extern char **environ;
   ```
 
-- Memory Layout of a C Program:
+- 7.6 Memory Layout of a C Program:
 
   - environ: 命令行参数和环境变量。
 
@@ -162,7 +207,8 @@ This chapter centers on I/O for regular files
 
 With Linux on a 32-bit Intel x86 processor, the text segment starts at location `0x08048000`
 
-- Memory Allocation
+- 7.7 shared libraries
+- 7.8 Memory Allocation
 
   Memory can be allocated through many API calls:
 
@@ -208,9 +254,9 @@ reference:
 
 - [malloc 函数工作机制](https://blog.csdn.net/nodeathphoenix/article/details/39339549)
 
-- Environment variables
-- setjmp and longjmp Functions
-- 资源限制设置函数： getrlimit and setrlimit Functions
+- 7.9 Environment variables
+- 7.10 setjmp and longjmp Functions
+- 7.11 getrlimit and setrlimit Functions 资源限制设置函数
 
 reference:
 
@@ -219,13 +265,13 @@ reference:
 
 ## Chapter 8. Process Control
 
-- process identifiers(进程标识符)
+- 8.2 process identifiers(进程标识符)
 
   process 0(swapper, part of the kernel, system process), 1(init/systemd, user space process and not system process in the kernel space)
 
   getpid/getppid/getuid/gettid
 
-- fork funtion
+- 8.3 fork funtion
 
   fork/vfork
 
@@ -251,49 +297,28 @@ reference:
 
 - [zombie process](https://www-cdf.fnal.gov/offline/UNIX_Concepts/concepts.zombies.txts)
 
-- [daemon process](<https://en.wikipedia.org/wiki/Daemon_(computing)>)
-
-  In multitasking computer operating systems, a daemon is a computer program that runs as a `background process`, rather than being under the direct control of an interactive user.
-
-  a list of daemon process
-
-  1. init
-  2. crond
-  3. dhdpd
-  4. ftpd
-  5. nfsd
-  6. ntpd
-  7. sshd
-  8. httpd
-  9. swapper
-  10. systemd
-  11. syslogd
-
-  create a daemon process
-
-  1. fork and parent process exit.
-  2. child process setsid(), which create new session and become the process group leader
-  3. set the root directory to `/`
-  4. change umask to 0
-  5. close file descriptors 0,1,2
-
-- wait/waitpid/waitid/wait3/wait4 SIGCHLD
+* 8.4 vfork function
+* 8.5 exit functions
+* 8.6 wait/waitpid function
+* 8.7 waitid function
+* 8.8 wait3/wait4 function SIGCHLD
 
   When a process terminates, either normally or abnormally, the kernel notifies the parent by sending the `SIGCHLD` signal to the parent.
 
-- exec 函数族:加载并运行程序 execl, execv
+* 8.9 race conditions
+* 8.10 exec functions: 加载并运行程序 execl, execv
 
-- Changing User IDs and Group IDs
+* 8.11 Changing User IDs and Group IDs
 
   setuid/setgid/seteuid/setegid/setreuid/setregid
 
-- Interpreter Files
+* 8.12 Interpreter Files
 
   ```bash
   #!/bin/bash
   ```
 
-- the system function
+* 8.13 system function
 
   ```c
   #include <stdlib.h>
@@ -301,12 +326,14 @@ reference:
   int system(const char *cmdstring);
   ```
 
-- Process Scheduling
+* 8.14 process accounting
+* 8.15 user identification
+* 8.16 Process Scheduling
 
   - nice
   - getpriority
 
-- Process Times: 进程时间
+* 8.17 Process Times: 进程时间
 
 Three times can be measured:
 
@@ -320,17 +347,27 @@ reference:
 
 ## Chapter 9. Process Relationships
 
-1. Terminal login
-2. Network login
-3. Process group
+- 9.2 Terminal loginss
+- 9.3 Network login
+- 9.4 Process group
 
-   - getpgrp/getpgid/setpgid
-   - Sessions:setsid/getsid
+  - getpgrp/getpgid/setpgid
+  - Sessions:setsid/getsid
 
-4. Job control
-5. orphaned process group
+- 9.5 sessions
+- 9.6 controlling terminal
+- 9.8 Job control
+- 9.9 shell execution of programs
+- 9.10 orphaned process group
 
 ## Chapter 10. Signals
+
+- 10.2 signal concepts
+- 10.3 signal functions
+- 10.4 unreliable signals
+- 10.5 interrupted system calls
+- 10.6 reentrant functions
+- 10.7 SIGCLD semantics
 
 - Signal dispositions
 
@@ -369,12 +406,17 @@ SIGSEGV invalid memory reference
   kill -s SIGSEGV $PID  # this will generate a coredump file
   ```
 
+- 10.9 kill and raise functions
+- 10.10 alarm and pause functions
+- 10.11 signal sets
+- 10.13 sigpending function
+- 10.14 sigaction function
+- 10.17 abort function
+- 10.18 system function
+- 10.19 sleep, nanosleep, clock_nanosleep
+- 10.22 signal names and numbers
+
 - the core file
-- signal function
-- kill and raise
-- alarm and pause
-- sigset sigaction
-- sleep, nanosleep, clock_nanosleep
 
 reference:
 
@@ -387,9 +429,16 @@ reference:
 
   线程同步的方式：互斥量 mutex, 读写锁 rwlock, 条件变量 condition variable
 
-- thread concept
-- thread identification
-- thread creation
+- 11.2 thread concept
+- 11.3 thread identification
+
+  ```c
+  // thread identifier
+  pthread_t pthread_self(void);
+
+  ```
+
+- 11.4 thread creation
 
   ```c
   //create
@@ -397,61 +446,72 @@ reference:
                           void *(*start_routine) (void *), void *arg);
   ```
 
-- thread termination
+- 11.5 thread termination
 
   ```c
   //exit
   void pthread_exit(void *retval);
   int pthread_join(pthread_t thread, void **rval_ptr);
-
-  //cancel
-  int pthread_setcancelstate(int state, int *oldstate);//PTHREAD_CANCEL_ENABLE PTHREAD_CANCEL_DISABLE
-  int pthread_setcanceltype(int type, int *oldtype);//asynchPTHREAD_CANCEL_DEFERRED  PTHREAD_CANCEL_ASYNCHRONOUS
-
-  int pthread_cancel(pthread_t thread);
   ```
 
-- Thread Synchronization
+int pthread_cancel(pthread_t thread);
+
+````
+
+- 11.6 Thread Synchronization
+- 11.6.1 mutexes
+
+```c
+//normal lock
+pthread_mutex_unlock
+pthread_mutex_lock
+````
+
+- 11.6.2 deadlock avoidance
+- 11.6.3 pthead_mutex_timedlock function
+- 11.6.4 reader-writer locks
 
   ```c
-    //normal lock
-    pthread_mutex_unlock
-    pthread_mutex_lock
-
-    //read write lock
-    int pthread_rwlock_rdlock(pthread_rwlock_t *rwlock);
-    int pthread_rwlock_wrlock(pthread_rwlock_t *rwlock);
-    int pthread_rwlock_unlock(pthread_rwlock_t *rwlock);
-
-    //condition variables
-    pthread_condattr_init
-    pthread_condattr_destroy
-
-    pthread_cond_wait
-    pthread_cond_timedwait
-
-    pthread_cond_signal
-    pthread_cond_broadcast
-    pthread_condattr_setclock
-
-    //spin lock
-    int pthread_spin_init(pthread_spinlock_t *lock, int pshared);
-    int pthread_spin_destroy(pthread_spinlock_t *lock)
-    int pthread_spin_lock(pthread_spinlock_t *lock);
-    int pthread_spin_trylock(pthread_spinlock_t *lock);
-    int pthread_spin_unlock(pthread_spinlock_t *lock);
+      //read write lock
+  int pthread_rwlock_rdlock(pthread_rwlock_t *rwlock);
+  int pthread_rwlock_wrlock(pthread_rwlock_t *rwlock);
+  int pthread_rwlock_unlock(pthread_rwlock_t *rwlock);
 
   ```
 
-  A spin lock is like a mutex, except that instead of blocking a process by sleeping, the process is blocked by busy-waiting (spinning) until the lock can be acquired.
+- 11.6.5 reader-writer locking with timeouts
+- 11.6.6 condition variables
+
+```c
+  //condition variables
+  pthread_condattr_init
+  pthread_condattr_destroy
+
+  pthread_cond_wait
+  pthread_cond_timedwait
+
+  pthread_cond_signal
+  pthread_cond_broadcast
+  pthread_condattr_setclock
+```
+
+- 11.6.7 spin locks
+
+  ```c
+      //spin lock
+  int pthread_spin_init(pthread_spinlock_t *lock, int pshared);
+  int pthread_spin_destroy(pthread_spinlock_t *lock)
+  int pthread_spin_lock(pthread_spinlock_t *lock);
+  int pthread_spin_trylock(pthread_spinlock_t *lock);
+  int pthread_spin_unlock(pthread_spinlock_t *lock);
+
+  ```
+
+A spin lock is like a mutex, except that instead of blocking a process by sleeping, the process is blocked by busy-waiting (spinning) until the lock can be acquired.
 
 - thread id/ attribute /stack
 
-  ```c
-  //attributes
-  int pthread_attr_init(pthread_attr_t *attr);
-  int pthread_attr_destroy(pthread_attr_t *attr);
-
+```c
   //Join state
   int pthread_attr_setdetachstate(pthread_attr_t *attr, int detachstate);
   int pthread_attr_getdetachstate(const pthread_attr_t *attr, int *detachstate);
@@ -471,65 +531,138 @@ reference:
 
   int pthread_setschedprio(pthread_t thread, int prio);
 
-  // mutex
+
+//stack， PTHREAD_STACK_MIN (16384)
+int pthread_attr_setstacksize(pthread_attr_t *attr, size_t stacksize);
+int pthread_attr_getstacksize(const pthread_attr_t *attr, size_t \*stacksize);
+
+int pthread_attr_setstack(pthread_attr_t *attr,
+void *stackaddr, size_t stacksize);
+int pthread_attr_getstack(const pthread_attr_t *attr,
+void **stackaddr, size_t *stacksize);
+//the system allocates an additional region of at least guardsize bytes at the end of the thread's stack to act as the guard area forthe stack (but see BUGS).
+int pthread_attr_setguardsize(pthread_attr_t *attr, size_t guardsize);
+int pthread_attr_getguardsize(const pthread_attr_t *attr, size_t \*guardsize);
+
+
+
+int pthread_attr_setscope(pthread_attr_t *attr, int scope);
+int pthread_attr_getscope(const pthread_attr_t *attr, int \*scope);
+PTHREAD_SCOPE_SYSTEM
+The thread competes for resources with all other threads in all processes on the system that are in the same scheduling allocation domain
+PTHREAD_SCOPE_PROCESS
+The thread competes for resources with all other threads in the same process that were also created with the PTHREAD_SCOPE_PROCESS contention scope.
+```
+
+reference
+
+- [多进程 多线程](http://www.cnblogs.com/dongzhiquan/archive/2011/12/15/2289450.html)
+
+## Chapter 12. Thread control
+
+- 12.2 thread limits
+- 12.3 thread attributes
+
+  ```c
+  //attributes
+  int pthread_attr_init(pthread_attr_t *attr);
+  int pthread_attr_destroy(pthread_attr_t *attr);
+  ```
+
+- 12.4 synchronization attributes
+
+- 12.4.1 mutex attributes
+
+  ```c
+  // mutex attribute
   int pthread_mutexattr_destroy(pthread_mutexattr_t *attr);
   int pthread_mutexattr_init(pthread_mutexattr_t *attr);
 
   pthread_mutexattr_setpshared
   pthread_mutexattr_destroy
   pthread_mutexattr_setprioceiling
-
-  //stack， PTHREAD_STACK_MIN (16384)
-  int pthread_attr_setstacksize(pthread_attr_t *attr, size_t stacksize);
-      int pthread_attr_getstacksize(const pthread_attr_t *attr, size_t *stacksize);
-
-  int pthread_attr_setstack(pthread_attr_t *attr,
-                          void *stackaddr, size_t stacksize);
-  int pthread_attr_getstack(const pthread_attr_t *attr,
-                          void **stackaddr, size_t *stacksize);
-  //the system allocates an additional region of at least guardsize bytes at the end of the thread's stack to act as the  guard  area  forthe stack (but see BUGS).
-  int pthread_attr_setguardsize(pthread_attr_t *attr, size_t guardsize);
-  int pthread_attr_getguardsize(const pthread_attr_t *attr, size_t *guardsize);
-
-  // thread identifier
-  pthread_t pthread_self(void);
-
-  pthread_key_create
-
-  int pthread_attr_setscope(pthread_attr_t *attr, int scope);
-  int pthread_attr_getscope(const pthread_attr_t *attr, int *scope);
-  PTHREAD_SCOPE_SYSTEM
-  The thread competes for resources with all other threads in all processes on the system that are in the same scheduling allocation domain
-  PTHREAD_SCOPE_PROCESS
-  The thread competes for resources with all other threads in the same process that were also created with the PTHREAD_SCOPE_PROCESS contention scope.
   ```
 
-  reference
+- 12.4.2 reader-writer lock attributes
+- 12.4.3 condition variable atrributes
+- 12.6 thread-specific data
 
-  - [多进程 多线程](http://www.cnblogs.com/dongzhiquan/archive/2011/12/15/2289450.html)
+```c
+pthread_key_create
 
-## Chapter 12. Thread control
+```
+
+- 12.7 cancel options
+
+```c
+  //cancel
+  int pthread_setcancelstate(int state, int *oldstate);//PTHREAD_CANCEL_ENABLE PTHREAD_CANCEL_DISABLE
+  int pthread_setcanceltype(int type, int *oldtype);//asynchPTHREAD_CANCEL_DEFERRED  PTHREAD_CANCEL_ASYNCHRONOUS
+
+```
+
+- 12.8 threads and signals
+- 12.9 threads and fork
+- 12.10 threads and I/O
 
 ## Chapter 13. Daemon Process
 
-- Error logging
+- 13.2 Daemon characteristics
+- 13.3 coding rules
+- 13.4 Error logging
+- 13.5 single-instance daemons
+- 13.6 daemon conventions
+
+- [daemon process](<https://en.wikipedia.org/wiki/Daemon_(computing)>)
+
+  In multitasking computer operating systems, a daemon is a computer program that runs as a `background process`, rather than being under the direct control of an interactive user.
+
+  a list of daemon process
+
+  1. init
+  2. crond
+  3. dhdpd
+  4. ftpd
+  5. nfsd
+  6. ntpd
+  7. sshd
+  8. httpd
+  9. swapper
+  10. systemd
+  11. syslogd
+
+  create a daemon process
+
+  1. fork and parent process exit.
+  2. child process setsid(), which create new session and become the process group leader
+  3. set the root directory to `/`
+  4. change umask to 0
+  5. close file descriptors 0,1,2
 
 ## Chapter 14. Advanced I/O
 
-- Nonblocking I/O
-- Record locking: fcntl
-- I/O multiplexing
-  - select, pselect function
-  - poll function
-- asynchronous I/O
+- 14.2 Nonblocking I/O
+- 14.3 Record locking: fcntl
+- 14.4 I/O multiplexing
+  - 14.4.1 select, pselect function
+  - 14.4.2 poll function
+- 14.5 asynchronous I/O
+  - system v asynchronous I/O
+  - BSD asynchronous I/O
+  - Posix asynchronous I/O
+- 14.6 readv and writev functions
+- 14.7 readn and writen functions
+- 14.8 memory mapped I/O
 
 ## Chapter 15. Interprocess Communication
 
-- pipe fifo
-- coprossses
-- message queue
-- semaphore
-- shared memory
+- 15.2 pipes
+- 15.3 popen and pclose functions
+- 15.4 coprocesses
+- 15.5 fifos
+- 15.7 message queues
+- 15.8 semaphores
+- 15.9 shared memory
 
 Approaches
 
@@ -565,8 +698,24 @@ int sem_trywait(sem_t *sem);
 int sem_timedwait(sem_t *sem, const struct timespec *abs_timeout);
 ```
 
-condition variables
-
 ## Chapter 16. Network IPC: sockets
 
+- 16.2 socket descriptors
+- 16.3 addressing
+  - 16.3.1 byte ordering
+  - 16.3.2 address format
+  - 16.3.3 address lookup
+  - 16.3.4 associating addresses with sockets
+- 16.4 connection establishment
+- 16.5 data transfer
+- 16.6 socket options
+- 16.7 out-of-band data
+- 16.8 nonblocking and asynchronous I/O
+
 ## Chapter 17. Advanced IPC
+
+- 17.2 Unix domain sockets
+
+reference:
+
+- [Advanced_Programming_in_the_UNIX_Environment](https://zodml.org/sites/default/files/Advanced_Programming_in_the_UNIX_Environment%2C_3rd_Edition.pdf)
