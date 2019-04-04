@@ -894,31 +894,6 @@ reference:
 
 - [Listing Information about Loaded Modules](https://docs.oracle.com/cd/E52668_01/E54669/html/ol7-s1-modules.html)
 
-## memory addressing
-
-- memory addresses
-
-  - logical address
-  - linear address
-  - physical address
-
-  segmentation uint and paging uint
-
-- segmentation in hardware
-
-  - segmentation registers:cd ds ,ss
-  - segmentation description(GDT, LDT, gdtr and ldtr)
-
-- segmentation in Linux
-
-  mmu virtual memory to physical memory
-
-- Paging in hardware
-
-  - regular paging: Directory, table, offset
-
-- Paging in linux
-
 ## Bootstrap
 
 - the BIOS<-- ROM <-- RESET pin of the CPU, POST
