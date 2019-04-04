@@ -708,6 +708,47 @@ reference:
 
 - [Unix system calls (1/2)](https://youtu.be/xHu7qI1gDPA?t=278)
 
+## Signals
+
+- 9.1 The role of signals
+
+  a signal is a very short message that may be sent to a process or to a group of processes. The only information given to the process is usually the number identifying the signal.
+
+  signals serve two main purposes:
+
+- to make a process aware that a specific event has occur
+- to force a process to execute a signal handler function included in its code
+
+  signals sent to a nonrunning process must be saved by the kernel until that process resumes execution.
+  at anytime , only one pending signal of a given type may exist for a process. additional pending signal of the smae type to the same process are not queued but simply discarded.
+
+- 9.1.1 actions performed upon receiving a signal
+
+  there are three ways in which a process can respond to a signal
+
+  - explicitly ignore the signal
+  - execute the default action associated with the signal
+  - catch the signal by invoking a correcponding signal-handler function
+
+    the SIGKILL and SIGSTOP signal cannot be explicitly ignored or caught, and thus their default actions must always be executed. Therefore, SIGKILL and SIGSTOP allow a user with appropriate privilleges to destroy and top stop.
+
+- 9.1.2 data structures associated with signals
+- 9.1.3 operations on signal data structures
+- 9.2 sending a signal
+- 9.2.1 the `send_sig_info()` and `send_sig()` functions
+- 9.2.2 the `force_sig_info()` and `force_sig()` functions
+- 9.3 receiving a signal
+- 9.3.1 ignoring the signal
+- 9.3.2 executing the default action for the signal
+- 9.3.3 catching the signal
+  - `do_signal()`
+  - `handle_signal()`
+- 9.4 Real-time Signals
+- 9.5 system calls related to signal handling
+- 9.5.1 the kill() system call
+- 9.5.2 changing a signal action
+  - `sigaction(sig,act,oact)`
+
 ## 10. process scheduling
 
 - 10.1 scheduling policy
