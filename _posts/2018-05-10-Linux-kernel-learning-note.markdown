@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "APUE learning note"
+title: "Linux kernel learning note"
 date: 2018-05-18 12:12 +0800
 categories: linux
 published: true
@@ -708,7 +708,7 @@ reference:
 
 - [Unix system calls (1/2)](https://youtu.be/xHu7qI1gDPA?t=278)
 
-## Signals
+## 9. Signals
 
 - 9.1 The role of signals
 
@@ -779,6 +779,16 @@ some real-time operating systems feature preempive kernels,which means that a pr
 - multitasking
   - cooperative multitask
   - preemptive multitask
+
+## 11. Kernel Synchronization Methods
+
+- 11.2.2 atomic operation: acomic_read,atomic_add ,atomic_set
+- 11.2.3 Interrupt diabling
+- 11.2.4 Locking Through Kernel Semaphores
+
+  ```c
+  struct semaphore{}
+  ```
 
 ## 12. The virtual file system
 
@@ -894,7 +904,30 @@ reference:
 
 - [Listing Information about Loaded Modules](https://docs.oracle.com/cd/E52668_01/E54669/html/ol7-s1-modules.html)
 
-## Bootstrap
+## 14. disk caches
+
+## 15. accessing regular files
+
+- 15.1 reading and writing a regular file
+- 15.2 memory mapping
+
+## 16. swapping: methods for freeing memory
+
+## 17. the ext2 filesystems
+
+## 18. process comminications
+
+- 18.1 pipes
+- 18.2 fifos
+- 18.3 system v ipc
+
+## 19. program execution
+
+- 19.1 executable files
+- 19.1.4 program segments and process memory regions
+- 19.2 execute formats
+
+## A. system startup/Bootstrap
 
 - the BIOS<-- ROM <-- RESET pin of the CPU, POST
 - The bootloader <--MBR partion table
@@ -952,16 +985,6 @@ int main()
 }
 ```
 
-## Kernel Synchronization Methods
-
-- atomic operation: acomic_read,atomic_add ,atomic_set
-- Interrupt diabling
-- Locking Through Kernel Semaphores
-
-  ```c
-  struct semaphore{}
-  ```
-
 ## kernel data structures
 
 - linked Lists
@@ -975,6 +998,6 @@ int main()
 - maps
 - binary trees
 
-## books
+reference:
 
 - [Understanding.Linux.Kernel](http://ermak.cs.nstu.ru/Understanding.Linux.Kernel.pdf)
