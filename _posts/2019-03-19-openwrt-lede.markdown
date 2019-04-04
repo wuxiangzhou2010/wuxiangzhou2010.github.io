@@ -6,7 +6,7 @@ categories: tools
 published: true
 ---
 
-LEDE 是 [OpenWRT](https://Openwrt.org/) 分出来的一个项目。 几年前一部分开发者因为不满 OpenWRT 社区的协作方式，启动了 LEDE 项目， 这两支又重新合并. 最新版本为 `18.06.02`. 我实际正在使用是 `WNDR4300` (WNDR2000v4 已经咸鱼转手)
+LEDE 是 [OpenWRT](https://Openwrt.org/) 分出来的一个项目。 几年前一部分开发者因为不满 OpenWRT 社区的协作方式，启动了 LEDE 项目. 后来这两支又重新合并. 最新版本为 `18.06.02`. 我实际正在使用的设备是 `WNDR4300` (WNDR2000v4 已经咸鱼转手)
 
 - ~~Netgear WNDR2000v4~~
 
