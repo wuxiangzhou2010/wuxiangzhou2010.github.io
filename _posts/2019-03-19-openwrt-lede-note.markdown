@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "OpenWRT/LEDE"
+title: "OpenWRT/LEDE note"
 date: 2019-03-19 22:24 +0800
 categories: tools
 published: true
