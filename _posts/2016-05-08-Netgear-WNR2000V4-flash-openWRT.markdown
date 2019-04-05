@@ -32,16 +32,20 @@ published: false
 
   参考 [U-Boot 刷机方法大全](http://www.right.com.cn/forum/thread-154561-1-1.html)
 
-  最主要的是下面的两个命令刷入 bootloader， 虽然教程上是对 Tp-Link 的 ， 但是在 netgear 上也好用
+最主要的是下面的两个命令刷入 bootloader， 虽然教程上是对 Tp-Link 的 ， 但是在 netgear 上也好用
 
 ```sh
 erase 0x9f000000 +0x20000
 cp.b 0x80000000 0x9f000000 0x200002
 ```
 
+- 进入 U-Boot 控制台：
+
+路由器上只在 LAN 口上接入网线，且只能有一根网线接入路由，按住路由上的复位键或 WPS/QSS 按键开机。直到所有 LED 都快速闪烁（4Hz）后，用浏览器访问 192.168.1.1 即可。
+
 - 固件编译
 
-  由于这个路由的 flash 计比较小， 基本不能安装什么固件， 可以在 OpenWRT 的编译选项中选择需要的， 尝试编译固件。
+  由于这个路由的 flash 计比较小， 基本不能安装什么固件， 可以在 OpenWRT 的编译选项中自行裁剪， 尝试编译固件。
 
 参考：
 
