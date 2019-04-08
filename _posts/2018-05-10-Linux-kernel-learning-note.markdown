@@ -148,7 +148,7 @@ LKD:
 - program stack
 - set of processor registers
 
-The kernel schedules individual threads, not process. Linux does not differentiate bwtween threads and processes. to linux a thread is just a sprcial kind of process.
+The kernel schedules individual threads, not process. Linux does not differentiate bwtween threads and processes. to linux a thread is just a special kind of process.
 
 这一章主要讲解进程描述符以及相关数据结构， 进程切换，进程创建以及进程销毁
 
@@ -210,7 +210,9 @@ The kernel schedules individual threads, not process. Linux does not differentia
 
 - 3.1.2.6 The pidhash table and chained lists
 
-  derive the process descriptor pointer corresponding to a PID, uses chaining to handle colliding PIDs
+Linux uses chaining to handle colliding PIDs
+
+derive the process descriptor pointer corresponding to a PID, uses chaining to handle colliding PIDs
 
 - 3.1.3 parenthood relationship among processes
 
@@ -295,7 +297,7 @@ The kernel schedules individual threads, not process. Linux does not differentia
   - since kernel threads run only in kernel mode, they use only linear addresses greater than `PAGE_OFFSET`, regular processes, on the other hand , use all 4 gigabytes of linear addresses, either in user mode or in kernel mode.
 - 3.3.2.1 creating a kernel thread
 
-  kernel_thread() function`
+  kernel_thread() function
 
 - 3.3.2.2 Process 0
 
@@ -350,7 +352,7 @@ the kernel thead created by the process executes the init()function, which intur
 - 3.4.1 process termination
   all process terminations are handled by the `do_exit()` function, which removes most references to the terminationg process from kernel data structures. the do_exit() function executes the following actions:
 
-  1. set the PF_EXTING flag in the flag field of the process descriptor to denote that the process is being eliminated.
+  1. set the `PF_EXTING` flag in the flag field of the process descriptor to denote that the process is being eliminated.
   2. removes, if necessary, the process descriptor from an IPC semephore queue via the `sem_exit()` function or from a dynamic timer queue via the `del_timer()` function.
   3. Examines the process's data structures related to paging, filesystem, open file descriptors, and signal handing, respectively, with the `__exit_mm()`, `__exit_files()`, `__exit_fs()`and `__exit_sighand()` functions. These functions also remove any of these data structures if no other process is sharing it.
   4. set the state field field of the process descriptor to `TASK_ZOMBIE`.
