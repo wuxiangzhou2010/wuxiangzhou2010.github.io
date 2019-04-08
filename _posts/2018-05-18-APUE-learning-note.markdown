@@ -152,15 +152,15 @@ This chapter centers on I/O for regular files
 
     setbuf, setvbuf
 
-- 5.5 open a stream: fopen, freopen, fdopen, close with : flose
+- 5.5 open a stream: `fopen`, freopen, fdopen, close with : `fclose`
 - 5.6 reading and writing a stream:
-  - character at a time I/O: getc, fgetc, gethchar
-- 5.7 line at a time I/O:fgets, gets, fputs,puts
+  - character at a time I/O: `getc`, `fgetc`, `gethchar`
+- 5.7 line at a time I/O:`fgets`, `gets`, `fputs`, `puts`
 
 - 5.8 Standard I/O efficiency
-- 5.9 binary I/O. fread, fwrite
-- 5.10 positioning a stream: ftell, fseek, rewind
-- 5.11 formatted I/O: fprintf
+- 5.9 binary I/O. `fread`, `fwrite`
+- 5.10 positioning a stream: `ftell`, `fseek`, `rewind`
+- 5.11 formatted I/O: `fprintf`
 
 - umask - get/set default permissions for new files/directories
 
@@ -169,7 +169,7 @@ This chapter centers on I/O for regular files
 - 6.2 password
 - 6.3 shadow password
 - 6.4 group file
-- 6.9 system identification: uname
+- 6.9 system identification: `uname`
 - 6.10 time and date routines
 
 ## Chapter 7. Process Environment
@@ -197,7 +197,7 @@ This chapter centers on I/O for regular files
 
   - environ: 命令行参数和环境变量。
 
-    环境表(字符串的指针数组)和环境字符串通常存放在进程存储空间的顶部(栈之上)。getenv 函数可以得到特定环境变量的值。
+    环境表(字符串的指针数组)和环境字符串通常存放在进程存储空间的顶部(栈之上)`。getenv` 函数可以得到特定环境变量的值。
 
   - stack (栈区)
   - heap (堆区)
@@ -212,19 +212,19 @@ With Linux on a 32-bit Intel x86 processor, the text segment starts at location 
 
   Memory can be allocated through many API calls:
 
-  - malloc()
-  - calloc()
-  - realloc()
+  - `malloc()`
+  - `calloc()`
+  - `realloc()`
   - memalign()
   - posix_memalign()
   - valloc()
-  - mmap()
-  - brk() / sbrk()
+  - `mmap()`
+  - `brk()` / `sbrk()`
 
   To return memory to the OS:
 
-  - free()
-  - munmap()
+  - `free()`
+  - `munmap()`
 
 一般申请内存使用的是标准库提供的函数 malloc, cmalloc, remalloc.
 这些函数和`系统调用`之间还隔着一个 `glibc 分配器`。
@@ -269,7 +269,7 @@ reference:
 
   process 0(swapper, part of the kernel, system process), 1(init/systemd, user space process and not system process in the kernel space)
 
-  getpid/getppid/getuid/gettid
+  `getpid`/`getppid`/`getuid`/`gettid`
 
 - 8.3 fork funtion
 
@@ -293,32 +293,38 @@ reference:
 
   Zombie process is a process that has terminated, but whose `parent has not yet waited for it`.
 
-  防止僵死的方法： 1. fork 两次， 2. 父进程设置 SA_NOCLDWAIT
+  防止僵死的方法：
+
+  1. by using wait() system call ,父进程将停止运行， 并等待子进程结束
+  2. by fork twice: 1> parent fork and wait child, 2> child fork and exit
+  3. by 父进程设置 SA_NOCLDWAIT， or signal(SIGCHLD,SIG_IGN)
+  4. by using a signal handler
 
 - [zombie process](https://www-cdf.fnal.gov/offline/UNIX_Concepts/concepts.zombies.txts)
-
-* 8.4 vfork function
-* 8.5 exit functions
-* 8.6 wait/waitpid function
-* 8.7 waitid function
-* 8.8 wait3/wait4 function SIGCHLD
+- [zombie-processes-prevention](https://www.geeksforgeeks.org/zombie-processes-prevention/)
+- [double-forking-prevent-zombie-process](https://www.geeksforgeeks.org/double-forking-prevent-zombie-process/)
+- 8.4 vfork function
+- 8.5 exit functions
+- 8.6 wait/waitpid function
+- 8.7 waitid function
+- 8.8 wait3/wait4 function SIGCHLD
 
   When a process terminates, either normally or abnormally, the kernel notifies the parent by sending the `SIGCHLD` signal to the parent.
 
-* 8.9 race conditions
-* 8.10 exec functions: 加载并运行程序 execl, execv
+- 8.9 race conditions
+- 8.10 exec functions: 加载并运行程序 execl, execv
 
-* 8.11 Changing User IDs and Group IDs
+- 8.11 Changing User IDs and Group IDs
 
   setuid/setgid/seteuid/setegid/setreuid/setregid
 
-* 8.12 Interpreter Files
+- 8.12 Interpreter Files
 
   ```bash
   #!/bin/bash
   ```
 
-* 8.13 system function
+- 8.13 system function
 
   ```c
   #include <stdlib.h>
@@ -326,14 +332,14 @@ reference:
   int system(const char *cmdstring);
   ```
 
-* 8.14 process accounting
-* 8.15 user identification
-* 8.16 Process Scheduling
+- 8.14 process accounting
+- 8.15 user identification
+- 8.16 Process Scheduling
 
   - nice
   - getpriority
 
-* 8.17 Process Times: 进程时间
+- 8.17 Process Times: 进程时间
 
 Three times can be measured:
 
@@ -347,7 +353,7 @@ reference:
 
 ## Chapter 9. Process Relationships
 
-- 9.2 Terminal loginss
+- 9.2 Terminal logins
 - 9.3 Network login
 - 9.4 Process group
 
@@ -377,13 +383,12 @@ reference:
 
   The signals `SIGKILL` and `SIGSTOP` cannot be caught, blocked, or ignored.
 
-SIGABRT abnormal termination(abort)
-SIGALARM time expired(alarm)
-SIGCHLD change in status of child
-SIGPOLL pollable event(poll)
-SIGKILL termination
-SIGIO asynchronous i/o
-SIGSEGV invalid memory reference
+| signal name | description               |
+| ----------- | ------------------------- |
+| SIGALARM    | time expired(alarm)       |
+| SIGCHLD     | change in status of child |
+| SIGPOLL     | pollable event(poll)      |
+| SIGIO       | asynchronous i/o          |
 
 - kill
   send signal to the process, default signal is `SIGTERM(15) SIGKILL(9) SIGSEGV(11)`
@@ -395,9 +400,9 @@ SIGSEGV invalid memory reference
         SIGINT        2       Term    Interrupt from keyboard
         SIGQUIT       3       Core    Quit from keyboard
         SIGILL        4       Core    Illegal Instruction
-        SIGABRT       6       Core    Abort signal from abort(3)
+        SIGABRT       6       Core    Abort signal from abort(3), abnormal termination(abort)
         SIGFPE        8       Core    Floating point exception
-        SIGKILL       9       Term    Kill signal
+        SIGKILL       9       Term    Kill signal, termination
         SIGSEGV      11       Core    Invalid memory reference
 
   The signals SIGKILL and SIGSTOP cannot be caught, blocked, or ignored.
@@ -406,14 +411,14 @@ SIGSEGV invalid memory reference
   kill -s SIGSEGV $PID  # this will generate a coredump file
   ```
 
-- 10.9 kill and raise functions
-- 10.10 alarm and pause functions
+- 10.9 `kill` and `raise` functions
+- 10.10 `alarm` and `pause` functions
 - 10.11 signal sets
 - 10.13 sigpending function
 - 10.14 sigaction function
 - 10.17 abort function
-- 10.18 system function
-- 10.19 sleep, nanosleep, clock_nanosleep
+- 10.18 `system` function
+- 10.19 `sleep`, `nanosleep`, `clock_nanosleep`
 - 10.22 signal names and numbers
 
 - the core file
@@ -427,7 +432,11 @@ reference:
 - [UNIX 线程同步](https://blog.csdn.net/yang_yulei/article/details/18057203)
 - [POSIX Threads Programming](https://computing.llnl.gov/tutorials/pthreads)
 
-  线程同步的方式：互斥量 mutex, 读写锁 rwlock, 条件变量 condition variable
+  线程同步的方式：
+
+  - 互斥量 mutex
+  - 读写锁 rwlock
+  - 条件变量 condition variable
 
 - 11.2 thread concept
 - 11.3 thread identification
@@ -454,18 +463,19 @@ reference:
   int pthread_join(pthread_t thread, void **rval_ptr);
   ```
 
-int pthread_cancel(pthread_t thread);
-
-````
+  ```c
+  //cancel
+  int pthread_cancel(pthread_t thread);
+  ```
 
 - 11.6 Thread Synchronization
 - 11.6.1 mutexes
 
-```c
-//normal lock
-pthread_mutex_unlock
-pthread_mutex_lock
-````
+  ```c
+  //normal lock
+  pthread_mutex_unlock
+  pthread_mutex_lock
+  ```
 
 - 11.6.2 deadlock avoidance
 - 11.6.3 pthead_mutex_timedlock function
@@ -482,7 +492,7 @@ pthread_mutex_lock
 - 11.6.5 reader-writer locking with timeouts
 - 11.6.6 condition variables
 
-```c
+  ```c
   //condition variables
   pthread_condattr_init
   pthread_condattr_destroy
@@ -493,7 +503,7 @@ pthread_mutex_lock
   pthread_cond_signal
   pthread_cond_broadcast
   pthread_condattr_setclock
-```
+  ```
 
 - 11.6.7 spin locks
 
@@ -511,7 +521,7 @@ A spin lock is like a mutex, except that instead of blocking a process by sleepi
 
 - thread id/ attribute /stack
 
-```c
+  ```c
   //Join state
   int pthread_attr_setdetachstate(pthread_attr_t *attr, int detachstate);
   int pthread_attr_getdetachstate(const pthread_attr_t *attr, int *detachstate);
@@ -522,37 +532,38 @@ A spin lock is like a mutex, except that instead of blocking a process by sleepi
   // PTHREAD_INHERIT_SCHED：  using attr inherit scheduling attributes from the creating thread
   // PTHREAD_EXPLICIT_SCHED： Threads that are created using attr take their scheduling attributes from the values  specified  by the attributes object.
   int pthread_attr_setinheritsched(pthread_attr_t *attr,
-                              int inheritsched);
+                            int inheritsched);
   int pthread_attr_getinheritsched(const pthread_attr_t *attr,
-                              int *inheritsched);
+                            int *inheritsched);
   //shedule parameter
   int pthread_attr_setschedparam(pthread_attr_t *attr, const struct sched_param *param);
   int pthread_attr_getschedparam(const pthread_attr_t *attr, struct sched_param *param);
 
   int pthread_setschedprio(pthread_t thread, int prio);
+  ```
 
+  ```c
+  //stack， PTHREAD_STACK_MIN (16384)
+  int pthread_attr_setstacksize(pthread_attr_t *attr, size_t stacksize);
+  int pthread_attr_getstacksize(const pthread_attr_t *attr, size_t \*stacksize);
 
-//stack， PTHREAD_STACK_MIN (16384)
-int pthread_attr_setstacksize(pthread_attr_t *attr, size_t stacksize);
-int pthread_attr_getstacksize(const pthread_attr_t *attr, size_t \*stacksize);
+  int pthread_attr_setstack(pthread_attr_t *attr,
+  void *stackaddr, size_t stacksize);
+  int pthread_attr_getstack(const pthread_attr_t *attr,
+  void **stackaddr, size_t *stacksize);
+  //the system allocates an additional region of at least guardsize bytes at the end of the thread's stack to act as the guard area forthe stack (but see BUGS).
+  int pthread_attr_setguardsize(pthread_attr_t *attr, size_t guardsize);
+  int pthread_attr_getguardsize(const pthread_attr_t *attr, size_t \*guardsize);
+  ```
 
-int pthread_attr_setstack(pthread_attr_t *attr,
-void *stackaddr, size_t stacksize);
-int pthread_attr_getstack(const pthread_attr_t *attr,
-void **stackaddr, size_t *stacksize);
-//the system allocates an additional region of at least guardsize bytes at the end of the thread's stack to act as the guard area forthe stack (but see BUGS).
-int pthread_attr_setguardsize(pthread_attr_t *attr, size_t guardsize);
-int pthread_attr_getguardsize(const pthread_attr_t *attr, size_t \*guardsize);
-
-
-
-int pthread_attr_setscope(pthread_attr_t *attr, int scope);
-int pthread_attr_getscope(const pthread_attr_t *attr, int \*scope);
-PTHREAD_SCOPE_SYSTEM
-The thread competes for resources with all other threads in all processes on the system that are in the same scheduling allocation domain
-PTHREAD_SCOPE_PROCESS
-The thread competes for resources with all other threads in the same process that were also created with the PTHREAD_SCOPE_PROCESS contention scope.
-```
+  ```c
+  int pthread_attr_setscope(pthread_attr_t *attr, int scope);
+  int pthread_attr_getscope(const pthread_attr_t *attr, int \*scope);
+  //PTHREAD_SCOPE_SYSTEM
+  //The thread competes for resources with all other threads in all processes on the system that are in the same scheduling allocation domain
+  //PTHREAD_SCOPE_PROCESS
+  //The thread competes for resources with all other threads in the same process that were also created with the PTHREAD_SCOPE_PROCESS contention scope.
+  ```
 
 reference
 
@@ -587,19 +598,17 @@ reference
 - 12.4.3 condition variable atrributes
 - 12.6 thread-specific data
 
-```c
-pthread_key_create
-
-```
+  ```c
+  pthread_key_create
+  ```
 
 - 12.7 cancel options
 
-```c
+  ```c
   //cancel
   int pthread_setcancelstate(int state, int *oldstate);//PTHREAD_CANCEL_ENABLE PTHREAD_CANCEL_DISABLE
   int pthread_setcanceltype(int type, int *oldtype);//asynchPTHREAD_CANCEL_DEFERRED  PTHREAD_CANCEL_ASYNCHRONOUS
-
-```
+  ```
 
 - 12.8 threads and signals
 - 12.9 threads and fork
@@ -656,47 +665,46 @@ pthread_key_create
 
 ## Chapter 15. Interprocess Communication
 
+Approaches
+
+- file
+- signal
+- socket
+- unix domain socket
+
 - 15.2 pipes
 - 15.3 popen and pclose functions
 - 15.4 coprocesses
 - 15.5 fifos
 - 15.7 message queues
+  - `sys_msgget()` `sys_msgctl()`
 - 15.8 semaphores
-- 15.9 shared memory
 
-Approaches
-
-    file
-    signal
-    Shared Memory  sys_shmget() sys_shmctl()
-    message queue
-    socket
-    unix domain socket
-    pipe
-    named pipe
-
-Synchronization
-
-    Semaphores sys_semget() sys_semctl() sys_msgget() sys_msgctl()
-    mutex
-    lock/deadlock (Spinlocks)
-    reader-writer locks
-
-- semaphore
+  - `sys_semget()` `sys_semctl()`
 
   link with `-pthread`
 
-```c
-#include <semaphore.h>
+  ```c
+  #include <semaphore.h>
 
-int sem_init(sem_t *sem, int pshared, unsigned int value);
-int sem_destroy(sem_t *sem);
-int sem_getvalue(sem_t *sem, int *sval);
-int sem_post(sem_t *sem);
-int sem_wait(sem_t *sem);
-int sem_trywait(sem_t *sem);
-int sem_timedwait(sem_t *sem, const struct timespec *abs_timeout);
-```
+  int sem_init(sem_t *sem, int pshared, unsigned int value);
+  int sem_destroy(sem_t *sem);
+  int sem_getvalue(sem_t *sem, int *sval);
+  int sem_post(sem_t *sem);
+  int sem_wait(sem_t *sem);
+  int sem_trywait(sem_t *sem);
+  int sem_timedwait(sem_t *sem, const struct timespec *abs_timeout);
+  ```
+
+- 15.9 shared memory
+  - `sys_shmget()` `sys_shmctl()`
+
+thread Synchronization
+
+- mutex
+- lock/deadlock (Spinlocks)
+- reader-writer locks
+- condition variables
 
 ## Chapter 16. Network IPC: sockets
 
