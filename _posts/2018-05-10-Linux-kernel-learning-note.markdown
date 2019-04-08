@@ -594,16 +594,6 @@ void * kmalloc(size_t size, int flags)
 ```
 
 - 6.3 Noncountiguous memory area management
-- 6.3.2 Descriptors of Noncontiguous memory areas
-
-```c
-struct vm_struct{
-    unsigned long flags;
-    void * addr;
-    unsigned long size;
-    struct vm_struct *next;
-}
-```
 
 - 6.3.2 Descriptors of Noncontiguous memory areas
 
@@ -627,7 +617,7 @@ the `vfree()` function relaeses noncontiguous memory areas. Its parameter addr c
 
 - kmalloc/kfree/vmalloc
 
-a kernel function gets dynamic memory in a fairly straightforward manner by invoking one of a variety of functions:\_\_get_free_pages from the buddy system algorithm, kmem_cache_alloc() or kmalloc() to use the slab allocator for specialized or general-purpose objects, and vmalloc() to get a noncontingunous memory area.
+a kernel function gets dynamic memory in a fairly straightforward manner by invoking one of a variety of functions:`__get_free_pages` from the buddy system algorithm, `kmem_cache_alloc()` or `kmalloc()` to use the slab allocator for specialized or general-purpose objects, and `vmalloc()` to get a noncontingunous memory area.
 
 ## 7. Process address space
 
@@ -638,7 +628,7 @@ A kernel function gets dynamic memory in a fairly straightforward manner by invo
 
 when allocating memory to user mode process, the situation is entirely different.
 
-- process requests for dynamic memory are considered nonurgent. when a process's executable file is loaded, for instance, it is unlikely that the process will address all the pages of code in the near future. Similarly, when a process invokes malloc() to get additional dynamic memory it doesn't mean the process will soom access all additional memory obtained. So as a general rule, the kernel tries to defer allocating dynamic memory to user mode processes
+- process requests for dynamic memory are considered nonurgent. when a process's executable file is loaded, for instance, it is unlikely that the process will address all the pages of code in the near future. Similarly, when a process invokes `malloc()` to get additional dynamic memory it doesn't mean the process will soom access all additional memory obtained. So as a general rule, the kernel tries to defer allocating dynamic memory to user mode processes
 - Since user programs cannot be trusted, the kernel must be prepared to catch all addressing errors caused by processes in user mode.
 
 - 7.1 the process's address space
@@ -652,7 +642,7 @@ when allocating memory to user mode process, the situation is entirely different
   - a running process may perform a "memory mapping" on a file
   - a process may keep adding data on its stack.
   - a process may create an IPC shared memory region to share data with other cooperating processes.
-  - a process may expand its dynamic area(the heap) through a function such as malloc()
+  - a process may expand its dynamic area(the heap) through a function such as `malloc()`
 
 - system calls related to memory region creation and deletion
 
@@ -717,13 +707,13 @@ the `mm_alloc()` function is invoked to get a new memory descriptor. Since these
   - good_area
   - bad_area
   - no_context
-- 7.4.1 handling a faulty address outside the addresss space -->bad_area/no_context --> do_exit()
-- 7.4.2 handling a faulty address inside the address space --> good_area --> handle_mm_fault()
+- 7.4.1 handling a faulty address outside the addresss space -->bad_area/no_context --> `do_exit()`
+- 7.4.2 handling a faulty address inside the address space --> good_area --> `handle_mm_fault()`
 - 7.4.4 copy on write
 
 - 7.5 creating and deleting a process address space
 - 7.5.1 create a process address space
-  - the kernel invokes the copy_mm() function while creating a new process
+  - the kernel invokes the `copy_mm()` function while creating a new process
   - each process usually has its own address space, but lightweight processes can be created by callling `__clone()` with the `CLONE_VM` flag set. these share the same address space; that is, they are allowed to address the same set of pages.
 - 7.5.2 deleting a process address space
   when a process terminates, the kernel invokes the `exit_mm()` function to release the addresss space owned by that process. Since the process is entering the `TASK_ZOMBIE` state, the function assigns the address space of the swapper process to it:
@@ -782,9 +772,9 @@ in order to associate each system call number with its corresponding service rou
 - system call implementation
 - system call context
 
-      the kernel is in process context during the execution of a system call. the current pointer points to the current task, which is the process that issued the syscall.
+      the kernel is in process context during the execution of a system call. the `current` pointer points to the current task, which is the process that issued the syscall.
 
-- 8.2.2 the system_call() function
+- 8.2.2 the `system_call()` function
   - saving the system call number and all the CPU registers
   - stores in `ebx` the address of the current process
   - check the paramter, number and value
@@ -841,7 +831,7 @@ reference:
   - execute the default action associated with the signal
   - catch the signal by invoking a correcponding signal-handler function
 
-    the SIGKILL and SIGSTOP signal cannot be explicitly ignored or caught, and thus their default actions must always be executed. Therefore, SIGKILL and SIGSTOP allow a user with appropriate privilleges to destroy and top stop.
+    the `SIGKILL` and `SIGSTOP` signal cannot be explicitly ignored or caught, and thus their default actions must always be executed. Therefore, `SIGKILL` and `SIGSTOP` allow a user with appropriate privilleges to destroy and top stop.
 
 - 9.1.2 data structures associated with signals
 - 9.1.3 operations on signal data structures
@@ -893,7 +883,7 @@ some real-time operating systems feature preempive kernels,which means that a pr
 
 ## 11. Kernel Synchronization Methods
 
-- 11.2.2 atomic operation: acomic_read,atomic_add ,atomic_set
+- 11.2.2 atomic operation: `acomic_read`, `atomic_add` ,`atomic_set`
 - 11.2.3 Interrupt diabling
 - 11.2.4 Locking Through Kernel Semaphores
 
@@ -920,7 +910,7 @@ some real-time operating systems feature preempive kernels,which means that a pr
 - 12.1.1 the common file model
 
   - in the common file model each directory is regarded as a normal file, which contains a list of files and other directories
-  - the Linux kernel cannot hardcode a particular function to handle an operation such as `read()` or `ioctl()`. Instead, it must use a pointer for each operation; the pointer is made to point to the proper function for the particular filesystem being accessed.
+  - the Linux kernel cannot hardcode a particular function to handle an operation such as `read()` or `ioctl()`. Instead, it must use a `pointer` for each operation; the pointer is made to point to the proper function for the particular filesystem being accessed.
     file -> f_op-> read(...)
   - In short, the kernel is responsible for assigning the right set of pointers to the file variable associated with each open file, then for invoking the call specific to each filesystem that the f_op field points to.
 
