@@ -207,6 +207,13 @@ This chapter centers on I/O for regular files
 
 With Linux on a 32-bit Intel x86 processor, the text segment starts at location `0x08048000`
 
+reference:
+
+- [Linux 虚拟地址空间布局](https://www.cnblogs.com/clover-toeic/p/3754433.html)
+- [C 语言函数调用栈(一)](https://www.cnblogs.com/clover-toeic/p/3755401.html)
+- [C 语言函数调用栈(二)](https://www.cnblogs.com/clover-toeic/p/3756668.html)
+  - cdecl 调用约定
+  - 可变参数函数支持条件
 - 7.7 shared libraries
 - 7.8 Memory Allocation
 
@@ -219,7 +226,7 @@ With Linux on a 32-bit Intel x86 processor, the text segment starts at location 
   - posix_memalign()
   - valloc()
   - `mmap()`
-  - `brk()` / `sbrk()`
+  - `brk()` / `sbrk()`: program break
 
   To return memory to the OS:
 
