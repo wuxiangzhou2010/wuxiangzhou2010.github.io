@@ -128,18 +128,40 @@ obtain the kernel source
 
 ## 3. process management
 
+LKD:
+
+- besides the executing program code(text section in Unix), Processes also include a set of resources:
+
+  - open files
+  - pending signals
+  - internel kernel data
+  - memory address space with one or more memory mappings
+  - Thread(s) of execution
+  - Data section containing global variables
+
+- Threads of execution
+
+  `Threads of exectuion`, often shortened to `threads`, are the objects of activity with the process.
+  Each thread includes:
+
+- program counter
+- program stack
+- set of processor registers
+
+The kernel schedules individual threads, not process. Linux does not differentiate bwtween threads and processes. to linux a thread is just a sprcial kind of process.
+
 这一章主要讲解进程描述符以及相关数据结构， 进程切换，进程创建以及进程销毁
 
 - 3.1 process descriptor and the task structure
 
   what each process is doing , process prority, whether it's runing or blocked, what address space has been assigned to it, what files it is allowed to address.
 
-  The task_struct structure is allocated via the `slab allocator` to provide object reuse and cache coloring.
+  The task_struct structure is allocated via the `slab allocator` to provide object reuse and cache coloring.defined in `<linux/sched.h>`
 
   ```c
   struct task_struct{
-      volatile long state;/* -1 unrunnable, 0 runnable , > 0 stopped*/
-      struct mm_struct *mm;
+    volatile long state;/* -1 unrunnable, 0 runnable , > 0 stopped*/
+    struct mm_struct *mm;
     int exit_state;
     int exit_code, exit_signal;
     pid_t pid;
