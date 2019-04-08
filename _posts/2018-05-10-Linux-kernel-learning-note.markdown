@@ -1102,3 +1102,5 @@ int main()
 reference:
 
 - [Understanding.Linux.Kernel](http://ermak.cs.nstu.ru/Understanding.Linux.Kernel.pdf)
+- [理解进程创建、可执行文件的加载和进程执行进程切换，重点理解分析fork、execve和进程切换](https://blog.csdn.net/weixin_43389097/article/details/88743522)
+- [跟踪分析Linux内核5.0系统调用处理过程](https://blog.csdn.net/Poor_Tony/article/details/88620626)
