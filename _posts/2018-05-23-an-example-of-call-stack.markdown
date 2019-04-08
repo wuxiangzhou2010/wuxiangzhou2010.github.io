@@ -41,7 +41,7 @@ grep  -E  -v '\t{0,}\.' functiontest.s
 - [compile the code online](https://godbolt.org/)
 
 ```asm
-  foo(int, int, int):
+foo(int, int, int):
   push ebp
   mov ebp, esp
   sub esp, 16
@@ -134,3 +134,4 @@ Foo:
 reference:
 
 - [call stack](https://blog.csdn.net/yang_yulei/article/details/45795591)
+- [online c compiler and asembler](https://godbolt.org/)
