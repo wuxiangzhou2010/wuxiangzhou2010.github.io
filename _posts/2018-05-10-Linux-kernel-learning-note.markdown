@@ -723,19 +723,59 @@ the `mm_alloc()` function is invoked to get a new memory descriptor. Since these
 
     if the process has asked to shrink the heap, `sys_brk()` invokes the `do_munmap()` function to do the job and then returns:
 
-## 8. system call
+## 8. system calls
 
-- api, POSIX, The C library
-- syscalls
-  - system call numbers
-  - system call performance
+Putting an extra layer between the application and the hardware has several advantages.
+
+- it makes programming easier, freeing users from studying low-level programming characteristics of harware devices.
+- it greatly increases system security, since the kernel can check the correctness of the request at the interface level before attempting to satisfy it.
+- the interfaces make programs more portable sice they can be compiled and executed correctly on any kernel that offerss the same set of interfaces.
+
+- 8.1 api, POSIX, The C library
+- 8.2 system call handlers and service routines
+
+  in linux the system calls must be involed by executing the int \$0x80 assembly instruction. which raises the programmed exception having vector 128
+
+  - system call numbers --> eax
+
 - system call handler
+
+  - saves the contents of most r egisters in the kernel mode stack(This operation is common to all system calls ans is coded in assembly language)
+  - handles the system call by invoking a correcponding C function called the system call service routine
+  - exits from the handler by meanss of the ret_from_sys_call() function(this function is coded in assembly language)
+
+in order to associate each system call number with its corresponding service routine, the kernel makes use of a system call dispatch table; this table is stored i the sys_call_table array and has NR_syscalls entries(usually 256); the nth entry contains the service routine address of the system call having number n.
+
+- 8.2.1 initializing system calls
+
+  the trap_init() function invoked during kernel initialization sets up the `IDT` entry correcponding to vector 128 as follows
+
+  ```c
+  trap_init()
+  set_system_gate(0x80, &system_call)
+  ```
+
 - system call implementation
+- system call context
 
-sys_call_table
+      the kernel is in process context during the execution of a system call. the current pointer points to the current task, which is the process that issued the syscall.
 
+- 8.2.2 the system_call() function
+  - saving the system call number and all the CPU registers
+  - stores in `ebx` the address of the current process
+  - check the paramter, number and value
+- 8.2.3 parameter passing
+- 8.2.4 verifing the parameter
+- 8.2.5 accessing the process address space
+
+```c
+get_user()
+put_user()
+```
+
+```c
 SYSCALL_DEFINE0(vfork)
-\_do_fork
+do_fork
 copy_process
 CLONE_NEWNS // new mount namespaces group
 CLONE_FS //set if fs info shared between processes
@@ -744,10 +784,11 @@ dup_task_struct
 free_task
 cgroup_can_fork
 copy_to_user copy_from_users
-ptrace_event/ SIGTRAP
+ptrace_event // SIGTRAP
 ptrace_notify((event << 8) | SIGTRAP)
 
 SYSCALL_DEFINE4
+```
 
 system call use the stack of the calling process just like a normal function call.
 reference:
