@@ -10,14 +10,60 @@ This is a brief learning note of `Understanding The Linux Kernel`
 
 ## Get started with kernel
 
+obtain the kernel source
+
+- using git
+- installing the kernel
+- using patches
 - the kernel source tree
+  - arch: architecture-specific source
+  - block: block I/O layer
+  - crypto: crypto API
+  - Documentation: kernel source documentation
+  - drivers: Device drivers
+  - fs: the virtual file system and individual filesystems
+  - init: kernel boot and initialization
+  - IPC interprocess communication
+  - kernel: core subsystems, such as the scheduler
+  - mm: memory management system
+  - sound: sound subsystem
+  - virt: virtualazation infrastructure
+  - net: networking subsystem
 - building the kernel
+
+  ```sh
+  make config
+  make menuconfig
+  makegconfig
+  make defconfig
+  make oldconfig
+  make
+  make -jn
+  ```
+
+  - install the kernel
+
+    on an x86 system using grub, your would copy `arch/i386/boot/bzImage` to `/boot`, name it something like `vmlinuz-version`, and edit `/boot/grub/grub/conf`, adding a new entry for the new kernel.
+
+  - install modules
+
+  ```sh
+  # installing modules is automated and architecture-independent.
+  make modules_install
+  ```
+
 - A beast of a different nature
   - the kernel has access to neither the C library nor the standard C header
   - the kernel is coded in GNU C
   - the kernel lacks the memory protection afforded to user-space
   - the kernel can not easily execute floating-point operations
-  - the kernel has a smaller per-process fixed-size stack
+  - the kernel has a small per-process fixed-size stack
+  - because the kernel has asychronous interrupts, is preemptive, and supports SMP, synchronization and concurrency are major concerns within the kernel.
+  - portability is important.
+- no libc or standard headers
+  - stdc is too large and too inefficient for the kernel. many of the usual libc functions are implemented inside the kernel.
+- GNU C
+  - the kernel is not programmed in strict ANSI C. the kernel developers make use of various language extensions available in gcc, they use both C99 and GNUC extensions to the C language.
 
 ## 1. Intruduction
 
