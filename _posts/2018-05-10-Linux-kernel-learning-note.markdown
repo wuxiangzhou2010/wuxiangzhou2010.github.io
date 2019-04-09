@@ -85,7 +85,7 @@ obtain the kernel source
 
   a logical address consists of two parts: a `segment identifier` and an `offset` that specifies the relative address within the segment.
 
-  - segment idenfitier --> 16bits --> segmetn selector
+  - segment idenfitier --> 16bits --> segment selector
   - offset --> 32bits
 
     segmentation registers
@@ -104,16 +104,33 @@ obtain the kernel source
 
 - 2.2.2 Segment descriptors
 
-  - GDT --> contain in main memory --> gdtr register
-  - LDT --> contain in a process --> ldtr
+Each segment is represented by an 8-byte Segment Descriptor that describe the segment characteristics. Segment descriptor either store in GDT or LDT. Usually, only one GDT is defined, while each process may have its own LDT,
 
-    Each segment descriptor consists of the following fields:
+- GDT
 
-    - a 32-bit based field that contains the linear address of the first byte of the segment
+  global descriptor table --> contain in main memory --> gdtr register
+
+- LDT
+
+  Local descriptor table --> contain in a process --> ldtr
+
+  Each segment descriptor consists of the following fields:
+
+  - a 32-bit based field that contains the linear address of the first byte of the segment
 
 - 2.2.3 segment selectors
 - 2.2.4 segmentation unit
 - 2.3 segmentation in linux
+
+  segments used by linux:
+
+  - a kernel code segment
+  - a kernel data segment
+  - a user code segment shared by all processes in user mode
+  - a user data segment shared by all processes in user mode
+  - a task state segment for each process
+  - a default LDT that is usually shared by all the process
+
 - 2.4 paging hardware
 - 2.4.1 regular paging
   - directory
@@ -737,6 +754,10 @@ the `mm_alloc()` function is invoked to get a new memory descriptor. Since these
 
     if the process has asked to shrink the heap, `sys_brk()` invokes the `do_munmap()` function to do the job and then returns:
 
+reference:
+
+- [Linux 2.x 内核对内存的管理](https://blog.csdn.net/yang_yulei/article/details/45795591)
+
 ## 8. system calls
 
 Putting an extra layer between the application and the hardware has several advantages.
@@ -1102,5 +1123,5 @@ int main()
 reference:
 
 - [Understanding.Linux.Kernel](http://ermak.cs.nstu.ru/Understanding.Linux.Kernel.pdf)
-- [理解进程创建、可执行文件的加载和进程执行进程切换，重点理解分析fork、execve和进程切换](https://blog.csdn.net/weixin_43389097/article/details/88743522)
-- [跟踪分析Linux内核5.0系统调用处理过程](https://blog.csdn.net/Poor_Tony/article/details/88620626)
+- [理解进程创建、可执行文件的加载和进程执行进程切换，重点理解分析 fork、execve 和进程切换](https://blog.csdn.net/weixin_43389097/article/details/88743522)
+- [跟踪分析 Linux 内核 5.0 系统调用处理过程](https://blog.csdn.net/Poor_Tony/article/details/88620626)
