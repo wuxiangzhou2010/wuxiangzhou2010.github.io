@@ -83,24 +83,24 @@ obtain the kernel source
   - protected mode
 - 2.2.1 segmentation registers
 
-  a logical address consists of two parts: a `segment identifier` and an `offset` that specifies the relative address within the segment.
+  a logical address consists of two parts: a `segment identifier` and an `offset` that specifies the relative address within the segment.The segment identifier is a 16-bit field called `segment selector`, while the offset is a 32-bit field
 
   - segment idenfitier --> 16bits --> segment selector
   - offset --> 32bits
 
-    segmentation registers
+    segmentation registers: hold segment selectors
 
     - cs
 
-      code segment register--> CPL current privilege level of the cpu
+      code segment register--> CPL current privilege level of the cpu. points to a segment containing program instruction.
 
     - ss
 
-      stack segment register
+      stack segment register, points to a segment containing the current program stack.
 
     - ds
 
-      data segment register
+      data segment register, points to a segment containing static and external data.
 
 - 2.2.2 Segment descriptors
 
