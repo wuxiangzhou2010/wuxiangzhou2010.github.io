@@ -672,24 +672,43 @@ reference
 
 ## Chapter 15. Interprocess Communication
 
+每个进程各自又不同的用户地址空间, 任何一个进程的全局变量在另一个进程都看不到, 所以进程之间要交换数据必须通过内核, 在内核中开辟一块缓冲区, 进程 A 把数据从用户空间拷贝到内核缓冲区, 进程 B 再从内核缓冲区读走, 内核提供的这种机制称为进程间通信.
+
+不同进程间的通信本质: 进程之间可以看到一份公共资源, 而提供这份资源的形式或者提供者不同造成了通信方式的不同.
+
 Approaches
 
 - file
 - signal
-- socket
-- unix domain socket
+- socket/unix domain socket
 
 - 15.2 pipes
+  - 管道是一种半双工的通信方式, 数据只能单向流动, 而且只能在具有亲缘关系的进程间使用.进程间的亲缘关系通常是指父子进程关系.
+  - named pipe: 也是半双工的通信方式, 但是允许无亲缘关系进程间的通信.
 - 15.3 popen and pclose functions
 - 15.4 coprocesses
 - 15.5 fifos
 - 15.7 message queues
   - `sys_msgget()` `sys_msgctl()`
-- 15.8 semaphores
+- 15.8 semaphores: 内核态使用的信号量
 
+  - `#include <sys/sem.h>`
   - `sys_semget()` `sys_semctl()`
+  - semop()/semget()/semctl()
 
-  link with `-pthread`
+- 15.9 shared memory
+
+  - `sys_shmget()` `sys_shmctl()`
+
+- file
+
+thread Synchronization
+
+- mutex
+- lock/deadlock (Spinlocks)
+- reader-writer locks
+- condition variables
+- sem 信号量(用户态使用的信号量)
 
   ```c
   #include <semaphore.h>
@@ -703,15 +722,11 @@ Approaches
   int sem_timedwait(sem_t *sem, const struct timespec *abs_timeout);
   ```
 
-- 15.9 shared memory
-  - `sys_shmget()` `sys_shmctl()`
+  link with `-pthread`
 
-thread Synchronization
+  reference:
 
-- mutex
-- lock/deadlock (Spinlocks)
-- reader-writer locks
-- condition variables
+- [linux 内核剖析（十）进程间通信之-信号量 semaphore](https://www.cnblogs.com/alantu2018/p/8991393.html)
 
 ## Chapter 16. Network IPC: sockets
 
