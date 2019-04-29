@@ -902,6 +902,10 @@ some real-time operating systems feature preempive kernels,which means that a pr
   - cooperative multitask
   - preemptive multitask
 
+reference :
+
+- [Linux 进程优先级的处理--Linux 进程的管理与调度](https://blog.csdn.net/gatieme/article/details/51719208)
+
 ## 11. Kernel Synchronization Methods
 
 - 11.2.2 atomic operation: `acomic_read`, `atomic_add` ,`atomic_set`
