@@ -162,3 +162,10 @@ reference:
     rm -f /var/lock/opkg.lock
     opkg update
   ```
+## [reset](http://wiki.villagetelco.org/OpenWrt_Failsafe_Mode_and_Flash_Recovery)
+``` sh
+root@(none):/# firstboot
+Unlocking rootfs_data ...
+Erasing rootfs_data ...
+root@(none):/# reboot -f
+```
