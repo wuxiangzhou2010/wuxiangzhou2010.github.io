@@ -195,7 +195,8 @@ categories: proxy
   - Install package
 
     ```sh
-    sudo add-apt-repository ppa:wireguard/wireguard -y \
+    sudo apt-get install software-properties-common  -y \
+    && sudo add-apt-repository ppa:wireguard/wireguard -y \
     && sudo apt update \
     && sudo apt install wireguard-dkms wireguard-tools -y
     ```
