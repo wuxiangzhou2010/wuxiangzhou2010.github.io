@@ -6,9 +6,11 @@ categories: tools
 published: false
 ---
 ### [code server](https://github.com/cdr/code-server)
+
 ### [ssh code](https://github.com/cdr/sshcode)
 
-- Run VS Code on any server over SSH. 
-    ```sh
-    sshcode --sshflags "-i ~/key.pem -p 1024" kyle@dev.kwc.io "~/projects/sourcegraph"
-    ```
+- Run VS Code on any server over SSH.
+
+```sh
+sshcode --ssh-flags "-i ~/key.pem -p 1024" kyle@dev.kwc.io "~/projects/sourcegraph"
+```
