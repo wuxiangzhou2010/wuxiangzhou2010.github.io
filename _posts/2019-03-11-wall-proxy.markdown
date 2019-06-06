@@ -115,6 +115,7 @@ categories: proxy
     2. 其中的 users id 可以用 [这个](https://www.uuidgenerator.net/)链接生成
     3. 确保指定的端口开放
     4. 重启服务以生效
+    5. [各平台客户端](https://v2ray.com/awesome/tools.html)
 
        ```sh
        service v2ray start
