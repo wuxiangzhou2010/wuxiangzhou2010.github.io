@@ -86,7 +86,7 @@ LEDE 是 [OpenWRT](https://Openwrt.org/) 分出来的一个项目。 几年前�
 - 安装可能需要的依赖
 
 ```sh
-sudo apt update && sudo apt install git build-essential libncurses5-dev unzip python-dev -y
+sudo apt update && sudo apt install gawk git build-essential libncurses5-dev unzip python-dev -y
 ```
 
 - 选择编译的版本
