@@ -27,9 +27,9 @@ China has been on the internet intermittently since May `1989` and on a permanen
 - Hosts
 - Wallproxy Google App Engine
 - OpenVPN
-- Shadowsocks
-- V2ray
-- Wireguard
+- Shadowsocks --> shadowrocket
+- V2ray -->shadowrocket kitsunebi
+- Wireguard --> official wireguard tunsafe
 
 ## VPS
 
@@ -51,9 +51,9 @@ China has been on the internet intermittently since May `1989` and on a permanen
 
 - [Asia Pacific Gateway (APG)](https://www.submarinecablemap.com/#/submarine-cable/asia-pacific-gateway-apg)
   | Cable | Year | Length | Capacity |
-  | ----------------------------------------------------------------------------------------- | ---- | --------- | -------- |
+  | --------------- | ---- | --------- | -------- |
   | [NCP][ncp-news] | 2018 | 13,618 km | 60T |
-  | APG | 2016|10,400 km|54.8 T||
+  | APG | 2016 | 10,400 km | 54.8 T |
 
 [ncp-news]: https://www.submarinenetworks.com/systems/trans-pacific/faster/faster-cable-vs-ncp
 [ncp-map]: https://www.submarinecablemap.com/#/submarine-cable/new-cross-pacific-ncp-cable-system
