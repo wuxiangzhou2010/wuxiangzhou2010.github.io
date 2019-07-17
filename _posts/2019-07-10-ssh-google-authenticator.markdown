@@ -19,7 +19,7 @@ google-authenticator
 ### Configure PAM
 
 ```sh
-sudo nano /etc/pam.d/sshd
+sudo vi /etc/pam.d/sshd
 # comment below command, This tells PAM not to prompt for a password.
 # Standard Un*x authentication.
 @include common-auth
