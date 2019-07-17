@@ -6,8 +6,6 @@ categories: tools
 published: true
 ---
 
-## Setup ssh Google Authenticator OTP
-
 ### Install Google Authenticator
 
 ```sh
@@ -41,9 +39,10 @@ PasswordAuthentication no
 # for authenticator
 UsePAM yes
 
+ChallengeResponseAuthentication yes
+
 AuthenticationMethods publickey,password publickey,keyboard-interactive
 
-ChallengeResponseAuthentication yes
 ```
 
 ```sh
