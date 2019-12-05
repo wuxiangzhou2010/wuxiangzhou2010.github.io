@@ -8,10 +8,11 @@ published: false
 
 ## DNS
 
-
 ### DNSsec
 
 ### [DNS leak test](https://www.dnsleaktest.com/)
+
 ### [DNScrypt](https://dnscrypt.info/)
+
 - [在 macOS 上启用 DNSCrypt-Proxy](https://www.v2ex.com/t/445199)
 - [install DNScrypt on OpenWRT](https://github.com/jedisct1/dnscrypt-proxy/wiki/Installation-on-OpenWRT)

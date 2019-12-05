@@ -77,7 +77,3 @@ One solution for NAT traversal, called the `Internet Gateway Device Protocol (IG
 - uPnP IGDP (Universal Plug and Play Internet Gateway Device Protocol)
 - NAT-PMP ( NAT Port Mapping Protocol)
 - PCP (Port Control Protocol )
-
-```
-
-```
