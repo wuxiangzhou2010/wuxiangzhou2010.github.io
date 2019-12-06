@@ -199,7 +199,7 @@ categories: proxy
     sudo apt-get install software-properties-common  -y \
     && sudo add-apt-repository ppa:wireguard/wireguard -y \
     && sudo apt update \
-    && sudo apt install wireguard-dkms wireguard-tools -y
+    && sudo apt install wireguard -y
     ```
 
   - Config
@@ -213,7 +213,7 @@ categories: proxy
 
     - server
 
-    server need to enable kernel `ip_forward` feature
+    server must enable kernel `ip_forward` feature
 
     ```sh
     sudo vi /etc/sysctl.conf
@@ -285,6 +285,7 @@ refer to：
 [Arch linux wiki: wireguard](https://wiki.archlinux.org/index.php/WireGuard)
 
 [linode: set-up-wireguard-vpn-on-ubuntu](https://www.linode.com/docs/networking/vpn/set-up-wireguard-vpn-on-ubuntu/#wireguard-client)
+[Wireguard VPN: Typical Setup](https://www.ckn.io/blog/2017/11/14/wireguard-vpn-typical-setup/)
 
 [bandwagon vps]: https://bandwagonhost.com/
 [vultr vps]: https://www.vultr.com/
