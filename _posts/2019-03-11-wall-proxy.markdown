@@ -191,7 +191,7 @@ categories: proxy
 
 - [Wireguard](https://www.wireguard.com/)
 
-  Wireguard is a VPN solution in the kernel space, it has not been merged into linux source tree yet. But it is increasingly popular. We take ubuntu for example.
+  Wireguard is a VPN solution in the kernel space, it has not been merged into linux source tree yet. But it is increasingly popular. We take Ubuntu for example.
 
   - Install package
 
@@ -213,72 +213,72 @@ categories: proxy
 
     - server
 
-    server must enable kernel `ip_forward` feature
+      - server must enable kernel `ip_forward` feature
 
-    ```sh
-    sudo vi /etc/sysctl.conf
-    # uncomment net.ipv4.ip_forward = 1
-    # apply with
-    sudo sysctl -p
-    ```
+        ```sh
+        sudo vi /etc/sysctl.conf
+        # uncomment net.ipv4.ip_forward = 1
+        # apply with
+        sudo sysctl -p
+        ```
 
-    create server config file
+      - create server config file
 
-    ```sh
-    sudo vi /etc/wireguard/wg0server.conf
-    ```
+        ```sh
+        sudo vi /etc/wireguard/wg0server.conf
+        ```
 
-    server config as follows:
+      - server config is as follows:
 
-    ```sh
-    [Interface]
-    Address = 10.0.0.1/24  # This is the vpn address, remember to change eth0 to the interface of you server
-    PostUp   = iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-    PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
-    ListenPort = 51820
-    PrivateKey = [SERVER PRIVATE KEY]
+        ```sh
+        [Interface]
+        Address = 10.0.0.1/24  # This is the vpn address, remember to change eth0 to the interface of you server
+        PostUp   = iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+        PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
+        ListenPort = 51820
+        PrivateKey = [SERVER PRIVATE KEY]
 
-    [Peer]
-    PublicKey = [CLIENT PUBLIC KEY]
-    AllowedIPs = 10.0.0.2/32  # This denotes the clients IP with a /32: the client only has ONE IP.
-    ```
+        [Peer]
+        PublicKey = [CLIENT PUBLIC KEY]
+        AllowedIPs = 10.0.0.2/32  # This denotes the clients IP with a /32: the client only has ONE IP.
+        ```
 
-    start
+        - start service
 
-    ```sh
-    sudo wg-quick up/down wg0server
-    # start when reboot
-    sudo systemctl enable wg-quick@wg0server
-    ```
+        ```sh
+        sudo wg-quick up/down wg0server
+        # start when reboot
+        sudo systemctl enable wg-quick@wg0server
+        ```
 
     - client
 
-    create client config file
+      - create client config file
 
-    ```sh
-    sudo vi /etc/wireguard/wg0.conf
-    ```
+        ```sh
+        sudo vi /etc/wireguard/wg0.conf
+        ```
 
-    client config as folows:
+      - client config is as folows:
 
-    ```sh
-    [Interface]
-    Address = 10.0.0.2/24  # The client IP from wg0server.conf with the same subnet mask
-    PrivateKey = [CLIENT PRIVATE KEY]
-    DNS = 10.0.0.1
+        ```sh
+        [Interface]
+        Address = 10.0.0.2/24  # The client IP from wg0server.conf with the same subnet mask
+        PrivateKey = [CLIENT PRIVATE KEY]
+        DNS = 10.0.0.1
 
-    [Peer]
-    PublicKey = [SERVER PUBLICKEY]
-    AllowedIPs = 0.0.0.0/0, ::0/0
-    Endpoint = [Server ip address]:51820 # this is the server real IP
-    PersistentKeepalive = 25
-    ```
+        [Peer]
+        PublicKey = [SERVER PUBLICKEY]
+        AllowedIPs = 0.0.0.0/0, ::0/0
+        Endpoint = [Server ip address]:51820 # this is the server real IP
+        PersistentKeepalive = 25
+        ```
 
-    ```sh
-    sudo wg-quick up/down wg0
-    # enable start on system boot
-    sudo systemctl enable wg-quick@wg0
-    ```
+        ```sh
+        sudo wg-quick up/down wg0
+        # enable start on system boot
+        sudo systemctl enable wg-quick@wg0
+        ```
 
 refer to：
 
