@@ -15,6 +15,9 @@ published: false
 - 将 Proxmox 写入 USB
 
   - [etcher](https://www.balena.io/etcher/)
+  - [pve 修改软件源](https://www.d3tt.com/view/123)
+  - [csdn: 另一个软件源修改方法](https://blog.csdn.net/wingtrace/article/details/97917815)
+  - [official: upgrade from 5.x to 6.x](https://pve.proxmox.com/wiki/Upgrade_from_5.x_to_6.0)
 
 - 登录虚拟机软件，创建虚拟机
 
