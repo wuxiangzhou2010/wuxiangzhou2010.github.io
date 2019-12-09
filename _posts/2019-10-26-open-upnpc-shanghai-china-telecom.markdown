@@ -8,16 +8,21 @@ published: false
 
 ## 上海电信 SDN 网关，UPNP 端口映射
 
-最近刚搬家， 合租屋的路由没有完全控制权限， port forwarding 也就无法配置了。 偶然查找了一个工具， 可以通过 uPnP [IGDP](https://en.wikipedia.org/wiki/Internet_Gateway_Device_Protocol)(Internet Gateway Device Protocol
-) 添加一个端口映射， 具体使用还有待观察。
+最近刚搬家， 合租屋的路由没有完全控制权限， port forwarding 也就无法配置了。 偶然查找了一个工具， 可以通过 uPnP [IGDP](https://en.wikipedia.org/wiki/Internet_Gateway_Device_Protocol)(Internet Gateway Device Protocol) 添加一个端口映射， 具体使用还有待观察。
 
-[Tunnelling SSH via uPnP](https://medium.com/@jos.martin/tunnelling-ssh-via-upnp-af023d04290d)
+- [Tunnelling SSH via uPnP](https://medium.com/@jos.martin/tunnelling-ssh-via-upnp-af023d04290d)
 
-## 编译
+## 自行编译
 
 ```sh
 git clone https://github.com/miniupnp/miniupnp.git
 docker run -it -v /Users/takesachishuu/miniupnp:/root ubuntu /bin/bash
+```
+
+## Mac
+
+```sh
+brew install upnpc
 ```
 
 ## 使用方法
@@ -69,6 +74,8 @@ upnpc -d 2345 udp
 upnpc -a 192.168.0.2 80 80 TCP
 ```
 
+- ps： 电信的网关 SDN 网关设备对 uPnP 的支持不全面， 有些命令可能不好用。
+
 - [python verson](https://pypi.org/project/miniupnpc)
 
 - [A shell script](https://gist.github.com/wuxiangzhou2010/11c2d7848b4741b8887fc88bebe9277b)
@@ -80,3 +87,7 @@ One solution for NAT traversal, called the `Internet Gateway Device Protocol (IG
 - uPnP IGDP (Universal Plug and Play Internet Gateway Device Protocol)
 - NAT-PMP ( NAT Port Mapping Protocol)
 - PCP (Port Control Protocol )
+
+## refer
+
+- [check open ports](https://www.yougetsignal.com/tools/open-ports/)
