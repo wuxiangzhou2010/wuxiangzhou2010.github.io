@@ -15,7 +15,7 @@ My devices:
 | ~~Iphone 6 16G~~                                  | Gived it to my sister                                                          | Jan. 2019        |
 | Logiteck stereo speakers Z120                     | sound is only loud enough, no issue to blame                                   | 2013             |
 | Logiteck K200 keyboard mouse combo                | this is quite an old device                                                    | Feb. 2011        |
-| Synology Ds218+                                   | quit love synology                                                             | around Sep. 2018 |
+| Synology Ds218+                                   | quite love synology                                                            | around Sep. 2018 |
 | ASUS AC1900P router                               | has not been used for a while                                                  | middle 2018      |
 | NetGear ProSafe GS105E switch                     | Gigabit switch                                                                 | middle 2017      |
 | ~~NetGear WNDR2000v4 300M~~                       | 2.4G, flashed to openWRT firmware, sold by Xianyu                              | middle 2015      |
