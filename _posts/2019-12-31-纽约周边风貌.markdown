@@ -1,0 +1,26 @@
+---
+layout: post
+title: "纽约周边风貌"
+date: 2019-12-31 12:12 +0800
+categories: tools
+published: true
+---
+
+## 工具
+
+- Google Earth
+
+## 观察
+
+- 曼哈顿岛上基本都是 apartment
+
+  ![overview](https://i.imgur.com/UP9M69A.jpg)
+
+- 周边基本被 house 覆盖了， 规划非常一致优美
+  ![houses](https://i.imgur.com/YUkHaOl.jpg)
+  ![house](https://i.imgur.com/oQoYWQB.jpg)
+
+- 海岸线基本被完全利用
+  ![seashore](https://i.imgur.com/nxQUbq3.jpg)
+  ![seashore2](https://i.imgur.com/qiBs5jd.jpg)
+  ![seashore3](https://i.imgur.com/dtWntar.jpg)
