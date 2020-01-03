@@ -31,4 +31,8 @@ published: true
   - https://koolshare.cn/forum.php?mod=viewthread&tid=164857
 
 - 离线插件下载地址
+
   - https://github.com/hq450/fancyss_history_package/tree/master/fancyss_arm384
+
+- Koolshare 固件占用率, v2ray 插件使用中, 4k 播放
+  ![Imgur](https://i.imgur.com/yXiS0fs.png)
