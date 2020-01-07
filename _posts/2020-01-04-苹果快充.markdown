@@ -1,0 +1,30 @@
+---
+layout: post
+title: "苹果快充"
+date: 2020-01-04 12:12 +0800
+categories: tools
+published: true
+---
+
+## 使用 iPad， Macbook 的充电器给手机充电
+
+- [Charge your iPhone with an iPad or Mac notebook power adapter](https://support.apple.com/en-us/HT202105)
+- [苹果手机快充兼容性](https://support.apple.com/en-us/HT208137)
+- [USB-C lighting cable 线的功能](https://support.apple.com/en-us/HT205807)
+- 线材功率
+- [Buy 1m USB-C to lighting cable](https://www.apple.com/shop/product/MKQ42AM/A/usb-c-to-lightning-cable-2-m)
+- [线材鉴别](https://support.apple.com/zh-cn/HT204566)
+
+## 闲鱼购买快充
+
+这几天在闲鱼上看了很多 iphone 快充， 价格不等， 并且同样价格各种信用分的都有。 一时不能确认真假。 一句话: 水太深， 于是买了一个第三方的贝尔金的电头和线材。
+
+- 充电线
+  ![the cable](https://i.imgur.com/P6XkvPF.png)
+- 充电头
+  ![the adapter](https://i.imgur.com/Zltk6XJ.jpg)
+- 卖家描述
+  ![the description](https://i.imgur.com/uBcAlyj.png)
+
+价格方面感觉尚可接受，描述也符合稍微专业的尝试， 卖家的信用也和我一样， 于是毫不犹地得买了。
+晚上的时候想了想， 苹果的 MFI 确实有其必要的。 苹果自己的充电方式虽然生成采用 PD， 但实际上跟一般标准的 PD 充电方式的实现可能还是有些不一样的， 比如温度检测控制的加入等。 希望不要翻车。感觉咸鱼靠信用分越来越难分辨了。 800 多信用希望靠谱。
