@@ -80,8 +80,8 @@ each UDP output operation requested by an application produces `exactly one UDP 
 - 21.6 Congestion Avoidance Algorithm
 - [TCP 拥塞 控制](https://zhidao.baidu.com/question/98620785.html)
 
-  1. 慢启动(Slow start)
-  2. 拥塞避免(Congestion avoidance)
+  1. 慢启动(Slow start)， cwnd 拥塞窗口， 二倍增长。
+  2. 拥塞避免(Congestion avoidance)， 发现超时减半
   3. 快速重传(Fast retransmit)
   4. 快速恢复(Fast Recovery)
 
@@ -102,9 +102,30 @@ each UDP output operation requested by an application produces `exactly one UDP 
 2. This means that TCP tracks all data sent, requiring `acknowledgement` for each octet.
 3. tcp is considered a `reliable` datatransfer protocal because of acknowledgement. It ensure that no data is sent to upper layer out of order, duplicated, or has missing pieces. it can even manage transmissions to reduce `congestion`.
 
-reference:
+## 为什么握手三次， 挥手四次？
+
+- 握手三次。每次都是接收到数据包的一方可以得到一些结论，发送的一方其实没有任何头绪。我虽然有发包的动作，但是我怎么知道我有没有发出去，而对方有没有接收到呢？所以要相互确认。这个过程就要两次。
+- 挥手四次。 因为 TCP 连接是双向的， 关闭一个方向的连接， 但是另一个方向仍然可以继续发送数据。因此需要四次。
+
+## 分包粘包解决方案
+
+- 尽量使用定长的数据
+
+## Sync flood
+
+在三次握手过程中，服务器发送 SYN-ACK 之后，收到客户端的 ACK 之前的 TCP 连接称为半连接(half-open connect)。此时服务器处于 SYN_RCVD 状态。当收到 ACK 后，服务器才能转入 ESTABLISHED 状态.
+
+- 半连接状态
+
+检测 SYN 攻击非常的方便，当你在服务器上看到大量的半连接状态时，特别是源 IP 地址是随机的，基本上可以断定这是一次 SYN 攻击。在 Linux/Unix 上可以使用系统自带的 netstats 命令来检测 SYN 攻击。
+
+- 解决办法
+
+  - 缩短超时（SYN Timeout）时间
+    reference:
 
 - [book: TCP IP Illustrated Volume 1 The Protocols](https://doc.lagout.org/network/TCP%20IP%20Illustrated%20Volume%201%20The%20Protocols.pdf)
 
 - [kernel_flow-->TCP](https://wiki.linuxfoundation.org/networking/kernel_flow)
 - [path-of-packet](https://www.cs.dartmouth.edu/~sergey/me/netreads/path-of-packet/Lab9_modified.pdf)
+- [一文搞定 UDP 和 TCP 高频面试题！](https://zhuanlan.zhihu.com/p/108822858)
