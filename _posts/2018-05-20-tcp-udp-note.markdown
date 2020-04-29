@@ -129,3 +129,8 @@ each UDP output operation requested by an application produces `exactly one UDP 
 - [kernel_flow-->TCP](https://wiki.linuxfoundation.org/networking/kernel_flow)
 - [path-of-packet](https://www.cs.dartmouth.edu/~sergey/me/netreads/path-of-packet/Lab9_modified.pdf)
 - [一文搞定 UDP 和 TCP 高频面试题！](https://zhuanlan.zhihu.com/p/108822858)
+
+## UDP 如何实现可靠传输
+
+- 需要应用层实现确认机制， 重传机制， 窗口确认机制，包的分片， 调序等等
+- 目前有如下开源程序利用 udp 实现了可靠的数据传输。分别为 RUDP、RTP、UDT。
