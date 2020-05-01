@@ -18,6 +18,8 @@ the User Datagram Protocol header has four fields, each of which is 2 bytes.
 - source port, destination port
 - length and checksum
 
+![img](http://telescript.denayer.wenk.be/~hcr/cn/idoceo/images/udp_header.gif)
+
 udp is a datagram-oriented protocol. it `does not provide error correction`, `sequencing`, `duplicate elimination`, `flow control or congestion control`.
 
 it can provide `error detection`. the checksum field is end to end and is computed over the UDP pseudo-header, which includes the source and destination IP addresses from the IP hader, Thus, any modification(NAT) made to those fields requires a modification to the UDP checksum
@@ -42,8 +44,12 @@ each UDP output operation requested by an application produces `exactly one UDP 
 ## Chapter 17. TCP: transmission Control Protocol
 
 - 17.1 Introduction
+
 - 17.2 TCP Service
+
 - 17.3 TCP Header
+
+  ![img](http://telescript.denayer.wenk.be/~hcr/cn/idoceo/images/tcp_header.gif)
 
   tcp provides a connection-oriented, reliable, byte stream service
 
@@ -53,7 +59,7 @@ each UDP output operation requested by an application produces `exactly one UDP 
   - `URG|ACK|RST|SYN|FIN`, window size 32bits
   - TCP checksum urgent pointer 32bits
 
-- 17.4 Summary
+* 17.4 Summary
 
 ## Chapter 18. TCP Connection Establishment and Termination
 
@@ -117,7 +123,7 @@ each UDP output operation requested by an application produces `exactly one UDP 
 
 - 半连接状态
 
-检测 SYN 攻击非常的方便，当你在服务器上看到大量的半连接状态时，特别是源 IP 地址是随机的，基本上可以断定这是一次 SYN 攻击。在 Linux/Unix 上可以使用系统自带的 netstats 命令来检测 SYN 攻击。
+检测 SYN 攻击非常的方·便，当你在服务器上看到大量的半连接状态时，特别是源 IP 地址是随机的，基本上可以断定这是一次 SYN 攻击。在 Linux/Unix 上可以使用系统自带的 netstats 命令来检测 SYN 攻击。
 
 - 解决办法
 
