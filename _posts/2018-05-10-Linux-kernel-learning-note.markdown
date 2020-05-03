@@ -61,13 +61,17 @@ obtain the kernel source
   - because the kernel has asychronous interrupts, is preemptive, and supports SMP, synchronization and concurrency are major concerns within the kernel.
   - portability is important.
 - no libc or standard headers
+  
   - stdc is too large and too inefficient for the kernel. many of the usual libc functions are implemented inside the kernel.
 - GNU C
+  
   - the kernel is not programmed in strict ANSI C. the kernel developers make use of various language extensions available in gcc, they use both C99 and GNUC extensions to the C language.
 
 ## 1. Intruduction
 
-## 2. memory addressing
+## 2. [memory addressing](https://www.youtube.com/watch?v=7aONIVSXiJ8)
+
+another [link](https://www.youtube.com/watch?v=0OvQfEcEp-U)
 
 - 2.1 memory address
 
@@ -143,6 +147,14 @@ Each segment is represented by an 8-byte Segment Descriptor that describe the se
   - linear addresses from 0x00000000 to PAGE_OFFSET -1 can be addressed when the process is in either user mode or kernel mode
   - linear addresses from PAGE_OFFSET to 0xffffffff can be addresses only when the process is in kernel mode
 
+![image-20200502211452370](/Users/takesachishuu/go/src/github.com/wuxiangzhou2010/wuxiangzhou2010.github.io/_posts/image-20200502211452370.png)
+
+![image-20200502211707264](/Users/takesachishuu/go/src/github.com/wuxiangzhou2010/wuxiangzhou2010.github.io/_posts/image-20200502211707264.png)
+
+
+
+![image-20200502212101758](/Users/takesachishuu/go/src/github.com/wuxiangzhou2010/wuxiangzhou2010.github.io/_posts/image-20200502212101758.png)
+
 ## 3. process management
 
 LKD:
@@ -199,6 +211,7 @@ The kernel schedules individual threads, not process. Linux does not differentia
   Each task_struct (include/linux/sched.h) has:
 
 - 3.1.1 `state`: `TASK_{RUNNING, INTERRUPTIBLE, UNINTERRUPTIBLE, STOPPED(reciving SIGSTOP, SIGSTP,ptrace), ZOMBIE}`
+  
   - TASK_ZOMBIE: process execution is terminated, but the parent process has not yet issued a `wait()` like system call(`wait()`, `wiat3()`, `wait4()`, or `waitpid()`) to return information about the dead process. Before the wait()-like call is issued the kernel can not discard the data contained in the dead process descriptor because the parent process could need it.
 - `fs_struct`: Filesystem information, current directory
 - `files_struct`: open file information, pointers to file descriptors
@@ -559,7 +572,7 @@ typedef struct page {
 
 - 6.1.1 getting page: alloc_page/free_page
 
-- 6.1.2 the buddy system algorithm
+- 6.1.2 [the buddy system algorithm](https://www.youtube.com/watch?v=1pCC6pPAtio)
 
 the kernel must establish a robust and efficient strategy for allocating groups of contiguous page frames. In doing so , it must deal with a well-know memory management problem called external fragmentation: frequent requests and releases of groups of contiguous page frames are "scattered" inside blocks of allocated page frames. As a result, it may become impossible to allocate a large block of contiguous page frames. even if there are engouh free pages to satisfy the request.
 strage:
@@ -635,6 +648,10 @@ the `vfree()` function relaeses noncontiguous memory areas. Its parameter addr c
 - kmalloc/kfree/vmalloc
 
 a kernel function gets dynamic memory in a fairly straightforward manner by invoking one of a variety of functions:`__get_free_pages` from the buddy system algorithm, `kmem_cache_alloc()` or `kmalloc()` to use the slab allocator for specialized or general-purpose objects, and `vmalloc()` to get a noncontingunous memory area.
+
+
+
+![image-20200502211008121](/Users/takesachishuu/go/src/github.com/wuxiangzhou2010/wuxiangzhou2010.github.io/_posts/image-20200502211008121.png)
 
 ## 7. Process address space
 
@@ -758,6 +775,26 @@ reference:
 
 - [Linux 2.x 内核对内存的管理](https://blog.csdn.net/yang_yulei/article/details/45795591)
 
+- 内存分配算法
+
+  - 固定分配
+  - [动态分配](https://www.youtube.com/watch?v=GNzUL200Fko)
+    - first fit
+    - next fit
+    - best fit
+    - Worst fit
+  - buddy system
+
+- simple paging
+
+- simple segmentation
+
+- [Virtual memory paging](https://www.youtube.com/watch?v=KqHNaOrxttM)
+
+- [Virtual memory segmentation](https://www.youtube.com/watch?v=04Xs185vtqc)
+
+  
+
 ## 8. system calls
 
 Putting an extra layer between the application and the hardware has several advantages.
@@ -869,6 +906,7 @@ reference:
 - 9.5 system calls related to signal handling
 - 9.5.1 the kill() system call
 - 9.5.2 changing a signal action
+  
   - `sigaction(sig,act,oact)`
 
 ## 10. process scheduling
@@ -901,6 +939,23 @@ some real-time operating systems feature preempive kernels,which means that a pr
 - multitasking
   - cooperative multitask
   - preemptive multitask
+
+
+
+### [常见调度算法](https://www.youtube.com/watch?v=vF3KKMI3_1s)
+
+- 先来先服务调度算法（FCFS)
+- 短作业优先调度算法（short job first）
+- 优先级调度算法（优先选择就绪队列中优先权最高的进程投入运行）
+  - 非抢占式优先权调度算法
+  - 抢占式优先权调度算法
+- 时间片轮转调度算法（RR round robin)
+- 多级反馈队列调度算法
+- 高响应比优先调度算法
+- [CFS](https://www.youtube.com/watch?v=scfDOof9pww) 
+  - use red-black tree to pick the next task to run 
+
+![image-20200503121442502](/Users/takesachishuu/go/src/github.com/wuxiangzhou2010/wuxiangzhou2010.github.io/_posts/image-20200503121442502.png)
 
 reference :
 
