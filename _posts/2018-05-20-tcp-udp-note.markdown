@@ -20,7 +20,7 @@ the User Datagram Protocol header has four fields, each of which is 2 bytes.
 
 ![img](http://telescript.denayer.wenk.be/~hcr/cn/idoceo/images/udp_header.gif)
 
-udp is a datagram-oriented protocol. it `does not provide error correction`, `sequencing`, `duplicate elimination`, `flow control or congestion control`.
+UDP is a datagram-oriented protocol. it `does not provide error correction`, `sequencing`, `duplicate elimination`, `flow control or congestion control`.
 
 it can provide `error detection`. the checksum field is end to end and is computed over the UDP pseudo-header, which includes the source and destination IP addresses from the IP hader, Thus, any modification(NAT) made to those fields requires a modification to the UDP checksum
 
@@ -56,7 +56,7 @@ each UDP output operation requested by an application produces `exactly one UDP 
   - source port and destination port 32bits
   - sequence number 32bits
   - acknowledgement number 32bits
-  - `URG|ACK|RST|SYN|FIN`, window size 32bits
+  - `URG|PSH|ACK|RST|SYN|FIN`, window size 32bits
   - TCP checksum urgent pointer 32bits
 
 * 17.4 Summary
@@ -102,7 +102,7 @@ each UDP output operation requested by an application produces `exactly one UDP 
 - 21.11 Repacketization
 - 21.12 Summary
 
-## tpp/udp difference
+## TCP/UDP difference
 
 1. tcp is `connection oriented`, whereas udp is connection-less.
 2. This means that TCP tracks all data sent, requiring `acknowledgement` for each octet.
@@ -112,6 +112,11 @@ each UDP output operation requested by an application produces `exactly one UDP 
 
 - 握手三次。每次都是接收到数据包的一方可以得到一些结论，发送的一方其实没有任何头绪。我虽然有发包的动作，但是我怎么知道我有没有发出去，而对方有没有接收到呢？所以要相互确认。这个过程就要两次。
 - 挥手四次。 因为 TCP 连接是双向的， 关闭一个方向的连接， 但是另一个方向仍然可以继续发送数据。因此需要四次。
+
+### 客户端为什么要等待2MSL（max segment life time）
+
+- 客户端发送的ACK包与可能丢失， 如果需要重传却没有重传不符合TCP重传协议。
+- 防止上次的包影响到下次TCP连接。 2MSL之后， 可以认为网络中没有上次连接的包存在。
 
 ## 分包粘包解决方案
 
@@ -123,12 +128,15 @@ each UDP output operation requested by an application produces `exactly one UDP 
 
 - 半连接状态
 
-检测 SYN 攻击非常的方·便，当你在服务器上看到大量的半连接状态时，特别是源 IP 地址是随机的，基本上可以断定这是一次 SYN 攻击。在 Linux/Unix 上可以使用系统自带的 netstats 命令来检测 SYN 攻击。
+检测 SYN 攻击非常的方便，当你在服务器上看到大量的半连接状态时，特别是源 IP 地址是随机的，基本上可以断定这是一次 SYN 攻击。在 Linux/Unix 上可以使用系统自带的 netstats 命令来检测 SYN 攻击。
 
 - 解决办法
 
   - 缩短超时（SYN Timeout）时间
-    reference:
+
+
+
+reference:
 
 - [book: TCP IP Illustrated Volume 1 The Protocols](https://doc.lagout.org/network/TCP%20IP%20Illustrated%20Volume%201%20The%20Protocols.pdf)
 
