@@ -27,7 +27,7 @@ obtain the kernel source
   - kernel: core subsystems, such as the scheduler
   - mm: memory management system
   - sound: sound subsystem
-  - virt: virtualazation infrastructure
+  - virt: virtualization infrastructure
   - net: networking subsystem
 - building the kernel
 
