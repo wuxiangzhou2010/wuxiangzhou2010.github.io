@@ -61,10 +61,11 @@ obtain the kernel source
   - because the kernel has asychronous interrupts, is preemptive, and supports SMP, synchronization and concurrency are major concerns within the kernel.
   - portability is important.
 - no libc or standard headers
-  
+
   - stdc is too large and too inefficient for the kernel. many of the usual libc functions are implemented inside the kernel.
+
 - GNU C
-  
+
   - the kernel is not programmed in strict ANSI C. the kernel developers make use of various language extensions available in gcc, they use both C99 and GNUC extensions to the C language.
 
 ## 1. Intruduction
@@ -151,8 +152,6 @@ Each segment is represented by an 8-byte Segment Descriptor that describe the se
 
 ![image-20200502211707264](/Users/takesachishuu/go/src/github.com/wuxiangzhou2010/wuxiangzhou2010.github.io/_posts/image-20200502211707264.png)
 
-
-
 ![image-20200502212101758](/Users/takesachishuu/go/src/github.com/wuxiangzhou2010/wuxiangzhou2010.github.io/_posts/image-20200502212101758.png)
 
 ## 3. process management
@@ -211,8 +210,9 @@ The kernel schedules individual threads, not process. Linux does not differentia
   Each task_struct (include/linux/sched.h) has:
 
 - 3.1.1 `state`: `TASK_{RUNNING, INTERRUPTIBLE, UNINTERRUPTIBLE, STOPPED(reciving SIGSTOP, SIGSTP,ptrace), ZOMBIE}`
-  
+
   - TASK_ZOMBIE: process execution is terminated, but the parent process has not yet issued a `wait()` like system call(`wait()`, `wiat3()`, `wait4()`, or `waitpid()`) to return information about the dead process. Before the wait()-like call is issued the kernel can not discard the data contained in the dead process descriptor because the parent process could need it.
+
 - `fs_struct`: Filesystem information, current directory
 - `files_struct`: open file information, pointers to file descriptors
 - `mm_struct`: pointers to memory
@@ -649,8 +649,6 @@ the `vfree()` function relaeses noncontiguous memory areas. Its parameter addr c
 
 a kernel function gets dynamic memory in a fairly straightforward manner by invoking one of a variety of functions:`__get_free_pages` from the buddy system algorithm, `kmem_cache_alloc()` or `kmalloc()` to use the slab allocator for specialized or general-purpose objects, and `vmalloc()` to get a noncontingunous memory area.
 
-
-
 ![image-20200502211008121](/Users/takesachishuu/go/src/github.com/wuxiangzhou2010/wuxiangzhou2010.github.io/_posts/image-20200502211008121.png)
 
 ## 7. Process address space
@@ -793,8 +791,6 @@ reference:
 
 - [Virtual memory segmentation](https://www.youtube.com/watch?v=04Xs185vtqc)
 
-  
-
 ## 8. system calls
 
 Putting an extra layer between the application and the hardware has several advantages.
@@ -906,7 +902,7 @@ reference:
 - 9.5 system calls related to signal handling
 - 9.5.1 the kill() system call
 - 9.5.2 changing a signal action
-  
+
   - `sigaction(sig,act,oact)`
 
 ## 10. process scheduling
@@ -940,8 +936,6 @@ some real-time operating systems feature preempive kernels,which means that a pr
   - cooperative multitask
   - preemptive multitask
 
-
-
 ### [常见调度算法](https://www.youtube.com/watch?v=vF3KKMI3_1s)
 
 - 先来先服务调度算法（FCFS)
@@ -952,8 +946,8 @@ some real-time operating systems feature preempive kernels,which means that a pr
 - 时间片轮转调度算法（RR round robin)
 - 多级反馈队列调度算法
 - 高响应比优先调度算法
-- [CFS](https://www.youtube.com/watch?v=scfDOof9pww) 
-  - use red-black tree to pick the next task to run 
+- [CFS](https://www.youtube.com/watch?v=scfDOof9pww)
+  - use red-black tree to pick the next task to run
 
 ![image-20200503121442502](/Users/takesachishuu/go/src/github.com/wuxiangzhou2010/wuxiangzhou2010.github.io/_posts/image-20200503121442502.png)
 
@@ -974,7 +968,9 @@ reference :
 ## 12. The virtual file system
 
 - regular files
+
 - directories
+
 - symbolic links
 
 - 12.1 the role of Virtual file system.(VFS)
@@ -1009,20 +1005,39 @@ reference :
 
 - 12.2.1 superblock objects
   super_operations
+
   - read_inode(inode)
   - write_inode(inode)
   - put_inode(inode)
   - delete_inode(inode)
+
 - 12.2.2 inode objects
+
 - 12.2.3 file objects
+
 - 12.2.5 dentry objects
+
 - 12.2.7 files associated with a process
 
 - 12.3 filesystem mounting
 
 - each file and directory in a partition is known by a unique inode number(root directory always has inode2)
+
 - mkdir/rmdir/link/unlink/getdents system calll
+
 - chdir/symlink
+
+- [Linux understanding inode](https://www.youtube.com/watch?v=_6VJ8WfWI4k)
+  - Filesystem, superblock--> inode table --> data blocks
+  - file table contain the file name and inode number
+  - Inode contain the data pointer and the `metadata` --> date /permission/location/size/blocks/file type..., contain indirect links to other inode and blocks
+    - `df -i` check the disk inode usage
+    - `ls -i filename` get the file inode number
+    - `Stat filename` check the file status
+- [soft link and hard link](https://youtu.be/kYonC93SvpE?t=21)
+  
+  - soft link, create new file point to the old filename , if old name changed , the link breaks
+  - hard link, create new file with same inode. can not create hard links for directory
 
 ## 13. managing IO devides
 
