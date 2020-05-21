@@ -761,13 +761,13 @@ the `mm_alloc()` function is invoked to get a new memory descriptor. Since these
   - free(addr)
   - brk(addr)
 
-        modify the size of the heap directly; the `addr` parameter specifies the new value of` current->mm->brk`, and the return value is the new ending address of the memory region(the process must check whether it coincides with the requested `addr` value).
+    - modify the size of the heap directly; the `addr` parameter specifies the new value of` current->mm->brk`, and the return value is the new ending address of the memory region(the process must check whether it coincides with the requested `addr` value).
 
-    the `brk()` function differs from the other functions listed because it is `the only one implemented as a system call`: all the other functions are implemented in the C library by make use of `brk()` and `mmap()`.
+    - the `brk()` function differs from the other functions listed because it is `the only one implemented as a system call`: all the other functions are implemented in the C library by make use of `brk()` and `mmap()`.
 
-    when a process in the user mode invokes the `brk()` system call, the kernel executes the `sys_brk(addr)` function. This function verifies first whether the addr parameter falls inside the memory region that contains the process code; if so, it reutrns immediately;
+    - when a process in the user mode invokes the `brk()` system call, the kernel executes the `sys_brk(addr)` function. This function verifies first whether the addr parameter falls inside the memory region that contains the process code; if so, it reutrns immediately;
 
-    if the process has asked to shrink the heap, `sys_brk()` invokes the `do_munmap()` function to do the job and then returns:
+    - if the process has asked to shrink the heap, `sys_brk()` invokes the `do_munmap()` function to do the job and then returns:
 
 reference:
 
@@ -862,6 +862,7 @@ system call use the stack of the calling process just like a normal function cal
 reference:
 
 - [Unix system calls (1/2)](https://youtu.be/xHu7qI1gDPA?t=278)
+- [Linux系统中用户态到内核态切换](https://www.cnblogs.com/justcxtoworld/p/3155741.html)
 
 ## 9. Signals
 

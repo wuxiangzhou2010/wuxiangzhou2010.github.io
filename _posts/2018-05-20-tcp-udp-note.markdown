@@ -79,12 +79,21 @@ each UDP output operation requested by an application produces `exactly one UDP 
 ## Chapterr 21. TCP Timeout and Retransmission
 
 - 21.1 Introduction
+
 - 21.2 Simple Timeout and Retansmission Example
+
 - 21.3 Round-Trip Time Measurement
+
 - 21.4 An RTT example
+
 - 21.5 Congestion Example
+
 - 21.6 Congestion Avoidance Algorithm
+
 - [TCP 拥塞 控制](https://zhidao.baidu.com/question/98620785.html)
+
+  - [another link](https://www.youtube.com/watch?v=cPLDaypKQkU&t=113s)
+  - [Optimizing the TCP congestion avoidance parameters for gigabit networks](https://www.excentis.com/blog/optimizing-tcp-congestion-avoidance-parameters-gigabit-networks)
 
   1. 慢启动(Slow start)， cwnd 拥塞窗口， 二倍增长。
   2. 拥塞避免(Congestion avoidance)， 发现超时减半
@@ -96,10 +105,15 @@ each UDP output operation requested by an application produces `exactly one UDP 
   - 网络往返时间(Round Trip Time, RTT)
 
 - 21.7 Fast Retransmit and Fast Recovery Algorithm
+
 - 21.8 Congestion Example(continued)
+
 - 21.9 Per-Route Metrics
+
 - 21.10 ICMP Errors
+
 - 21.11 Repacketization
+
 - 21.12 Summary
 
 ## TCP/UDP difference
@@ -113,10 +127,10 @@ each UDP output operation requested by an application produces `exactly one UDP 
 - 握手三次。每次都是接收到数据包的一方可以得到一些结论，发送的一方其实没有任何头绪。我虽然有发包的动作，但是我怎么知道我有没有发出去，而对方有没有接收到呢？所以要相互确认。这个过程就要两次。
 - 挥手四次。 因为 TCP 连接是双向的， 关闭一个方向的连接， 但是另一个方向仍然可以继续发送数据。因此需要四次。
 
-### 客户端为什么要等待2MSL（max segment life time）
+### 客户端为什么要等待 2MSL（max segment life time）
 
-- 客户端发送的ACK包与可能丢失， 如果需要重传却没有重传不符合TCP重传协议。
-- 防止上次的包影响到下次TCP连接。 2MSL之后， 可以认为网络中没有上次连接的包存在。
+- 客户端发送的 ACK 包与可能丢失， 如果需要重传却没有重传不符合 TCP 重传协议。
+- 防止上次的包影响到下次 TCP 连接。 2MSL 之后， 可以认为网络中没有上次连接的包存在。
 
 ## 分包粘包解决方案
 
@@ -133,8 +147,6 @@ each UDP output operation requested by an application produces `exactly one UDP 
 - 解决办法
 
   - 缩短超时（SYN Timeout）时间
-
-
 
 reference:
 
