@@ -3,7 +3,7 @@ layout: post
 title: "上海电信SDN网关，UPNP 端口映射"
 date: 2019-10-26 12:12 +0800
 categories: tools
-published: false
+published: true
 ---
 
 ## 上海电信 SDN 网关，UPNP 端口映射
