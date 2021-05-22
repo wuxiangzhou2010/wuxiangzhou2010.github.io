@@ -29,15 +29,17 @@ published: false
   usermod -aG sudo testuser
   su testuser
 
-  apt-get install bash-completion
-  apt install ca-certificates
-  apt install vim
-  apt install locales-all
-  sudo apt install rsync
 
 
   sudo apt-get update
-  sudo apt-get -y install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler git  wget --no-install-recommends -y
+  sudo apt-get -y --no-install-recommends \
+  install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler git  wget \
+   vim \
+  bash-completion \
+  ca-certificates \
+  vim \
+  locales-all \
+  rsync
   ```
 
 - 克隆仓库, 更新软件包
@@ -46,12 +48,15 @@ published: false
   git clone https://github.com/coolsnowwolf/lede
 
   # enable helloworld
-  vi feeds.conf.default
-
   cd lede
-  ./scripts/feeds update -a
-  ./scripts/feeds install -a
-  make menuconfig
+  #vi feeds.conf.default
+  sed -i 's/^#\(.*helloworld\)/\1/' feeds.conf.default
+  ./scripts/feeds update -a && ./scripts/feeds install -a
+  # make menuconfig
+  make defconfig
+  make -j8 download
+  make -j$(($(nproc) + 1)) V=s
+
   ```
 
 - 选择系统, 架构和软件
