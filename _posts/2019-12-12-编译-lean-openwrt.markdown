@@ -22,14 +22,32 @@ published: false
 - 安装必要工具
 
   ```sh
+  apt update
+  apt install sudo -y
+  useradd -m testuser
+  passwd testuser
+  usermod -aG sudo testuser
+  su testuser
+
+  apt-get install bash-completion
+  apt install ca-certificates
+  apt install vim
+  apt install locales-all
+  sudo apt install rsync
+
+
   sudo apt-get update
-  sudo apt-get -y install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler
+  sudo apt-get -y install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler git  wget --no-install-recommends -y
   ```
 
 - 克隆仓库, 更新软件包
 
   ```sh
   git clone https://github.com/coolsnowwolf/lede
+
+  # enable helloworld
+  vi feeds.conf.default
+
   cd lede
   ./scripts/feeds update -a
   ./scripts/feeds install -a
