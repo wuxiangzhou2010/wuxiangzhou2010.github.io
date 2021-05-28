@@ -22,15 +22,8 @@ published: false
 - 安装必要工具
 
   ```sh
-  apt update
-  apt install sudo -y
-  useradd -m testuser
-  echo -e "123\n123" | passwd testuser
-  usermod -aG sudo testuser
-  su testuser
-  cd
-
-
+  docker run --name "builder" -d -it debian:latest /bin/bash
+  docker exec -it builder /bin/bash
 
   apt-get update -y
   apt-get -y --no-install-recommends \
@@ -42,13 +35,21 @@ published: false
   locales-all \
   rsync
 
+
+  apt update
+  apt install sudo -y
+  useradd -m testuser
+  echo -e "123\n123" | passwd testuser
+  usermod -aG sudo testuser
+  su testuser
+  cd
+
+
   ```
 
 - 克隆仓库, 更新软件包
 
   ```sh
-  su testuser
-  cd
   git clone https://github.com/coolsnowwolf/lede
 
   # enable helloworld
@@ -60,7 +61,6 @@ published: false
   make defconfig
   make -j8 download
   make -j$(($(nproc) + 1)) V=s
-
   ```
 
 - 选择系统, 架构和软件
