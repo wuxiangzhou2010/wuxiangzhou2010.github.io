@@ -3,7 +3,7 @@ layout: post
 title: "编译 Lean Openwrt"
 date: 2019-12-12 12:12 +0800
 categories: tools
-published: false
+published: true
 ---
 
 看到最近网上的大 V 越来越多提到了 Lean OpenWRT, 于是也来做一下尝试。目标对象是家里的一台 x86 架构的软路由。
@@ -35,12 +35,8 @@ published: false
   locales-all \
   rsync
 
-
-  apt update
-  apt install sudo -y
   useradd -m testuser
   echo -e "123\n123" | passwd testuser
-  usermod -aG sudo testuser
   su testuser
   cd
 
